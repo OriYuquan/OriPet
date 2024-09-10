@@ -40,10 +40,18 @@ MainWindow::MainWindow(QWidget* parent) : QWidget(parent)
     // 状态机初始化
     behavior = new Behavior(this);
 
-    player->loadAction(StandFacingLeft);
-    soundPlayer->loadAction(StandFacingLeft);
+    connect(behavior, SIGNAL(PlayerLoadNewActionSignal(Action)), player, SLOT(loadAction(Action)));
+    connect(behavior, SIGNAL(PlayerNextPixSignal()), player, SLOT(pixUpdate()));
+    connect(behavior, SIGNAL(PlayerMirrorSignal()), player, SLOT(mirrorAction()));
+    connect(behavior,
+            SIGNAL(SoundPlayerLoadNewActionSignal(Action)),
+            soundPlayer,
+            SLOT(loadAction(Action)));
+
+    player->loadAction(StandFacingRight);
+    soundPlayer->loadAction(StandFacingRight);
     behavior->loadAction(
-        StandFacingLeft, SCREENWIDTHFIX, SCREENHEIGHTFIX + SCREENHEIGHT - ORIHEIGHT);
+        StandFacingRight, SCREENWIDTHFIX + 100, SCREENHEIGHTFIX + SCREENHEIGHT - ORIHEIGHT);
 
     player->move(behavior->getX(), behavior->getY());
 }
@@ -85,11 +93,6 @@ void MainWindow::timerEvent(QTimerEvent* event)
     soundPlayer->soundPlay(player->curFrame);
     behavior->actionUpdate(player->curFrame, player->timePlayed);
     player->move(behavior->getX(), behavior->getY());
-    if (!player->loadAction(behavior->getAction()))
-    {
-        player->pixUpdate();
-    }
-    soundPlayer->loadAction(behavior->getAction());
 }
 
 void MainWindow::keyPressEvent(QKeyEvent* event)

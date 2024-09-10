@@ -13,8 +13,6 @@ class Player : public QWidget
     Q_OBJECT
    public:
     explicit Player(QWidget* parent = nullptr);
-    bool loadAction(Action action, int cur = 1);
-    void pixUpdate();
 
     int       curFrame;
     long long timePlayed;
@@ -29,6 +27,9 @@ class Player : public QWidget
    signals:
 
    public slots:
+    void loadAction(Action action);
+    void pixUpdate();
+    void mirrorAction();
 };
 
 #endif  // PLAYER_H

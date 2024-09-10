@@ -10,25 +10,18 @@ Player::Player(QWidget* parent) : QWidget(parent)
     actionPlaying = None;
 }
 
-bool Player::loadAction(Action action, int cur)
+void Player::loadAction(Action action)
 {
-    if (actionPlaying != action)
-    {
-        curFrame      = cur;
-        timePlayed    = 0;
-        actionPlaying = action;
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+    curFrame      = 1;
+    timePlayed    = 0;
+    actionPlaying = action;
 }
 
 void Player::paintEvent(QPaintEvent* event)
 {
     QString curPath = ActionsMap[actionPlaying].path + QString::number(curFrame) + ".png";
-    pix.load(curPath, 0, Qt::AvoidDither | Qt::ThresholdAlphaDither | Qt::ThresholdAlphaDither);
+    pix.load(
+        curPath, nullptr, Qt::AvoidDither | Qt::ThresholdAlphaDither | Qt::ThresholdAlphaDither);
 
     // 是否镜像反转
     if (ActionsMap[actionPlaying].transform)
@@ -46,4 +39,9 @@ void Player::pixUpdate()
 {
     curFrame = (curFrame == ActionsMap[actionPlaying].totalFrameNumber) ? 1 : curFrame + 1;
     timePlayed++;
+}
+
+void Player::mirrorAction()
+{
+    actionPlaying = ActionsMirror[actionPlaying];
 }

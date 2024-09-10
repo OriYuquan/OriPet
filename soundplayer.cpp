@@ -13,22 +13,19 @@ SoundPlayer::SoundPlayer(QObject* parent) : QObject(parent)
 
 void SoundPlayer::loadAction(Action action)
 {
-    if (actionPlaying != action)
+    actionPlaying = action;
+    if (SoundMap[action].totalFrameNumber != 0)
     {
-        actionPlaying = action;
-        if (SoundMap[action].totalFrameNumber != 0)
-        {
-            frequency =
-                ActionsMap[actionPlaying].totalFrameNumber / SoundMap[actionPlaying].frequency + 1;
-            quint32 seed = static_cast<quint32>(QDateTime::currentMSecsSinceEpoch() & 0xFFFFFFFF);
-            QRandomGenerator generator(seed);
-            int randomValue = generator.bounded(1, SoundMap[actionPlaying].totalFrameNumber + 1);
-            curPath         = SoundMap[actionPlaying].path + QString::number(randomValue) + ".wav";
-            // qDebug() << curPath;
+        frequency =
+            ActionsMap[actionPlaying].totalFrameNumber / SoundMap[actionPlaying].frequency + 1;
+        quint32 seed = static_cast<quint32>(QDateTime::currentMSecsSinceEpoch() & 0xFFFFFFFF);
+        QRandomGenerator generator(seed);
+        int randomValue = generator.bounded(1, SoundMap[actionPlaying].totalFrameNumber + 1);
+        curPath         = SoundMap[actionPlaying].path + QString::number(randomValue) + ".wav";
+        // qDebug() << curPath;
 
-            mediaPlayer->setMedia(QUrl::fromLocalFile(curPath));
-            mediaPlayer->setVolume(20);  // Volume is set between 0 and 100
-        }
+        mediaPlayer->setMedia(QUrl::fromLocalFile(curPath));
+        mediaPlayer->setVolume(20);  // Volume is set between 0 and 100
     }
 }
 

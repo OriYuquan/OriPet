@@ -4,7 +4,7 @@
 #include <QMap>
 #include <QString>
 
-#define RATE 25
+#define RATE 23
 #define CONTROLTIME 50
 
 // 添加枚举量 + 添加动作文件 + 添加音效文件 + 添加状态机转移（特殊转移状态函数） + 添加速度函数
@@ -22,8 +22,6 @@ enum Action
     Jump2Right,
     LandStandLeft,
     LandStandRight,
-    //    LandRunFastLeft,
-    //    LandRunFastRight,
     AgainstWallLeft,
     AgainstWallRight,
     ClimbUpLeft,
@@ -42,8 +40,6 @@ enum Action
     RunJump2Right,
     DoubleJumpLeft,
     DoubleJumpRight,
-    TripleJumpLeft,
-    TripleJumpRight,
     DoubleJumptoFallLeft,
     DoubleJumptoFallRight,
     DoubleJumptoMovingFallLeft,
@@ -52,6 +48,16 @@ enum Action
     FallRight,
     MovingFallLeft,
     MovingFallRight,
+    LandRunFastLeft,
+    LandRunFastRight,
+    WallJump1Left,
+    WallJump1Right,
+    WallJump2Left,
+    WallJump2Right,
+    WallLongJump1Left,
+    WallLongJump1Right,
+    WallLongJump2Left,
+    WallLongJump2Right,
 
     None
 };

@@ -7,6 +7,7 @@
 #include <QRandomGenerator>
 #include <cmath>
 
+using std::abs;
 using std::max;
 using std::min;
 
@@ -111,9 +112,10 @@ Action Behavior::NextActions(Action currentAction)
 }
 
 // 状态机更新
-bool Behavior::actionUpdate(int curFrame, long long time)
+void Behavior::actionUpdate(int curFrame, long long time)
 {
-    bool result = false;
+    bool mirror  = false;
+    bool restart = false;
 
     vx = ActionsDX(actionBehavior, x, y, vx, vy, curFrame, time);
     vy = ActionsDY(actionBehavior, x, y, vx, vy, curFrame, time);
@@ -143,21 +145,46 @@ bool Behavior::actionUpdate(int curFrame, long long time)
     {
         actionBehavior = NextActions(actionBehavior);
     }
-    else if (controlTime != 0 && (curFrame == ActionsMap[actionBehavior].totalFrameNumber ||
-                                  ActionsMap[actionBehavior].completelyPlay == false))
+    else if (controlTime != 0)
     {
-        if (actionBehavior == DoubleJumpLeft || actionBehavior == DoubleJumpRight ||
-            actionBehavior == TripleJumpLeft || actionBehavior == TripleJumpRight)
+        // 播放完转移
+        if ((curFrame == ActionsMap[actionBehavior].totalFrameNumber ||
+             ActionsMap[actionBehavior].completelyPlay == false))
         {
-            actionBehavior =
-                (vx == 0) ? ((ActionsMap[actionBehavior].transform) ? DoubleJumptoFallLeft
-                                                                    : DoubleJumptoFallRight)
-                          : ((ActionsMap[actionBehavior].transform) ? DoubleJumptoMovingFallLeft
-                                                                    : DoubleJumptoMovingFallRight);
+            if (actionBehavior == DoubleJumpLeft || actionBehavior == DoubleJumpRight)
+            {
+                actionBehavior =
+                    (abs(vx) < 5)
+                        ? ((ActionsMap[actionBehavior].transform) ? DoubleJumptoFallLeft
+                                                                  : DoubleJumptoFallRight)
+                        : ((ActionsMap[actionBehavior].transform) ? DoubleJumptoMovingFallLeft
+                                                                  : DoubleJumptoMovingFallRight);
+            }
+            else
+            {
+                actionBehavior = ActionsColdTrans[actionBehavior];
+            }
         }
+        // 未播放完转移
         else
         {
-            actionBehavior = ActionsColdTrans[actionBehavior];
+            if (actionBehavior == DoubleJumpLeft || actionBehavior == DoubleJumpRight)
+            {
+                if (vx > 0)
+                    vx--;
+                else if (vx < 0)
+                    vx++;
+            }
+            else if (pre == FallLeft || pre == FallRight || pre == MovingFallLeft ||
+                     pre == MovingFallRight)
+            {
+                if (vx > 0)
+                    vx--;
+                else if (vx < 0)
+                    vx++;
+                if (abs(vx) < 5)
+                    actionBehavior = ActionsMap[actionBehavior].transform ? FallLeft : FallRight;
+            }
         }
     }
 
@@ -201,6 +228,11 @@ bool Behavior::actionUpdate(int curFrame, long long time)
                 actionBehavior = ClimbDownLeft;
             if (jumpKey)
             {
+                if (rightKey)
+                    actionBehavior = randomValue > 0.5 ? WallLongJump1Left : WallLongJump2Left;
+                else
+                    actionBehavior = randomValue > 0.5 ? WallJump1Left : WallJump2Left;
+                jumpKey = false;
             }
         }
         if (x == RightEdge)
@@ -211,12 +243,14 @@ bool Behavior::actionUpdate(int curFrame, long long time)
                 actionBehavior = ClimbDownRight;
             if (jumpKey)
             {
+                if (leftKey)
+                    actionBehavior = randomValue > 0.5 ? WallLongJump1Right : WallLongJump2Right;
+                else
+                    actionBehavior = randomValue > 0.5 ? WallJump1Right : WallJump2Right;
+                jumpKey = false;
             }
         }
-        if ((pre == Jump1Left || pre == Jump1Right || pre == Jump2Left || pre == Jump2Right ||
-             pre == RunJump1Left || pre == RunJump1Right || pre == RunJump2Left ||
-             pre == RunJump2Right) &&
-            y < BottomEdge)
+        if (x > LeftEdge && x < RightEdge && y < BottomEdge && y > TopEdge)
         {
             if (jumpKey)
             {
@@ -224,22 +258,59 @@ bool Behavior::actionUpdate(int curFrame, long long time)
                 {
                     actionBehavior =
                         ActionsMap[actionBehavior].transform ? DoubleJumpLeft : DoubleJumpRight;
+                    restart = true;
                     jumpChance--;
                 }
                 jumpKey = false;
             }
-        }
-        if ((pre == DoubleJumpLeft || pre == DoubleJumpRight) && y < BottomEdge)
-        {
-            if (jumpKey)
+            else
             {
-                if (jumpChance >= 1)
+                if (leftKey)
                 {
-                    actionBehavior =
-                        ActionsMap[actionBehavior].transform ? TripleJumpLeft : TripleJumpRight;
-                    jumpChance--;
+                    vx = -18;
+                    if (actionBehavior == DoubleJumpRight)
+                    {
+                        actionBehavior = DoubleJumpLeft;
+                        mirror         = true;
+                    }
+                    else if (actionBehavior == FallLeft || actionBehavior == FallRight)
+                    {
+                        actionBehavior = MovingFallLeft;
+                    }
+                    else if (actionBehavior == MovingFallRight)
+                    {
+                        actionBehavior = MovingFallLeft;
+                        mirror         = true;
+                    }
+                    else if (actionBehavior == RunJump1Right || actionBehavior == RunJump2Right)
+                    {
+                        actionBehavior = ActionsMirror[actionBehavior];
+                        mirror         = true;
+                    }
                 }
-                jumpKey = false;
+                if (rightKey)
+                {
+                    vx = 18;
+                    if (actionBehavior == DoubleJumpLeft)
+                    {
+                        actionBehavior = DoubleJumpRight;
+                        mirror         = true;
+                    }
+                    else if (actionBehavior == FallLeft || actionBehavior == FallRight)
+                    {
+                        actionBehavior = MovingFallRight;
+                    }
+                    else if (actionBehavior == MovingFallLeft)
+                    {
+                        actionBehavior = MovingFallRight;
+                        mirror         = true;
+                    }
+                    else if (actionBehavior == RunJump1Left || actionBehavior == RunJump2Left)
+                    {
+                        actionBehavior = ActionsMirror[actionBehavior];
+                        mirror         = true;
+                    }
+                }
             }
         }
     }
@@ -322,8 +393,29 @@ bool Behavior::actionUpdate(int curFrame, long long time)
         // 冷却时间调试输出
         // qDebug() << i << ActionsLeastTimes[Action(i)];
     }
+    //    qDebug() << x << " " << y << " " << vxCheck << " " << vyCheck << " " << curFrame << " "
+    //             << actionBehavior << " " << jumpChance;
 
-    return result;
+    if (actionBehavior == pre)
+    {
+        if (restart)
+            emit PlayerLoadNewActionSignal(actionBehavior);
+        else
+            emit PlayerNextPixSignal();
+    }
+    else
+    {
+        if (mirror)
+        {
+            emit PlayerMirrorSignal();
+            emit PlayerNextPixSignal();
+        }
+        else
+        {
+            emit PlayerLoadNewActionSignal(actionBehavior);
+            emit SoundPlayerLoadNewActionSignal(actionBehavior);
+        }
+    }
 }
 
 void Behavior::loadAction(Action act, int _x, int _y)

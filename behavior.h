@@ -42,6 +42,10 @@ class Behavior : public QWidget
     double generalPossiblity(Action);
 
    signals:
+    void PlayerLoadNewActionSignal(Action);
+    void PlayerNextPixSignal();
+    void PlayerMirrorSignal();
+    void SoundPlayerLoadNewActionSignal(Action);
 
    public:
     void keyPressEvent(QKeyEvent* event);

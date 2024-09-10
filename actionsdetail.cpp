@@ -52,20 +52,17 @@ void ActionsDetailLoad()
         ActionsDetail("Source/ClimbDown/ori43-", 13, true, 100, 0.7, true, false);
     ActionsMap[ClimbDownRight] =
         ActionsDetail("Source/ClimbDown/ori43-", 13, false, 100, 0.7, true, false);
-    ActionsMap[RunFastLeft] =
-        ActionsDetail("Source/RunFast/ori32-", 56, true, 200, 0.2, true, false);
+    ActionsMap[RunFastLeft] = ActionsDetail("Source/RunFast/ori32-", 56, true, 0, 0.2, true, false);
     ActionsMap[RunFastRight] =
-        ActionsDetail("Source/RunFast/ori32-", 56, false, 200, 0.2, true, false);
+        ActionsDetail("Source/RunFast/ori32-", 56, false, 0, 0.2, true, false);
     ActionsMap[RuntoStandLeft]  = ActionsDetail("Source/RuntoStand/runToIdle_", 37, true, 0, 0.0);
     ActionsMap[RuntoStandRight] = ActionsDetail("Source/RuntoStand/runToIdle_", 37, false, 0, 0.0);
-    ActionsMap[RunJump1Left]    = ActionsDetail("Source/RunJump1/jump1_", 40, true, 0, 0.0);
-    ActionsMap[RunJump1Right]   = ActionsDetail("Source/RunJump1/jump1_", 40, false, 0, 0.0);
-    ActionsMap[RunJump2Left]    = ActionsDetail("Source/RunJump2/ori28-", 40, true, 0, 0.0);
-    ActionsMap[RunJump2Right]   = ActionsDetail("Source/RunJump2/ori28-", 40, false, 0, 0.0);
+    ActionsMap[RunJump1Left]    = ActionsDetail("Source/RunJump1/jump1_", 31, true, 0, 0.0);
+    ActionsMap[RunJump1Right]   = ActionsDetail("Source/RunJump1/jump1_", 31, false, 0, 0.0);
+    ActionsMap[RunJump2Left]    = ActionsDetail("Source/RunJump2/ori28-", 31, true, 0, 0.0);
+    ActionsMap[RunJump2Right]   = ActionsDetail("Source/RunJump2/ori28-", 31, false, 0, 0.0);
     ActionsMap[DoubleJumpLeft]  = ActionsDetail("Source/DoubleJump/doubleJump_", 29, true, 0, 0.0);
     ActionsMap[DoubleJumpRight] = ActionsDetail("Source/DoubleJump/doubleJump_", 29, false, 0, 0.0);
-    ActionsMap[TripleJumpLeft]  = ActionsDetail("Source/DoubleJump/doubleJump_", 29, true, 0, 0.0);
-    ActionsMap[TripleJumpRight] = ActionsDetail("Source/DoubleJump/doubleJump_", 29, false, 0, 0.0);
     ActionsMap[DoubleJumptoFallLeft] =
         ActionsDetail("Source/DoubleJumptofFall/doubleJumpToFallIdle_", 5, true, 0, 0.0);
     ActionsMap[DoubleJumptoFallRight] =
@@ -74,10 +71,22 @@ void ActionsDetailLoad()
         ActionsDetail("Source/DoubleJumptoMovinfFall/doubleJumpToFall_", 5, true, 0, 0.0);
     ActionsMap[DoubleJumptoMovingFallRight] =
         ActionsDetail("Source/DoubleJumptoMovinfFall/doubleJumpToFall_", 5, false, 0, 0.0);
-    ActionsMap[FallLeft]        = ActionsDetail("Source/Fall/FallIdle_", 13, true, 0, 1.0);
-    ActionsMap[FallRight]       = ActionsDetail("Source/Fall/FallIdle_", 13, false, 0, 1.0);
-    ActionsMap[MovingFallLeft]  = ActionsDetail("Source/MovingFall/Fall_", 35, true, 0, 1.0);
-    ActionsMap[MovingFallRight] = ActionsDetail("Source/MovingFall/Fall_", 35, false, 0, 1.0);
+    ActionsMap[FallLeft]          = ActionsDetail("Source/Fall/FallIdle_", 13, true, 0, 1.0);
+    ActionsMap[FallRight]         = ActionsDetail("Source/Fall/FallIdle_", 13, false, 0, 1.0);
+    ActionsMap[MovingFallLeft]    = ActionsDetail("Source/MovingFall/Fall_", 35, true, 0, 1.0);
+    ActionsMap[MovingFallRight]   = ActionsDetail("Source/MovingFall/Fall_", 35, false, 0, 1.0);
+    ActionsMap[LandRunFastLeft]   = ActionsDetail("Source/LandRunFast/ori45-", 7, true, 0, 0.0);
+    ActionsMap[LandRunFastRight]  = ActionsDetail("Source/LandRunFast/ori45-", 7, false, 0, 0.0);
+    ActionsMap[WallJump1Left]     = ActionsDetail("Source/WallJump1/WallJump1_", 26, true, 0, 0.0);
+    ActionsMap[WallJump1Right]    = ActionsDetail("Source/WallJump1/WallJump1_", 26, false, 0, 0.0);
+    ActionsMap[WallJump2Left]     = ActionsDetail("Source/WallJump2/ori40-", 30, true, 0, 0.0);
+    ActionsMap[WallJump2Right]    = ActionsDetail("Source/WallJump2/ori40-", 30, false, 0, 0.0);
+    ActionsMap[WallLongJump1Left] = ActionsDetail("Source/WallLongJump1/ori41-", 30, false, 0, 0.0);
+    ActionsMap[WallLongJump1Right] = ActionsDetail("Source/WallLongJump1/ori41-", 30, true, 0, 0.0);
+    ActionsMap[WallLongJump2Left] =
+        ActionsDetail("Source/WallLongJump2/WallJumpAway2_", 30, false, 0, 0.0);
+    ActionsMap[WallLongJump2Right] =
+        ActionsDetail("Source/WallLongJump2/WallJumpAway2_", 30, true, 0, 0.0);
 
     // 操作冷却时的转移映射
     ActionsColdTrans[StandFacingLeft]             = StandFacingLeft;
@@ -108,16 +117,24 @@ void ActionsDetailLoad()
     ActionsColdTrans[RunJump2Right]               = LandStandRight;
     ActionsColdTrans[DoubleJumpLeft]              = DoubleJumptoFallLeft;
     ActionsColdTrans[DoubleJumpRight]             = DoubleJumptoFallRight;
-    ActionsColdTrans[TripleJumpLeft]              = DoubleJumptoFallLeft;
-    ActionsColdTrans[TripleJumpRight]             = DoubleJumptoFallRight;
     ActionsColdTrans[DoubleJumptoFallLeft]        = FallLeft;
     ActionsColdTrans[DoubleJumptoFallRight]       = FallRight;
-    ActionsColdTrans[DoubleJumptoMovingFallLeft]  = DoubleJumptoMovingFallLeft;
-    ActionsColdTrans[DoubleJumptoMovingFallRight] = DoubleJumptoMovingFallRight;
+    ActionsColdTrans[DoubleJumptoMovingFallLeft]  = MovingFallLeft;
+    ActionsColdTrans[DoubleJumptoMovingFallRight] = MovingFallRight;
     ActionsColdTrans[FallLeft]                    = FallLeft;
     ActionsColdTrans[FallRight]                   = FallRight;
-    ActionsColdTrans[MovingFallLeft]              = DoubleJumptoMovingFallLeft;
-    ActionsColdTrans[MovingFallRight]             = DoubleJumptoMovingFallRight;
+    ActionsColdTrans[MovingFallLeft]              = MovingFallLeft;
+    ActionsColdTrans[MovingFallRight]             = MovingFallRight;
+    ActionsColdTrans[LandRunFastLeft]             = RunFastLeft;
+    ActionsColdTrans[LandRunFastRight]            = RunFastRight;
+    ActionsColdTrans[WallJump1Left]               = MovingFallLeft;
+    ActionsColdTrans[WallJump1Right]              = MovingFallRight;
+    ActionsColdTrans[WallJump2Left]               = MovingFallLeft;
+    ActionsColdTrans[WallJump2Right]              = MovingFallRight;
+    ActionsColdTrans[WallLongJump1Left]           = MovingFallRight;
+    ActionsColdTrans[WallLongJump1Right]          = MovingFallLeft;
+    ActionsColdTrans[WallLongJump2Left]           = MovingFallRight;
+    ActionsColdTrans[WallLongJump2Right]          = MovingFallLeft;
 
     // 状态机的转移函数
     ActionsProbability[StandFacingLeft]  = {{StandFacingRight, 1},
@@ -166,8 +183,19 @@ void ActionsDetailLoad()
         {StandFacingLeft, 1}, {StandFacingLeft, 5}, {RunSlowlyLeft, -1}, {ClimbUpRight, 7}};
     ActionsProbability[ClimbUpLeft]    = {{WallStayLeft, 8}, {ClimbDownLeft, -1}};
     ActionsProbability[ClimbUpRight]   = {{WallStayRight, 8}, {ClimbDownRight, -1}};
-    ActionsProbability[WallStayLeft]   = {{ClimbUpLeft, -1}, {ClimbDownLeft, -1}};
-    ActionsProbability[WallStayRight]  = {{ClimbUpRight, -1}, {ClimbDownRight, -1}};
+    ActionsProbability[WallStayLeft]   = {{ClimbUpLeft, -1},
+                                          {ClimbDownLeft, -1},
+                                          {WallJump1Left, 1},
+                                          {WallJump2Left, 1},
+                                          {WallLongJump1Left, 1},
+                                          {WallLongJump2Left, 1}};
+    ActionsProbability[WallStayRight]  = {{ClimbUpRight, -1},
+                                          {ClimbDownRight, -1},
+                                          {ClimbDownRight, -1},
+                                          {WallJump1Right, 1},
+                                          {WallJump2Right, 1},
+                                          {WallLongJump1Right, 1},
+                                          {WallLongJump2Right, 1}};
     ActionsProbability[ClimbDownLeft]  = {{WallStayLeft, 8}, {ClimbUpLeft, -1}};
     ActionsProbability[ClimbDownRight] = {{WallStayRight, 8}, {ClimbUpRight, -1}};
     ActionsProbability[RunFastLeft]    = {
@@ -176,28 +204,34 @@ void ActionsDetailLoad()
         {RuntoStandRight, 10}, {RunSlowlyRight, -1}, {RunJump1Right, 3}, {RunJump2Right, 3}};
     ActionsProbability[RuntoStandLeft]              = {{StandFacingLeft, 1}};
     ActionsProbability[RuntoStandRight]             = {{StandFacingRight, 1}};
-    ActionsProbability[RunJump1Left]                = {{LandStandLeft, 1}};
-    ActionsProbability[RunJump1Right]               = {{LandStandRight, 1}};
-    ActionsProbability[RunJump2Left]                = {{LandStandLeft, 1}};
-    ActionsProbability[RunJump2Right]               = {{LandStandRight, 1}};
+    ActionsProbability[RunJump1Left]                = {{LandStandLeft, 1}, {LandRunFastLeft, 3}};
+    ActionsProbability[RunJump1Right]               = {{LandStandRight, 1}, {LandRunFastRight, 3}};
+    ActionsProbability[RunJump2Left]                = {{LandStandLeft, 1}, {LandRunFastLeft, 3}};
+    ActionsProbability[RunJump2Right]               = {{LandStandRight, 1}, {LandRunFastRight, 3}};
     ActionsProbability[DoubleJumpLeft]              = {{DoubleJumptoFallLeft, -1},
                                                        {DoubleJumptoMovingFallLeft, -1}};
     ActionsProbability[DoubleJumpRight]             = {{DoubleJumptoFallRight, -1},
-                                                       {DoubleJumptoMovingFallRight, -1}};
-    ActionsProbability[TripleJumpLeft]              = {{DoubleJumptoFallLeft, -1},
-                                                       {DoubleJumptoMovingFallLeft, -1}};
-    ActionsProbability[TripleJumpRight]             = {{DoubleJumptoFallRight, -1},
                                                        {DoubleJumptoMovingFallRight, -1}};
     ActionsProbability[DoubleJumptoFallLeft]        = {{FallLeft, 1}};
     ActionsProbability[DoubleJumptoFallRight]       = {{FallRight, 1}};
     ActionsProbability[DoubleJumptoMovingFallLeft]  = {{MovingFallLeft, 1}};
     ActionsProbability[DoubleJumptoMovingFallRight] = {{MovingFallRight, 1}};
+    ActionsProbability[LandRunFastLeft]             = {{RunFastLeft, 1}};
+    ActionsProbability[LandRunFastRight]            = {{RunFastRight, 1}};
+    ActionsProbability[WallJump1Left]               = {{MovingFallLeft, 1}};
+    ActionsProbability[WallJump1Right]              = {{MovingFallRight, 1}};
+    ActionsProbability[WallJump2Left]               = {{MovingFallLeft, 1}};
+    ActionsProbability[WallJump2Right]              = {{MovingFallRight, 1}};
+    ActionsProbability[WallLongJump1Left]           = {{MovingFallRight, 1}};
+    ActionsProbability[WallLongJump1Right]          = {{MovingFallLeft, 1}};
+    ActionsProbability[WallLongJump2Left]           = {{MovingFallRight, 1}};
+    ActionsProbability[WallLongJump2Right]          = {{MovingFallLeft, 1}};
 
     // 音效加载
     SoundMap[RunSlowlyLeft] = SoundMap[RunSlowlyRight] =
         SoundsDetail("Sound/stepSound/seinFootstepsRock", 5, 2);
-    SoundMap[LandStandLeft] = SoundMap[LandStandRight] =
-        SoundsDetail("Sound/land/seinLandsStone", 5, 1);
+    SoundMap[LandStandLeft] = SoundMap[LandStandRight] = SoundMap[LandRunFastLeft] =
+        SoundMap[LandRunFastRight] = SoundsDetail("Sound/land/seinLandsStone", 5, 1);
     SoundMap[Jump1Left] = SoundMap[Jump1Right] = SoundMap[Jump2Left] = SoundMap[Jump2Right] =
         SoundMap[RunJump1Left] = SoundMap[RunJump1Right] = SoundMap[RunJump2Left] =
             SoundMap[RunJump2Right] = SoundsDetail("Sound/jump/seinJumpsGrass", 5, 1);
@@ -207,8 +241,10 @@ void ActionsDetailLoad()
         SoundsDetail("Sound/stepSound/seinFootstepsRock", 5, 10);
     SoundMap[DoubleJumpLeft] = SoundMap[DoubleJumpRight] =
         SoundsDetail("Sound/doubleJump/seinDoubleJumps", 5, 1);
-    SoundMap[TripleJumpLeft] = SoundMap[TripleJumpRight] =
-        SoundsDetail("Sound/doubleJump/seinDoubleJumps", 5, 1);
+    SoundMap[WallJump1Left] = SoundMap[WallJump1Right] = SoundMap[WallJump2Left] =
+        SoundMap[WallJump2Right] = SoundMap[WallLongJump1Left] = SoundMap[WallLongJump1Right] =
+            SoundMap[WallLongJump2Left]                        = SoundMap[WallLongJump2Left] =
+                SoundsDetail("Sound/wallJump/seinWallJumps", 5, 1);
 
     // 镜像动作初始化
     for (int i = 0; i < int(None); i++)
@@ -247,7 +283,7 @@ ActionsMovement(Action action, int x, int y, int vx, int vy, int curFrame, long 
     if (action == ClimbDownLeft || action == ClimbDownRight)
     {
         dx = 0;
-        dy = 12;
+        dy = 14;
     }
     if (action == RunFastLeft || action == RunFastRight)
     {
@@ -258,25 +294,55 @@ ActionsMovement(Action action, int x, int y, int vx, int vy, int curFrame, long 
         action == RunJump2Right)
     {
         dx = (ActionsMap[action].transform ? -1 : 1) * 18;
-        dy = -(ActionsMap[Jump1Left].totalFrameNumber + 1) + curFrame * 2;
+        dy = -(ActionsMap[action].totalFrameNumber + 1) + curFrame * 2;
     }
-    if (action == DoubleJumpLeft || action == DoubleJumpRight || action == TripleJumpLeft ||
-        action == TripleJumpRight)
+    if (action == DoubleJumpLeft || action == DoubleJumpRight)
     {
         dx = vx;
-        dy = -(ActionsMap[DoubleJumpLeft].totalFrameNumber + 1) + curFrame * 2;
+        dy = -(ActionsMap[action].totalFrameNumber + 1) + curFrame * 2;
     }
     if (action == FallLeft || action == FallRight || action == DoubleJumptoFallLeft ||
         action == DoubleJumptoFallRight)
     {
         dx = 0;
-        dy = vy + 4;
+        dy = vy + 2;
     }
     if (action == MovingFallLeft || action == MovingFallRight ||
         action == DoubleJumptoMovingFallLeft || action == DoubleJumptoMovingFallRight)
     {
         dx = vx;
-        dy = vy + 4;
+        dy = vy + 2;
+    }
+    if (action == LandRunFastLeft || action == LandRunFastLeft)
+    {
+        dx = (ActionsMap[action].transform ? -1 : 1) * 18;
+        dy = 0;
+    }
+    if (action == WallJump1Left || action == WallJump1Right || action == WallJump2Left ||
+        action == WallJump2Right)
+    {
+        if (action == WallJump1Left || action == WallJump2Left)
+        {
+            dx = (ActionsMap[action].totalFrameNumber - curFrame + 5) / 2;
+        }
+        else
+        {
+            dx = -(ActionsMap[action].totalFrameNumber - curFrame + 5) / 2;
+        }
+        dy = -18 + time * 2;
+    }
+    if (action == WallLongJump1Left || action == WallLongJump1Right ||
+        action == WallLongJump2Left || action == WallLongJump2Right)
+    {
+        if (action == WallLongJump1Left || action == WallLongJump2Left)
+        {
+            dx = 22;
+        }
+        else
+        {
+            dx = -22;
+        }
+        dy = -18 + time * 2;
     }
 
     return {dx, dy};

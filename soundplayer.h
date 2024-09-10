@@ -11,7 +11,6 @@ class SoundPlayer : public QObject
     Q_OBJECT
    public:
     explicit SoundPlayer(QObject* parent = nullptr);
-    void loadAction(Action action);
     void soundPlay(int curFrame);
 
    private:
@@ -23,6 +22,7 @@ class SoundPlayer : public QObject
    signals:
 
    public slots:
+    void loadAction(Action action);
 };
 
 #endif  // SOUNDPLAYER_H
