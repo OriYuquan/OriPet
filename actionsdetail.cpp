@@ -11,6 +11,7 @@ QMap<Action, SoundsDetail>         SoundMap;
 QMap<Action, QMap<Action, double>> ActionsProbability;
 QMap<Action, int>                  ActionsLeastTimes;
 QMap<Action, Action>               ActionsMirror;
+QMap<Action, Action>               ActionsColdTrans;
 
 int ORIWIDTH = 130, ORIHEIGHT = 200;
 int SCREENWIDTHFIX = -538, SCREENHEIGHTFIX = -225;
@@ -74,6 +75,47 @@ void ActionsDetailLoad()
     ActionsMap[MovingFallLeft]  = ActionsDetail("Source/MovingFall/Fall_", 35, true, 0, 1.0);
     ActionsMap[MovingFallRight] = ActionsDetail("Source/MovingFall/Fall_", 35, false, 0, 1.0);
 
+    // 操作冷却时的转移映射
+    ActionsColdTrans[StandFacingLeft]             = StandFacingLeft;
+    ActionsColdTrans[StandFacingRight]            = StandFacingRight;
+    ActionsColdTrans[RunSlowlyLeft]               = StandFacingLeft;
+    ActionsColdTrans[RunSlowlyRight]              = StandFacingRight;
+    ActionsColdTrans[Jump1Left]                   = LandStandLeft;
+    ActionsColdTrans[Jump1Right]                  = LandStandRight;
+    ActionsColdTrans[Jump2Left]                   = LandStandLeft;
+    ActionsColdTrans[Jump2Right]                  = LandStandRight;
+    ActionsColdTrans[LandStandLeft]               = StandFacingLeft;
+    ActionsColdTrans[LandStandRight]              = StandFacingRight;
+    ActionsColdTrans[AgainstWallLeft]             = AgainstWallLeft;
+    ActionsColdTrans[AgainstWallRight]            = AgainstWallRight;
+    ActionsColdTrans[ClimbUpLeft]                 = WallStayLeft;
+    ActionsColdTrans[ClimbUpRight]                = WallStayRight;
+    ActionsColdTrans[WallStayLeft]                = WallStayLeft;
+    ActionsColdTrans[WallStayRight]               = WallStayRight;
+    ActionsColdTrans[ClimbDownLeft]               = WallStayLeft;
+    ActionsColdTrans[ClimbDownRight]              = WallStayRight;
+    ActionsColdTrans[RunFastLeft]                 = RuntoStandLeft;
+    ActionsColdTrans[RunFastRight]                = RuntoStandRight;
+    ActionsColdTrans[RuntoStandLeft]              = StandFacingLeft;
+    ActionsColdTrans[RuntoStandRight]             = StandFacingRight;
+    ActionsColdTrans[RunJump1Left]                = LandStandLeft;
+    ActionsColdTrans[RunJump1Right]               = LandStandRight;
+    ActionsColdTrans[RunJump2Left]                = LandStandLeft;
+    ActionsColdTrans[RunJump2Right]               = LandStandRight;
+    ActionsColdTrans[DoubleJumpLeft]              = DoubleJumptoFallLeft;
+    ActionsColdTrans[DoubleJumpRight]             = DoubleJumptoFallRight;
+    ActionsColdTrans[TripleJumpLeft]              = DoubleJumptoFallLeft;
+    ActionsColdTrans[TripleJumpRight]             = DoubleJumptoFallRight;
+    ActionsColdTrans[DoubleJumptoFallLeft]        = FallLeft;
+    ActionsColdTrans[DoubleJumptoFallRight]       = FallRight;
+    ActionsColdTrans[DoubleJumptoMovingFallLeft]  = DoubleJumptoMovingFallLeft;
+    ActionsColdTrans[DoubleJumptoMovingFallRight] = DoubleJumptoMovingFallRight;
+    ActionsColdTrans[FallLeft]                    = FallLeft;
+    ActionsColdTrans[FallRight]                   = FallRight;
+    ActionsColdTrans[MovingFallLeft]              = DoubleJumptoMovingFallLeft;
+    ActionsColdTrans[MovingFallRight]             = DoubleJumptoMovingFallRight;
+
+    // 状态机的转移函数
     ActionsProbability[StandFacingLeft]  = {{StandFacingRight, 1},
                                             {RunSlowlyLeft, -1},
                                             {RunSlowlyRight, -1},
@@ -87,7 +129,6 @@ void ActionsDetailLoad()
                                             {Jump1Right, 1},
                                             {Jump2Right, 1},
                                             {RunFastLeft, 1},
-
                                             {RunFastRight, -1}};
     ActionsProbability[RunSlowlyLeft]    = {{StandFacingLeft, 20},
                                             {StandFacingRight, 1},
@@ -225,13 +266,13 @@ ActionsMovement(Action action, int x, int y, int vx, int vy, int curFrame, long 
         action == DoubleJumptoFallRight)
     {
         dx = 0;
-        dy = vy + time * 2;
+        dy = vy + 4;
     }
     if (action == MovingFallLeft || action == MovingFallRight ||
         action == DoubleJumptoMovingFallLeft || action == DoubleJumptoMovingFallRight)
     {
         dx = vx;
-        dy = vy + time * 2;
+        dy = vy + 4;
     }
 
     return {dx, dy};

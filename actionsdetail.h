@@ -103,6 +103,7 @@ extern QMap<Action, Action>        ActionsMirror;
 
 // 转移概率矩阵
 extern QMap<Action, QMap<Action, double>> ActionsProbability;
+extern QMap<Action, Action>               ActionsColdTrans;
 
 // 冷却时间映射
 extern QMap<Action, int> ActionsLeastTimes;

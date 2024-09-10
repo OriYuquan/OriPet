@@ -113,6 +113,7 @@ Action Behavior::NextActions(Action currentAction)
 // 状态机更新
 void Behavior::actionUpdate(int curFrame, long long time)
 {
+    qDebug() << vx << " " << actionBehavior;
     vx = ActionsDX(actionBehavior, x, y, vx, vy, curFrame, time);
     vy = ActionsDY(actionBehavior, x, y, vx, vy, curFrame, time);
     x += vx;
@@ -130,7 +131,6 @@ void Behavior::actionUpdate(int curFrame, long long time)
     {
         controlTime = (controlTime == 0) ? 0 : controlTime - 1;
     }
-    qDebug() << controlTime;
 
     quint32          seed = static_cast<quint32>(QDateTime::currentMSecsSinceEpoch() & 0xFFFFFFFF);
     QRandomGenerator generator(seed);
@@ -141,6 +141,23 @@ void Behavior::actionUpdate(int curFrame, long long time)
         ActionsMap[actionBehavior].keepPossiblity < randomValue)
     {
         actionBehavior = NextActions(actionBehavior);
+    }
+    else if (controlTime != 0 && (curFrame == ActionsMap[actionBehavior].totalFrameNumber ||
+                                  ActionsMap[actionBehavior].completelyPlay == false))
+    {
+        if (actionBehavior == DoubleJumpLeft || actionBehavior == DoubleJumpRight ||
+            actionBehavior == TripleJumpLeft || actionBehavior == TripleJumpRight)
+        {
+            actionBehavior =
+                (vx == 0) ? ((ActionsMap[actionBehavior].transform) ? DoubleJumptoFallLeft
+                                                                    : DoubleJumptoFallRight)
+                          : ((ActionsMap[actionBehavior].transform) ? DoubleJumptoMovingFallLeft
+                                                                    : DoubleJumptoMovingFallRight);
+        }
+        else
+        {
+            actionBehavior = ActionsColdTrans[actionBehavior];
+        }
     }
 
     // 边界位置判断
