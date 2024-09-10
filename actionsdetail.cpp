@@ -42,18 +42,22 @@ void ActionsDetailLoad()
     ActionsMap[LandStandRight]   = ActionsDetail("Source/LandStand/ori12-", 41, false, 0, 0.0);
     ActionsMap[AgainstWallLeft]  = ActionsDetail("Source/AgainstWall/ori31-", 30, true, 0, 0.5);
     ActionsMap[AgainstWallRight] = ActionsDetail("Source/AgainstWall/ori31-", 30, false, 0, 0.5);
-    ActionsMap[ClimbUpLeft]      = ActionsDetail("Source/ClimbUp/ClimbUp_", 22, true, 300, 0.8);
-    ActionsMap[ClimbUpRight]     = ActionsDetail("Source/ClimbUp/ClimbUp_", 22, false, 300, 0.8);
-    ActionsMap[WallStayLeft]     = ActionsDetail("Source/WallStay/ori18-", 34, true, 0, 0.3);
-    ActionsMap[WallStayRight]    = ActionsDetail("Source/WallStay/ori18-", 34, false, 0, 0.3);
-    ActionsMap[ClimbDownLeft]    = ActionsDetail("Source/ClimbDown/ori43-", 13, true, 100, 0.7);
-    ActionsMap[ClimbDownRight]   = ActionsDetail("Source/ClimbDown/ori43-", 13, false, 100, 0.7);
+    ActionsMap[ClimbUpLeft] =
+        ActionsDetail("Source/ClimbUp/ClimbUp_", 22, true, 300, 0.8, true, false);
+    ActionsMap[ClimbUpRight] =
+        ActionsDetail("Source/ClimbUp/ClimbUp_", 22, false, 300, 0.8, true, false);
+    ActionsMap[WallStayLeft]  = ActionsDetail("Source/WallStay/ori18-", 34, true, 0, 0.3);
+    ActionsMap[WallStayRight] = ActionsDetail("Source/WallStay/ori18-", 34, false, 0, 0.3);
+    ActionsMap[ClimbDownLeft] =
+        ActionsDetail("Source/ClimbDown/ori43-", 13, true, 100, 0.7, true, false);
+    ActionsMap[ClimbDownRight] =
+        ActionsDetail("Source/ClimbDown/ori43-", 13, false, 100, 0.7, true, false);
     ActionsMap[RunFastLeft] =
         ActionsDetail("Source/RunFast/ori32-", 56, true, 200, 0.2, true, false);
     ActionsMap[RunFastRight] =
         ActionsDetail("Source/RunFast/ori32-", 56, false, 200, 0.2, true, false);
-    ActionsMap[RuntoStandLeft]  = ActionsDetail("Source/RuntoStand/ori33-", 30, true, 0, 0.0);
-    ActionsMap[RuntoStandRight] = ActionsDetail("Source/RuntoStand/ori33-", 30, false, 0, 0.0);
+    ActionsMap[RuntoStandLeft]  = ActionsDetail("Source/RuntoStand/runToIdle_", 37, true, 0, 0.0);
+    ActionsMap[RuntoStandRight] = ActionsDetail("Source/RuntoStand/runToIdle_", 37, false, 0, 0.0);
     ActionsMap[RunJump1Left]    = ActionsDetail("Source/RunJump1/jump1_", 40, true, 0, 0.0);
     ActionsMap[RunJump1Right]   = ActionsDetail("Source/RunJump1/jump1_", 40, false, 0, 0.0);
     ActionsMap[RunJump2Left]    = ActionsDetail("Source/RunJump2/ori28-", 40, true, 0, 0.0);
@@ -243,7 +247,7 @@ ActionsMovement(Action action, int x, int y, int vx, int vy, int curFrame, long 
     if (action == ClimbDownLeft || action == ClimbDownRight)
     {
         dx = 0;
-        dy = 10;
+        dy = 12;
     }
     if (action == RunFastLeft || action == RunFastRight)
     {

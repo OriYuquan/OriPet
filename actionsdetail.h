@@ -65,8 +65,9 @@ struct ActionsDetail
     // 动作冷却时间
     int    leastTime;
     double keepPossiblity;
-    bool   control;
-    bool   completelyPlay;
+    // 是否接受控制
+    bool control;
+    bool completelyPlay;
     ActionsDetail(QString _path = "",
                   int     num   = 0,
                   bool    trans = false,

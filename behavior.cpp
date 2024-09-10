@@ -111,9 +111,10 @@ Action Behavior::NextActions(Action currentAction)
 }
 
 // 状态机更新
-void Behavior::actionUpdate(int curFrame, long long time)
+bool Behavior::actionUpdate(int curFrame, long long time)
 {
-    qDebug() << vx << " " << actionBehavior;
+    bool result = false;
+
     vx = ActionsDX(actionBehavior, x, y, vx, vy, curFrame, time);
     vy = ActionsDY(actionBehavior, x, y, vx, vy, curFrame, time);
     x += vx;
@@ -177,7 +178,7 @@ void Behavior::actionUpdate(int curFrame, long long time)
                 actionBehavior = RunFastRight;
             if (jumpKey)
             {
-                if (actionBehavior == RunFastLeft || actionBehavior == RunFastRight)
+                if (pre == RunFastLeft || pre == RunFastRight)
                 {
                     actionBehavior = ActionsMap[actionBehavior].transform
                                          ? (randomValue > 0.5 ? RunJump1Left : RunJump2Left)
@@ -212,10 +213,9 @@ void Behavior::actionUpdate(int curFrame, long long time)
             {
             }
         }
-        if ((actionBehavior == Jump1Left || actionBehavior == Jump1Right ||
-             actionBehavior == Jump2Left || actionBehavior == Jump2Right ||
-             actionBehavior == RunJump1Left || actionBehavior == RunJump1Right ||
-             actionBehavior == RunJump2Left || actionBehavior == RunJump2Right) &&
+        if ((pre == Jump1Left || pre == Jump1Right || pre == Jump2Left || pre == Jump2Right ||
+             pre == RunJump1Left || pre == RunJump1Right || pre == RunJump2Left ||
+             pre == RunJump2Right) &&
             y < BottomEdge)
         {
             if (jumpKey)
@@ -229,8 +229,7 @@ void Behavior::actionUpdate(int curFrame, long long time)
                 jumpKey = false;
             }
         }
-        if ((actionBehavior == DoubleJumpLeft || actionBehavior == DoubleJumpRight) &&
-            y < BottomEdge)
+        if ((pre == DoubleJumpLeft || pre == DoubleJumpRight) && y < BottomEdge)
         {
             if (jumpKey)
             {
@@ -323,6 +322,8 @@ void Behavior::actionUpdate(int curFrame, long long time)
         // 冷却时间调试输出
         // qDebug() << i << ActionsLeastTimes[Action(i)];
     }
+
+    return result;
 }
 
 void Behavior::loadAction(Action act, int _x, int _y)
