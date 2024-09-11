@@ -393,8 +393,8 @@ void Behavior::actionUpdate(int curFrame, long long time)
         // 冷却时间调试输出
         // qDebug() << i << ActionsLeastTimes[Action(i)];
     }
-    //    qDebug() << x << " " << y << " " << vxCheck << " " << vyCheck << " " << curFrame << " "
-    //             << actionBehavior << " " << jumpChance;
+    qDebug() << x << " " << y << " " << vxCheck << " " << vyCheck << " " << curFrame << " "
+             << actionBehavior << " " << jumpChance;
 
     if (actionBehavior == pre)
     {
@@ -405,7 +405,7 @@ void Behavior::actionUpdate(int curFrame, long long time)
     }
     else
     {
-        if (mirror)
+        if (mirror && actionBehavior == ActionsMirror[pre])
         {
             emit PlayerMirrorSignal();
             emit PlayerNextPixSignal();
