@@ -37,6 +37,8 @@ MainWindow::MainWindow(QWidget* parent) : QWidget(parent)
     player = new Player(this);
     // 音频播放器初始化
     soundPlayer = new SoundPlayer(this);
+    // 实时音频播放
+    liveSoundPlayer = new SoundPlayer(this);
     // 状态机初始化
     behavior = new Behavior(this);
 
@@ -47,6 +49,10 @@ MainWindow::MainWindow(QWidget* parent) : QWidget(parent)
             SIGNAL(SoundPlayerLoadNewActionSignal(Action)),
             soundPlayer,
             SLOT(loadAction(Action)));
+    connect(behavior,
+            SIGNAL(SoundPlayerPathPlay(QString, int)),
+            liveSoundPlayer,
+            SLOT(loadPathAndPlay(QString, int)));
 
     player->loadAction(StandFacingRight);
     soundPlayer->loadAction(StandFacingRight);

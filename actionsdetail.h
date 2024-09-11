@@ -58,6 +58,10 @@ enum Action
     WallLongJump1Right,
     WallLongJump2Left,
     WallLongJump2Right,
+    TopStayLeft,
+    TopStayRight,
+    TopClimbLeft,
+    TopClimbRight,
 
     None
 };

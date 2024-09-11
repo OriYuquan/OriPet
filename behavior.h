@@ -46,6 +46,7 @@ class Behavior : public QWidget
     void PlayerNextPixSignal();
     void PlayerMirrorSignal();
     void SoundPlayerLoadNewActionSignal(Action);
+    void SoundPlayerPathPlay(QString, int);
 
    public:
     void keyPressEvent(QKeyEvent* event);

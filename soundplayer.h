@@ -14,6 +14,7 @@ class SoundPlayer : public QObject
     void soundPlay(int curFrame);
 
    private:
+    int           volume;
     int           frequency;
     QString       curPath;
     Action        actionPlaying;
@@ -22,7 +23,9 @@ class SoundPlayer : public QObject
    signals:
 
    public slots:
+    void setVolume(int v);
     void loadAction(Action action);
+    void loadPathAndPlay(QString path, int num);
 };
 
 #endif  // SOUNDPLAYER_H

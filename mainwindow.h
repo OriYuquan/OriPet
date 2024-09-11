@@ -32,6 +32,7 @@ class MainWindow : public QWidget
     Player*      player;
     Behavior*    behavior;
     SoundPlayer* soundPlayer;
+    SoundPlayer* liveSoundPlayer;
 
     void createActions();    // 创建动作
     void createTrayMenu();   // 创建托盘菜单

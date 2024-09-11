@@ -8,7 +8,8 @@ SoundPlayer::SoundPlayer(QObject* parent) : QObject(parent)
 {
     mediaPlayer   = new QMediaPlayer(this);
     actionPlaying = None;
-    mediaPlayer->setVolume(20);  // Volume is set between 0 and 100
+    volume        = 20;
+    mediaPlayer->setVolume(volume);  // Volume is set between 0 and 100
 }
 
 void SoundPlayer::loadAction(Action action)
@@ -25,7 +26,7 @@ void SoundPlayer::loadAction(Action action)
         // qDebug() << curPath;
 
         mediaPlayer->setMedia(QUrl::fromLocalFile(curPath));
-        mediaPlayer->setVolume(20);  // Volume is set between 0 and 100
+        mediaPlayer->setVolume(volume);  // Volume is set between 0 and 100
     }
 }
 
@@ -40,4 +41,22 @@ void SoundPlayer::soundPlay(int curFrame)
         }
         mediaPlayer->play();
     }
+}
+
+void SoundPlayer::loadPathAndPlay(QString path, int num)
+{
+    quint32          seed = static_cast<quint32>(QDateTime::currentMSecsSinceEpoch() & 0xFFFFFFFF);
+    QRandomGenerator generator(seed);
+    int              randomValue = generator.bounded(1, num + 1);
+    curPath                      = path + QString::number(randomValue) + ".wav";
+    // qDebug() << curPath;
+
+    mediaPlayer->setMedia(QUrl::fromLocalFile(curPath));
+    mediaPlayer->setVolume(volume);  // Volume is set between 0 and
+    mediaPlayer->play();
+}
+
+void SoundPlayer::setVolume(int v)
+{
+    volume = v;
 }

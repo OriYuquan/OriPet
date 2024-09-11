@@ -42,12 +42,15 @@ double Behavior::generalPossiblity(Action act)
         }
         else if (act == ClimbUpLeft || act == ClimbUpRight)
         {
-            return 10.0 * (double) (y - TopEdge) / (double) (BottomEdge - TopEdge);
+            return 12.0 * (double) (y - TopEdge) / (double) (BottomEdge - TopEdge);
         }
         else if (act == ClimbDownLeft || act == ClimbDownRight)
         {
-            return 10.0 * (double) (BottomEdge - TopEdge - (y - TopEdge)) /
-                   (double) (BottomEdge - TopEdge);
+            if (x == LeftEdge || x == RightEdge)
+                return 12.0 * (double) (BottomEdge - TopEdge - (y - TopEdge)) /
+                       (double) (BottomEdge - TopEdge);
+            else
+                return 0;
         }
         else if (act == DoubleJumptoFallLeft)
         {
@@ -65,6 +68,22 @@ double Behavior::generalPossiblity(Action act)
         {
             return (vx > 0) ? 1 : 0;
         }
+        else if (act == TopClimbLeft)
+        {
+            if (y == TopEdge)
+                return 10.0 * (double) (x - LeftEdge) / (double) (RightEdge - LeftEdge);
+            else
+                return 0;
+        }
+        else if (act == TopClimbRight)
+        {
+            if (y == TopEdge)
+                return 10.0 * (double) (RightEdge - LeftEdge - (x - LeftEdge)) /
+                       (double) (RightEdge - LeftEdge);
+            else
+                return 0;
+        }
+
         return 0;
     }
     else
@@ -122,6 +141,12 @@ void Behavior::actionUpdate(int curFrame, long long time)
     x += vx;
     y += vy;
 
+    // 边界位置判断
+    x = max(x, LeftEdge);
+    x = min(x, RightEdge);
+    y = max(y, TopEdge);
+    y = min(y, BottomEdge);
+
     Action pre = actionBehavior;
 
     // 检查是否存在控制
@@ -140,10 +165,25 @@ void Behavior::actionUpdate(int curFrame, long long time)
     double           randomValue = generator.bounded(1.0);
     // 检查是否可以进行状态转移
     // 如果操控已冷却，状态机转移
-    if (controlTime == 0 && curFrame == ActionsMap[actionBehavior].totalFrameNumber &&
-        ActionsMap[actionBehavior].keepPossiblity < randomValue)
+    if (controlTime == 0)
     {
-        actionBehavior = NextActions(actionBehavior);
+        if (curFrame == ActionsMap[actionBehavior].totalFrameNumber &&
+            ActionsMap[actionBehavior].keepPossiblity < randomValue)
+        {
+            actionBehavior = NextActions(actionBehavior);
+        }
+        // 优先进行二段跳判定
+        if (x > LeftEdge && x < RightEdge && y < BottomEdge && y > TopEdge && jumpChance > 0 &&
+            randomValue < 0.005)
+        {
+            if (vx < 0)
+                actionBehavior = DoubleJumpLeft;
+            else if (vx > 0)
+                actionBehavior = DoubleJumpRight;
+            else
+                actionBehavior = int(actionBehavior) % 2 == 0 ? DoubleJumpLeft : DoubleJumpRight;
+            jumpChance--;
+        }
     }
     else if (controlTime != 0)
     {
@@ -154,7 +194,7 @@ void Behavior::actionUpdate(int curFrame, long long time)
             if (actionBehavior == DoubleJumpLeft || actionBehavior == DoubleJumpRight)
             {
                 actionBehavior =
-                    (abs(vx) < 5)
+                    (abs(vx) < 10)
                         ? ((ActionsMap[actionBehavior].transform) ? DoubleJumptoFallLeft
                                                                   : DoubleJumptoFallRight)
                         : ((ActionsMap[actionBehavior].transform) ? DoubleJumptoMovingFallLeft
@@ -166,33 +206,24 @@ void Behavior::actionUpdate(int curFrame, long long time)
             }
         }
         // 未播放完转移
-        else
+        if (actionBehavior == DoubleJumpLeft || actionBehavior == DoubleJumpRight)
         {
-            if (actionBehavior == DoubleJumpLeft || actionBehavior == DoubleJumpRight)
-            {
-                if (vx > 0)
-                    vx--;
-                else if (vx < 0)
-                    vx++;
-            }
-            else if (pre == FallLeft || pre == FallRight || pre == MovingFallLeft ||
-                     pre == MovingFallRight)
-            {
-                if (vx > 0)
-                    vx--;
-                else if (vx < 0)
-                    vx++;
-                if (abs(vx) < 5)
-                    actionBehavior = ActionsMap[actionBehavior].transform ? FallLeft : FallRight;
-            }
+            if (vx > 0)
+                vx--;
+            else if (vx < 0)
+                vx++;
+        }
+        else if (pre == FallLeft || pre == FallRight || pre == MovingFallLeft ||
+                 pre == MovingFallRight)
+        {
+            if (vx > 0)
+                vx--;
+            else if (vx < 0)
+                vx++;
+            if (abs(vx) < 10)
+                actionBehavior = int(actionBehavior) % 2 == 0 ? FallLeft : FallRight;
         }
     }
-
-    // 边界位置判断
-    x = max(x, LeftEdge);
-    x = min(x, RightEdge);
-    y = max(y, TopEdge);
-    y = min(y, BottomEdge);
 
     // 按键控制
     if (ActionsMap[actionBehavior].control)
@@ -216,6 +247,30 @@ void Behavior::actionUpdate(int curFrame, long long time)
                     actionBehavior = ActionsMap[actionBehavior].transform
                                          ? (randomValue > 0.5 ? Jump1Left : Jump2Left)
                                          : (randomValue > 0.5 ? Jump1Right : Jump2Right);
+                }
+                jumpKey = false;
+            }
+        }
+        if (y == TopEdge)
+        {
+            if (leftKey)
+            {
+                actionBehavior = TopClimbLeft;
+            }
+            if (rightKey)
+            {
+                actionBehavior = TopClimbRight;
+            }
+            if (jumpKey)
+            {
+                if (pre == TopStayLeft || pre == TopStayRight)
+                {
+                    actionBehavior = int(actionBehavior) % 2 == 0 ? FallLeft : FallRight;
+                }
+                else if (pre == TopClimbLeft || pre == TopClimbRight)
+                {
+                    actionBehavior =
+                        int(actionBehavior) % 2 == 0 ? MovingFallLeft : MovingFallRight;
                 }
                 jumpKey = false;
             }
@@ -327,9 +382,11 @@ void Behavior::actionUpdate(int curFrame, long long time)
         }
         else if (y == TopEdge)
         {
+            actionBehavior = TopStayLeft;
         }
         else
         {
+            emit SoundPlayerPathPlay("Sound/wallEnter/seinWallSlideEnterGrass", 5);
             actionBehavior = WallStayLeft;
         }
     }
@@ -341,9 +398,11 @@ void Behavior::actionUpdate(int curFrame, long long time)
         }
         else if (y == TopEdge)
         {
+            actionBehavior = TopStayRight;
         }
         else
         {
+            emit SoundPlayerPathPlay("Sound/wallEnter/seinWallSlideEnterGrass", 5);
             actionBehavior = WallStayRight;
         }
     }
@@ -359,6 +418,8 @@ void Behavior::actionUpdate(int curFrame, long long time)
         }
         else
         {
+            emit SoundPlayerPathPlay("Sound/wallEnter/seinWallSlideEnterGrass", 5);
+            actionBehavior = int(actionBehavior) % 2 == 0 ? TopStayLeft : TopStayRight;
         }
     }
     else if (y == BottomEdge && vyCheck > 0)
