@@ -43,9 +43,9 @@ void ActionsDetailLoad()
     ActionsMap[AgainstWallLeft]  = ActionsDetail("Source/AgainstWall/ori31-", 30, true, 0, 0.5);
     ActionsMap[AgainstWallRight] = ActionsDetail("Source/AgainstWall/ori31-", 30, false, 0, 0.5);
     ActionsMap[ClimbUpLeft] =
-        ActionsDetail("Source/ClimbUp/ClimbUp_", 22, true, 100, 0.9, true, false);
+        ActionsDetail("Source/ClimbUp/ClimbUp_", 22, true, 100, 0.8, true, false);
     ActionsMap[ClimbUpRight] =
-        ActionsDetail("Source/ClimbUp/ClimbUp_", 22, false, 100, 0.9, true, false);
+        ActionsDetail("Source/ClimbUp/ClimbUp_", 22, false, 100, 0.8, true, false);
     ActionsMap[WallStayLeft]  = ActionsDetail("Source/WallStay/ori18-", 34, true, 0, 0.3);
     ActionsMap[WallStayRight] = ActionsDetail("Source/WallStay/ori18-", 34, false, 0, 0.3);
     ActionsMap[ClimbDownLeft] =
@@ -133,10 +133,10 @@ void ActionsDetailLoad()
     ActionsColdTrans[MovingFallRight]             = MovingFallRight;
     ActionsColdTrans[LandRunFastLeft]             = RunFastLeft;
     ActionsColdTrans[LandRunFastRight]            = RunFastRight;
-    ActionsColdTrans[WallJump1Left]               = MovingFallLeft;
-    ActionsColdTrans[WallJump1Right]              = MovingFallRight;
-    ActionsColdTrans[WallJump2Left]               = MovingFallLeft;
-    ActionsColdTrans[WallJump2Right]              = MovingFallRight;
+    ActionsColdTrans[WallJump1Left]               = FallLeft;
+    ActionsColdTrans[WallJump1Right]              = FallRight;
+    ActionsColdTrans[WallJump2Left]               = FallLeft;
+    ActionsColdTrans[WallJump2Right]              = FallRight;
     ActionsColdTrans[WallLongJump1Left]           = MovingFallRight;
     ActionsColdTrans[WallLongJump1Right]          = MovingFallLeft;
     ActionsColdTrans[WallLongJump2Left]           = MovingFallRight;

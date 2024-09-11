@@ -62,6 +62,10 @@ enum Action
     TopStayRight,
     TopClimbLeft,
     TopClimbRight,
+    //    FeatherLeft,
+    //    FeatherRight,
+    //    MovingFeatherLeft,
+    //    MovingFeatherRight,
 
     None
 };
