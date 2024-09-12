@@ -135,13 +135,13 @@ Action Behavior::NextActions(Action currentAction)
         if (randomValue < cumulativeWeight)
         {
             ActionsLeastTimes[it.key()] = ActionsMap[it.key()].leastTime;
+            if (it.key() == DoubleJumpLeftUp || it.key() == DoubleJumpRightUp)
+                jumpChance--;
             // qDebug() << ActionsMap[it.key()].leastTime;
             return it.key();
         }
     }
     ActionsLeastTimes[currentAction] = ActionsMap[currentAction].leastTime;
-    if (currentAction == DoubleJumpLeftUp || currentAction == DoubleJumpRightUp)
-        jumpChance--;
     return currentAction;
 }
 

@@ -356,15 +356,15 @@ void ActionsDetailLoad()
                                         {FallRight, 4},
                                         {ClimbDownRight, -1}};
     ActionsProbability[TopClimbLeft] = {
-        {TopStayLeft, 6}, {TopStayRight, 1}, {TopClimbRight, 1}, {MovingFallLeft, 7}};
+        {TopStayLeft, 6}, {TopStayRight, 1}, {TopClimbRight, 1}, {MovingFallLeft, 9}};
     ActionsProbability[TopClimbRight] = {
-        {TopStayLeft, 1}, {TopStayRight, 6}, {TopStayLeft, 1}, {MovingFallRight, 7}};
+        {TopStayLeft, 1}, {TopStayRight, 6}, {TopStayLeft, 1}, {MovingFallRight, 9}};
     ActionsProbability[FallLeft] = {
         {DoubleJumpLeftUp, -1}, {DoubleJumpRightUp, -1}, {FeatherLeft, -1}};
     ActionsProbability[FallRight] = {
         {DoubleJumpLeftUp, -1}, {DoubleJumpRightUp, -1}, {FeatherRight, -1}};
     ActionsProbability[MovingFallLeft]     = {{DoubleJumpLeftUp, -1}, {MovingFeatherLeft, -1}};
-    ActionsProbability[MovingFallRight]    = {{DoubleJumpLeftUp, -1}, {MovingFeatherRight, -1}};
+    ActionsProbability[MovingFallRight]    = {{DoubleJumpRightUp, -1}, {MovingFeatherRight, -1}};
     ActionsProbability[FeatherLeft]        = {{FallLeft, 7}, {DoubleJumpLeftUp, -1}};
     ActionsProbability[FeatherRight]       = {{FallRight, 7}, {DoubleJumpRightUp, -1}};
     ActionsProbability[MovingFeatherLeft]  = {{MovingFallLeft, 7}, {DoubleJumpLeftUp, -1}};
@@ -441,7 +441,8 @@ ActionsMovement(Action action, int x, int y, int vx, int vy, int curFrame, long 
         dx = 0;
         dy = 14;
     }
-    if (action == RunFastLeft || action == RunFastRight)
+    if (action == RunFastLeft || action == RunFastRight || action == LandRunFastLeft ||
+        action == LandRunFastLeft)
     {
         dx = (ActionsMap[action].transform ? -1 : 1) * 18;
         dy = 0;
@@ -487,11 +488,6 @@ ActionsMovement(Action action, int x, int y, int vx, int vy, int curFrame, long 
     {
         dx = vx;
         dy = vy + 2;
-    }
-    if (action == LandRunFastLeft || action == LandRunFastLeft)
-    {
-        dx = (ActionsMap[action].transform ? -1 : 1) * 18;
-        dy = 0;
     }
     if (action == WallJump1Left || action == WallJump1Right || action == WallJump2Left ||
         action == WallJump2Right)
