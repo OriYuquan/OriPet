@@ -16,10 +16,17 @@ enum Action
     StandFacingRight,
     RunSlowlyLeft,
     RunSlowlyRight,
-    Jump1Left,
-    Jump1Right,
-    Jump2Left,
-    Jump2Right,
+
+    Jump1LeftUp,
+    Jump1RightUp,
+    Jump1LeftDown,
+    Jump1RightDown,
+
+    Jump2LeftUp,
+    Jump2RightUp,
+    Jump2LeftDown,
+    Jump2RightDown,
+
     LandStandLeft,
     LandStandRight,
     AgainstWallLeft,
@@ -34,12 +41,22 @@ enum Action
     RunFastRight,
     RuntoStandLeft,
     RuntoStandRight,
-    RunJump1Left,
-    RunJump1Right,
-    RunJump2Left,
-    RunJump2Right,
-    DoubleJumpLeft,
-    DoubleJumpRight,
+
+    RunJump1LeftUp,
+    RunJump1RightUp,
+    RunJump1LeftDown,
+    RunJump1RightDown,
+
+    RunJump2LeftUp,
+    RunJump2RightUp,
+    RunJump2LeftDown,
+    RunJump2RightDown,
+
+    DoubleJumpLeftUp,
+    DoubleJumpRightUp,
+    DoubleJumpLeftDown,
+    DoubleJumpRightDown,
+
     DoubleJumptoFallLeft,
     DoubleJumptoFallRight,
     DoubleJumptoMovingFallLeft,
@@ -62,10 +79,10 @@ enum Action
     TopStayRight,
     TopClimbLeft,
     TopClimbRight,
-    //    FeatherLeft,
-    //    FeatherRight,
-    //    MovingFeatherLeft,
-    //    MovingFeatherRight,
+    FeatherLeft,
+    FeatherRight,
+    MovingFeatherLeft,
+    MovingFeatherRight,
 
     None
 };

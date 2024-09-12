@@ -18,9 +18,9 @@ Behavior::Behavior(QWidget* parent) : QWidget(parent)
     TopEdge    = SCREENHEIGHTFIX - ORIWIDTH * 0;
     BottomEdge = SCREENHEIGHTFIX + SCREENHEIGHT - ORIHEIGHT * 1;
 
-    leftKey = rightKey = upKey = downKey = jumpKey = false;
-    jumpChance                                     = 2;
-    controlTime                                    = 0;
+    leftKey = rightKey = upKey = downKey = jumpKey = featherKey = false;
+    jumpChance                                                  = 2;
+    controlTime                                                 = 0;
 
     startTimer(100000);
     QDateTime currentDateTime = QDateTime::currentDateTime();
@@ -83,6 +83,19 @@ double Behavior::generalPossiblity(Action act)
             else
                 return 0;
         }
+        else if (act == DoubleJumpLeftUp || act == DoubleJumpRightUp)
+        {
+            return (jumpChance > 0) ? 2 : 0;
+        }
+
+        else if (act == FeatherLeft || act == FeatherRight)
+        {
+            return (abs(vx) < 10) ? abs(vy) / 15 + 1 : 0;
+        }
+        else if (act == DoubleJumptoMovingFallLeft || act == DoubleJumptoMovingFallLeft)
+        {
+            return (abs(vx) >= 10) ? abs(vy) / 15 + 1 : 0;
+        }
 
         return 0;
     }
@@ -127,6 +140,8 @@ Action Behavior::NextActions(Action currentAction)
         }
     }
     ActionsLeastTimes[currentAction] = ActionsMap[currentAction].leastTime;
+    if (currentAction == DoubleJumpLeftUp || currentAction == DoubleJumpRightUp)
+        jumpChance--;
     return currentAction;
 }
 
@@ -150,7 +165,7 @@ void Behavior::actionUpdate(int curFrame, long long time)
     Action pre = actionBehavior;
 
     // 检查是否存在控制
-    bool control = leftKey || rightKey || upKey || downKey || jumpKey;
+    bool control = leftKey || rightKey || upKey || downKey || jumpKey || featherKey;
     if (control)
     {
         controlTime = CONTROLTIME;
@@ -165,25 +180,10 @@ void Behavior::actionUpdate(int curFrame, long long time)
     double           randomValue = generator.bounded(1.0);
     // 检查是否可以进行状态转移
     // 如果操控已冷却，状态机转移
-    if (controlTime == 0)
+    if (controlTime == 0 && curFrame == ActionsMap[actionBehavior].totalFrameNumber &&
+        ActionsMap[actionBehavior].keepPossiblity < randomValue)
     {
-        if (curFrame == ActionsMap[actionBehavior].totalFrameNumber &&
-            ActionsMap[actionBehavior].keepPossiblity < randomValue)
-        {
-            actionBehavior = NextActions(actionBehavior);
-        }
-        // 优先进行二段跳判定
-        if (x > LeftEdge && x < RightEdge && y < BottomEdge && y > TopEdge && jumpChance > 0 &&
-            randomValue < 0.005)
-        {
-            if (vx < 0)
-                actionBehavior = DoubleJumpLeft;
-            else if (vx > 0)
-                actionBehavior = DoubleJumpRight;
-            else
-                actionBehavior = int(actionBehavior) % 2 == 0 ? DoubleJumpLeft : DoubleJumpRight;
-            jumpChance--;
-        }
+        actionBehavior = NextActions(actionBehavior);
     }
     else if (controlTime != 0)
     {
@@ -191,7 +191,7 @@ void Behavior::actionUpdate(int curFrame, long long time)
         if ((curFrame == ActionsMap[actionBehavior].totalFrameNumber ||
              ActionsMap[actionBehavior].completelyPlay == false))
         {
-            if (actionBehavior == DoubleJumpLeft || actionBehavior == DoubleJumpRight)
+            if (actionBehavior == DoubleJumpLeftDown || actionBehavior == DoubleJumpRightDown)
             {
                 actionBehavior =
                     (abs(vx) < 10)
@@ -206,7 +206,8 @@ void Behavior::actionUpdate(int curFrame, long long time)
             }
         }
         // 未播放完转移
-        if (actionBehavior == DoubleJumpLeft || actionBehavior == DoubleJumpRight)
+        else if (actionBehavior == DoubleJumpLeftUp || actionBehavior == DoubleJumpRightUp ||
+                 actionBehavior == DoubleJumpLeftDown || actionBehavior == DoubleJumpRightDown)
         {
             if (vx > 0)
                 vx--;
@@ -222,6 +223,12 @@ void Behavior::actionUpdate(int curFrame, long long time)
                 vx++;
             if (abs(vx) < 10)
                 actionBehavior = int(actionBehavior) % 2 == 0 ? FallLeft : FallRight;
+        }
+        else if (pre == FeatherLeft || pre == FeatherRight || pre == MovingFeatherLeft ||
+                 pre == MovingFeatherRight)
+        {
+            if (abs(vx) < 10)
+                actionBehavior = int(actionBehavior) % 2 == 0 ? FeatherLeft : FeatherRight;
         }
     }
 
@@ -239,14 +246,14 @@ void Behavior::actionUpdate(int curFrame, long long time)
                 if (pre == RunFastLeft || pre == RunFastRight)
                 {
                     actionBehavior = ActionsMap[actionBehavior].transform
-                                         ? (randomValue > 0.5 ? RunJump1Left : RunJump2Left)
-                                         : (randomValue > 0.5 ? RunJump1Right : RunJump2Right);
+                                         ? (randomValue > 0.5 ? RunJump1LeftUp : RunJump2LeftUp)
+                                         : (randomValue > 0.5 ? RunJump1RightUp : RunJump2RightUp);
                 }
                 else
                 {
                     actionBehavior = ActionsMap[actionBehavior].transform
-                                         ? (randomValue > 0.5 ? Jump1Left : Jump2Left)
-                                         : (randomValue > 0.5 ? Jump1Right : Jump2Right);
+                                         ? (randomValue > 0.5 ? Jump1LeftUp : Jump2LeftUp)
+                                         : (randomValue > 0.5 ? Jump1RightUp : Jump2RightUp);
                 }
                 jumpKey = false;
             }
@@ -312,20 +319,40 @@ void Behavior::actionUpdate(int curFrame, long long time)
                 if (jumpChance >= 1)
                 {
                     actionBehavior =
-                        ActionsMap[actionBehavior].transform ? DoubleJumpLeft : DoubleJumpRight;
+                        ActionsMap[actionBehavior].transform ? DoubleJumpLeftUp : DoubleJumpRightUp;
                     restart = true;
                     jumpChance--;
                 }
-                jumpKey = false;
+                featherKey = false;
+                jumpKey    = false;
+            }
+            else if (featherKey)
+            {
+                actionBehavior = int(actionBehavior) % 2 == 0 ? FeatherLeft : FeatherRight;
+                if (leftKey)
+                {
+                    vx             = -18;
+                    actionBehavior = MovingFeatherLeft;
+                }
+                if (rightKey)
+                {
+                    vx             = 18;
+                    actionBehavior = MovingFeatherRight;
+                }
             }
             else
             {
                 if (leftKey)
                 {
                     vx = -18;
-                    if (actionBehavior == DoubleJumpRight)
+                    if (actionBehavior == DoubleJumpRightUp)
                     {
-                        actionBehavior = DoubleJumpLeft;
+                        actionBehavior = DoubleJumpLeftUp;
+                        mirror         = true;
+                    }
+                    else if (actionBehavior == DoubleJumpRightDown)
+                    {
+                        actionBehavior = DoubleJumpLeftDown;
                         mirror         = true;
                     }
                     else if (actionBehavior == FallLeft || actionBehavior == FallRight)
@@ -337,7 +364,10 @@ void Behavior::actionUpdate(int curFrame, long long time)
                         actionBehavior = MovingFallLeft;
                         mirror         = true;
                     }
-                    else if (actionBehavior == RunJump1Right || actionBehavior == RunJump2Right)
+                    else if (actionBehavior == RunJump1RightUp ||
+                             actionBehavior == RunJump1RightDown ||
+                             actionBehavior == RunJump2RightUp ||
+                             actionBehavior == RunJump2RightDown)
                     {
                         actionBehavior = ActionsMirror[actionBehavior];
                         mirror         = true;
@@ -346,9 +376,14 @@ void Behavior::actionUpdate(int curFrame, long long time)
                 if (rightKey)
                 {
                     vx = 18;
-                    if (actionBehavior == DoubleJumpLeft)
+                    if (actionBehavior == DoubleJumpLeftUp)
                     {
-                        actionBehavior = DoubleJumpRight;
+                        actionBehavior = DoubleJumpRightUp;
+                        mirror         = true;
+                    }
+                    else if (actionBehavior == DoubleJumpLeftDown)
+                    {
+                        actionBehavior = DoubleJumpRightDown;
                         mirror         = true;
                     }
                     else if (actionBehavior == FallLeft || actionBehavior == FallRight)
@@ -360,7 +395,9 @@ void Behavior::actionUpdate(int curFrame, long long time)
                         actionBehavior = MovingFallRight;
                         mirror         = true;
                     }
-                    else if (actionBehavior == RunJump1Left || actionBehavior == RunJump2Left)
+                    else if (actionBehavior == RunJump1LeftUp ||
+                             actionBehavior == RunJump1LeftDown ||
+                             actionBehavior == RunJump2LeftUp || actionBehavior == RunJump2LeftDown)
                     {
                         actionBehavior = ActionsMirror[actionBehavior];
                         mirror         = true;
@@ -454,8 +491,8 @@ void Behavior::actionUpdate(int curFrame, long long time)
         // 冷却时间调试输出
         // qDebug() << i << ActionsLeastTimes[Action(i)];
     }
-    //    qDebug() << x << " " << y << " " << vxCheck << " " << vyCheck << " " << curFrame << " "
-    //             << actionBehavior << " " << jumpChance;
+    qDebug() << x << " " << y << " " << vxCheck << " " << vyCheck << " " << curFrame << " "
+             << actionBehavior << " " << jumpChance;
 
     if (actionBehavior == pre)
     {
@@ -528,29 +565,37 @@ void Behavior::keyPressEvent(QKeyEvent* event)
     {
         jumpKey = true;
     }
+    if (event->key() == Qt::Key_Z && !event->isAutoRepeat())
+    {
+        featherKey = true;
+    }
 }
 
 void Behavior::keyReleaseEvent(QKeyEvent* event)
 {
-    if (event->key() == Qt::Key_Left)
+    if (event->key() == Qt::Key_Left && !event->isAutoRepeat())
     {
         leftKey = false;
     }
-    if (event->key() == Qt::Key_Right)
+    if (event->key() == Qt::Key_Right && !event->isAutoRepeat())
     {
         rightKey = false;
     }
-    if (event->key() == Qt::Key_Up)
+    if (event->key() == Qt::Key_Up && !event->isAutoRepeat())
     {
         upKey = false;
     }
-    if (event->key() == Qt::Key_Down)
+    if (event->key() == Qt::Key_Down && !event->isAutoRepeat())
     {
         downKey = false;
     }
-    if (event->key() == Qt::Key_Space)
+    if (event->key() == Qt::Key_Space && !event->isAutoRepeat())
     {
         jumpKey = false;
+    }
+    if (event->key() == Qt::Key_Z && !event->isAutoRepeat())
+    {
+        featherKey = false;
     }
 }
 
