@@ -454,8 +454,8 @@ void Behavior::actionUpdate(int curFrame, long long time)
         // 冷却时间调试输出
         // qDebug() << i << ActionsLeastTimes[Action(i)];
     }
-    qDebug() << x << " " << y << " " << vxCheck << " " << vyCheck << " " << curFrame << " "
-             << actionBehavior << " " << jumpChance;
+    //    qDebug() << x << " " << y << " " << vxCheck << " " << vyCheck << " " << curFrame << " "
+    //             << actionBehavior << " " << jumpChance;
 
     if (actionBehavior == pre)
     {
@@ -504,27 +504,27 @@ Action Behavior::getAction() const
 
 void Behavior::keyPressEvent(QKeyEvent* event)
 {
-    if (event->key() == Qt::Key_Left)
+    if (event->key() == Qt::Key_Left && !event->isAutoRepeat())
     {
         leftKey  = true;
         rightKey = false;
     }
-    if (event->key() == Qt::Key_Right)
+    if (event->key() == Qt::Key_Right && !event->isAutoRepeat())
     {
         rightKey = true;
         leftKey  = false;
     }
-    if (event->key() == Qt::Key_Up)
+    if (event->key() == Qt::Key_Up && !event->isAutoRepeat())
     {
         upKey   = true;
         downKey = false;
     }
-    if (event->key() == Qt::Key_Down)
+    if (event->key() == Qt::Key_Down && !event->isAutoRepeat())
     {
         downKey = true;
         upKey   = false;
     }
-    if (event->key() == Qt::Key_Space)
+    if (event->key() == Qt::Key_Space && !event->isAutoRepeat())
     {
         jumpKey = true;
     }

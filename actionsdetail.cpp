@@ -212,7 +212,6 @@ void ActionsDetailLoad()
                                           {TopClimbRight, -1}};
     ActionsProbability[WallStayRight]  = {{ClimbUpRight, -1},
                                           {ClimbDownRight, -1},
-                                          {ClimbDownRight, -1},
                                           {WallJump1Right, 1},
                                           {WallJump2Right, 1},
                                           {WallLongJump1Right, 2},
