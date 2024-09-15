@@ -26,7 +26,7 @@ class Behavior : public QWidget
     int x, y;
     int vx, vy;
     // 检查方向键是否在按下的状态
-    bool leftKey, rightKey, upKey, downKey, jumpKey, featherKey;
+    bool leftKey, rightKey, upKey, downKey, jumpKey, featherKey, dashKey;
     // 状态机的当前状态
     Action actionBehavior;
     // 控制冷却时间

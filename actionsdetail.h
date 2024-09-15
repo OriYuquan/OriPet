@@ -61,12 +61,15 @@ enum Action
     DoubleJumptoFallRight,
     DoubleJumptoMovingFallLeft,
     DoubleJumptoMovingFallRight,
+
     FallLeft,
     FallRight,
     MovingFallLeft,
     MovingFallRight,
+
     LandRunFastLeft,
     LandRunFastRight,
+
     WallJump1Left,
     WallJump1Right,
     WallJump2Left,
@@ -75,14 +78,19 @@ enum Action
     WallLongJump1Right,
     WallLongJump2Left,
     WallLongJump2Right,
+
     TopStayLeft,
     TopStayRight,
     TopClimbLeft,
     TopClimbRight,
+
     FeatherLeft,
     FeatherRight,
     MovingFeatherLeft,
     MovingFeatherRight,
+
+    DashLeft,
+    DashRight,
 
     None
 };

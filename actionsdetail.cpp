@@ -102,8 +102,8 @@ void ActionsDetailLoad()
     ActionsMap[LandRunFastRight]  = ActionsDetail("Source/LandRunFast/ori45-", 7, false, 0, 0.0);
     ActionsMap[WallJump1Left]     = ActionsDetail("Source/WallJump1/WallJump1_", 26, true, 0, 0.0);
     ActionsMap[WallJump1Right]    = ActionsDetail("Source/WallJump1/WallJump1_", 26, false, 0, 0.0);
-    ActionsMap[WallJump2Left]     = ActionsDetail("Source/WallJump2/ori40-", 30, true, 0, 0.0);
-    ActionsMap[WallJump2Right]    = ActionsDetail("Source/WallJump2/ori40-", 30, false, 0, 0.0);
+    ActionsMap[WallJump2Left]     = ActionsDetail("Source/WallJump2/WallJump2_", 36, true, 0, 0.0);
+    ActionsMap[WallJump2Right]    = ActionsDetail("Source/WallJump2/WallJump2_", 36, false, 0, 0.0);
     ActionsMap[WallLongJump1Left] = ActionsDetail("Source/WallLongJump1/ori41-", 30, false, 0, 0.0);
     ActionsMap[WallLongJump1Right] = ActionsDetail("Source/WallLongJump1/ori41-", 30, true, 0, 0.0);
     ActionsMap[WallLongJump2Left] =
@@ -123,6 +123,8 @@ void ActionsDetailLoad()
         ActionsDetail("Source/MovingFeather/ori17-", 21, true, 0, 0.8, true, false);
     ActionsMap[MovingFeatherRight] =
         ActionsDetail("Source/MovingFeather/ori17-", 21, false, 0, 0.8, true, false);
+    ActionsMap[DashLeft]  = ActionsDetail("Source/Dash/Dash", 10, true, 0, 0.0, false);
+    ActionsMap[DashRight] = ActionsDetail("Source/Dash/Dash", 10, false, 0, 0.0, false);
 
     // 操作冷却时的转移映射
     ActionsColdTrans[StandFacingLeft]  = StandFacingLeft;
@@ -196,6 +198,9 @@ void ActionsDetailLoad()
     ActionsColdTrans[FeatherRight]                = FallRight;
     ActionsColdTrans[MovingFeatherLeft]           = MovingFallLeft;
     ActionsColdTrans[MovingFeatherRight]          = MovingFallRight;
+
+    ActionsColdTrans[DashLeft]  = StandFacingLeft;
+    ActionsColdTrans[DashRight] = StandFacingRight;
 
     // 状态机的转移函数
     ActionsProbability[StandFacingLeft]  = {{StandFacingRight, 1},
@@ -370,6 +375,9 @@ void ActionsDetailLoad()
     ActionsProbability[MovingFeatherLeft]  = {{MovingFallLeft, 7}, {DoubleJumpLeftUp, -1}};
     ActionsProbability[MovingFeatherRight] = {{MovingFallRight, 7}, {DoubleJumpRightUp, -1}};
 
+    ActionsProbability[DashLeft]  = {{StandFacingLeft, 1}};
+    ActionsProbability[DashRight] = {{StandFacingRight, 1}};
+
     // 音效加载
     SoundMap[RunSlowlyLeft] = SoundMap[RunSlowlyRight] =
         SoundsDetail("Sound/stepSound/seinFootstepsRock", 5, 2);
@@ -390,6 +398,11 @@ void ActionsDetailLoad()
         SoundMap[WallJump2Right] = SoundMap[WallLongJump1Left] = SoundMap[WallLongJump1Right] =
             SoundMap[WallLongJump2Left]                        = SoundMap[WallLongJump2Left] =
                 SoundsDetail("Sound/wallJump/seinWallJumps", 5, 1);
+    SoundMap[FeatherLeft] = SoundMap[FeatherRight] =
+        SoundsDetail("Sound/feather/oriGlideStart", 3, 0);
+    SoundMap[MovingFeatherLeft] = SoundMap[MovingFeatherRight] =
+        SoundsDetail("Sound/movingFeather/oriGlideMoveLeftRight", 5, 0);
+    SoundMap[DashLeft] = SoundMap[DashRight] = SoundsDetail("Sound/dash/oriDash", 5, 1);
 
     // 镜像动作初始化
     for (int i = 0; i < int(None); i++)
@@ -489,8 +502,7 @@ ActionsMovement(Action action, int x, int y, int vx, int vy, int curFrame, long 
         dx = vx;
         dy = vy + 2;
     }
-    if (action == WallJump1Left || action == WallJump1Right || action == WallJump2Left ||
-        action == WallJump2Right)
+    if (action == WallJump1Left || action == WallJump1Right)
     {
         if (action == WallJump1Left || action == WallJump2Left)
         {
@@ -499,6 +511,22 @@ ActionsMovement(Action action, int x, int y, int vx, int vy, int curFrame, long 
         else
         {
             dx = -(ActionsMap[action].totalFrameNumber - curFrame + 5) / 2;
+        }
+        dy = -18 + time * 2;
+    }
+    if (action == WallJump2Left || action == WallJump2Right)
+    {
+        if (action == WallJump1Left || action == WallJump2Left)
+        {
+            dx = (ActionsMap[action].totalFrameNumber - curFrame + 5) / 2 *
+                 ActionsMap[WallJump1Left].totalFrameNumber /
+                 ActionsMap[WallJump2Left].totalFrameNumber;
+        }
+        else
+        {
+            dx = -(ActionsMap[action].totalFrameNumber - curFrame + 5) /
+                 ActionsMap[WallJump1Left].totalFrameNumber /
+                 ActionsMap[WallJump2Left].totalFrameNumber;
         }
         dy = -18 + time * 2;
     }
@@ -529,6 +557,12 @@ ActionsMovement(Action action, int x, int y, int vx, int vy, int curFrame, long 
     {
         dx = vx;
         dy = vy * 0.8f + 2;
+    }
+    if (action == DashLeft || action == DashRight)
+    {
+        int dashVertor[10] = {30, 30, 30, 30, 30, 30, 30, 30, 30, 30};
+        dx                 = (ActionsMap[action].transform ? -1 : 1) * dashVertor[curFrame - 1];
+        dy                 = 0;
     }
 
     return {dx, dy};

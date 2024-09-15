@@ -18,9 +18,9 @@ Behavior::Behavior(QWidget* parent) : QWidget(parent)
     TopEdge    = SCREENHEIGHTFIX - ORIWIDTH * 0;
     BottomEdge = SCREENHEIGHTFIX + SCREENHEIGHT - ORIHEIGHT * 1;
 
-    leftKey = rightKey = upKey = downKey = jumpKey = featherKey = false;
-    jumpChance                                                  = 2;
-    controlTime                                                 = 0;
+    leftKey = rightKey = upKey = downKey = jumpKey = featherKey = dashKey = false;
+    jumpChance                                                            = 2;
+    controlTime                                                           = 0;
 
     startTimer(100000);
     QDateTime currentDateTime = QDateTime::currentDateTime();
@@ -257,6 +257,11 @@ void Behavior::actionUpdate(int curFrame, long long time)
                 }
                 jumpKey = false;
             }
+            if (dashKey)
+            {
+                actionBehavior = ActionsMap[actionBehavior].transform ? DashLeft : DashRight;
+                dashKey        = false;
+            }
         }
         if (y == TopEdge)
         {
@@ -323,8 +328,7 @@ void Behavior::actionUpdate(int curFrame, long long time)
                     restart = true;
                     jumpChance--;
                 }
-                featherKey = false;
-                jumpKey    = false;
+                jumpKey = false;
             }
             else if (featherKey)
             {
@@ -563,11 +567,16 @@ void Behavior::keyPressEvent(QKeyEvent* event)
     }
     if (event->key() == Qt::Key_Space && !event->isAutoRepeat())
     {
-        jumpKey = true;
+        jumpKey    = true;
+        featherKey = false;
     }
     if (event->key() == Qt::Key_Z && !event->isAutoRepeat())
     {
         featherKey = true;
+    }
+    if (event->key() == Qt::Key_X && !event->isAutoRepeat())
+    {
+        dashKey = true;
     }
 }
 
@@ -594,6 +603,10 @@ void Behavior::keyReleaseEvent(QKeyEvent* event)
         jumpKey = false;
     }
     if (event->key() == Qt::Key_Z && !event->isAutoRepeat())
+    {
+        featherKey = false;
+    }
+    if (event->key() == Qt::Key_X && !event->isAutoRepeat())
     {
         featherKey = false;
     }
