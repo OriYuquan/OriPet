@@ -17,12 +17,12 @@ Behavior::Behavior(QWidget* parent) : QWidget(parent)
     TopEdge    = SCREENHEIGHTFIX - ORIWIDTH * 0;
     BottomEdge = SCREENHEIGHTFIX + SCREENHEIGHT - ORIHEIGHT * 1;
 
-    leftKey = rightKey = upKey = downKey = jumpKey = featherKey = dashKey = false;
-    mouseLeftKey                                                          = false;
-    jumpChance                                                            = 2;
-    controlTime                                                           = 0;
+    leftKey = rightKey = upKey = downKey = jumpKey = featherKey = dashKey = mouseLeftKey = false;
+    mouseLeftKey                                                                         = false;
+    jumpChance                                                                           = 2;
+    controlTime                                                                          = 0;
 
-    mouseVx = mouseVy = mousex = mousey = 0;
+    mousex = mousey = 0;
 
     startTimer(100000);
     QDateTime currentDateTime = QDateTime::currentDateTime();
@@ -153,8 +153,8 @@ void Behavior::actionUpdate(int curFrame, long long time)
     bool mirror  = false;
     bool restart = false;
 
-    vx = ActionsDX(actionBehavior, x, y, vx, vy, curFrame, time);
-    vy = ActionsDY(actionBehavior, x, y, vx, vy, curFrame, time);
+    vx = ActionsDX(actionBehavior, x, y, vx, vy, curFrame, time, mousex, mousey);
+    vy = ActionsDY(actionBehavior, x, y, vx, vy, curFrame, time, mousex, mousey);
     x += vx;
     y += vy;
 
@@ -167,7 +167,8 @@ void Behavior::actionUpdate(int curFrame, long long time)
     Action pre = actionBehavior;
 
     // 检查是否存在控制
-    bool control = leftKey || rightKey || upKey || downKey || jumpKey || featherKey || dashKey;
+    bool control =
+        leftKey || rightKey || upKey || downKey || jumpKey || featherKey || dashKey || mouseLeftKey;
     if (control)
     {
         controlTime = CONTROLTIME;
@@ -416,14 +417,25 @@ void Behavior::actionUpdate(int curFrame, long long time)
                 }
             }
         }
+
+        if (mouseLeftKey && mousex > LeftEdge && mousex < RightEdge && mousey < BottomEdge &&
+            mousey > TopEdge)
+        {
+            actionBehavior = int(actionBehavior) % 2 == 0 ? MouseHoldLeft : MouseHoldRight;
+        }
     }
 
-    int vxCheck = pre == actionBehavior ? vx : ActionsDX(actionBehavior, x, y, vx, vy, 1, time);
-    int vyCheck = pre == actionBehavior ? vy : ActionsDY(actionBehavior, x, y, vx, vy, 1, time);
+    int vxCheck = pre == actionBehavior
+                      ? vx
+                      : ActionsDX(actionBehavior, x, y, vx, vy, 1, time, mousex, mousey);
+    int vyCheck = pre == actionBehavior
+                      ? vy
+                      : ActionsDY(actionBehavior, x, y, vx, vy, 1, time, mousex, mousey);
 
     // 边界判断
     if (x == LeftEdge && vxCheck < 0)
     {
+        mouseLeftKey = false;
         if (y == BottomEdge)
         {
             actionBehavior = AgainstWallLeft;
@@ -440,6 +452,7 @@ void Behavior::actionUpdate(int curFrame, long long time)
     }
     else if (x == RightEdge && vxCheck > 0)
     {
+        mouseLeftKey = false;
         if (y == BottomEdge)
         {
             actionBehavior = AgainstWallRight;
@@ -456,6 +469,7 @@ void Behavior::actionUpdate(int curFrame, long long time)
     }
     else if (y == TopEdge && vyCheck < 0)
     {
+        mouseLeftKey = false;
         if (x == LeftEdge)
         {
             actionBehavior = WallStayLeft;
@@ -472,6 +486,7 @@ void Behavior::actionUpdate(int curFrame, long long time)
     }
     else if (y == BottomEdge && vyCheck > 0)
     {
+        mouseLeftKey = false;
         if (x == LeftEdge)
         {
             actionBehavior = AgainstWallLeft;
@@ -504,7 +519,7 @@ void Behavior::actionUpdate(int curFrame, long long time)
     }
     qDebug() << x << " " << y << " " << vxCheck << " " << vyCheck << " " << curFrame << " "
              << actionBehavior << " " << jumpChance << " " << mousex << " " << mousey << " "
-             << mouseVx << " " << mouseVy;
+             << mouseLeftKey << " " << controlTime;
 
     if (actionBehavior == pre)
     {
@@ -548,10 +563,8 @@ int Behavior::getY() const
 
 void Behavior::setMousePos(int x, int y)
 {
-    mouseVx = mousex - x;
-    mouseVy = mousey - y;
-    mousex  = x + TopEdge;
-    mousey  = y + LeftEdge;
+    mousex = x + LeftEdge - 32;
+    mousey = y + TopEdge + 30;
 }
 
 Action Behavior::getAction() const
@@ -637,9 +650,6 @@ void Behavior::mouseReleaseEvent(QMouseEvent* event)
 {
     if (event->button() == Qt::LeftButton)
         mouseLeftKey = false;
-}
-void Behavior::mouseMoveEvent(QMouseEvent* event)
-{
 }
 
 void Behavior::timerEvent(QTimerEvent* event)

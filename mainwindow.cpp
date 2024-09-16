@@ -7,6 +7,7 @@
 
 MainWindow::MainWindow(QWidget* parent) : QWidget(parent)
 {
+    setCursor(Qt::PointingHandCursor);
     // 资源文件信息加载
     ActionsDetailLoad();
 
@@ -99,7 +100,6 @@ void MainWindow::timerEvent(QTimerEvent* event)
 {
     QPoint mousePos = mapFromGlobal(QCursor::pos());
     behavior->setMousePos(mousePos.x(), mousePos.y());
-
     player->update();
     soundPlayer->soundPlay(player->curFrame);
     behavior->actionUpdate(player->curFrame, player->timePlayed);
@@ -114,4 +114,13 @@ void MainWindow::keyPressEvent(QKeyEvent* event)
 void MainWindow::keyReleaseEvent(QKeyEvent* event)
 {
     behavior->keyReleaseEvent(event);
+}
+
+void MainWindow::mousePressEvent(QMouseEvent* event)
+{
+    behavior->mousePressEvent(event);
+}
+void MainWindow::mouseReleaseEvent(QMouseEvent* event)
+{
+    behavior->mouseReleaseEvent(event);
 }

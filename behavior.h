@@ -29,7 +29,6 @@ class Behavior : public QWidget
     int vx, vy;
     // 鼠标坐标
     int mousex, mousey;
-    int mouseVx, mouseVy;
     // 检查方向键是否在按下的状态
     bool leftKey, rightKey, upKey, downKey, jumpKey, featherKey, dashKey;
     // 检查鼠标左键是否在按下的状态
@@ -60,7 +59,6 @@ class Behavior : public QWidget
     void keyReleaseEvent(QKeyEvent* event);
     void mousePressEvent(QMouseEvent* event);
     void mouseReleaseEvent(QMouseEvent* event);
-    void mouseMoveEvent(QMouseEvent* event);
     // void mouseDoubleClickEvent(QMouseEvent* event);
 
    protected:

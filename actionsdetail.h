@@ -97,6 +97,11 @@ enum Action
     WallJumpClimbLeft,
     WallJumpClimbRight,
 
+    MouseHoldLeft,
+    MouseHoldRight,
+    FeatherAfterMouseLeft,
+    FeatherAfterMouseRight,
+
     None
 };
 
@@ -163,7 +168,23 @@ extern int PNGWIDTH, PNGHEIGHT;
 void ActionsDetailLoad();
 
 // 位移函数
-int ActionsDX(Action action, int x, int y, int vx, int vy, int curFrame, long long time);
-int ActionsDY(Action action, int x, int y, int vx, int vy, int curFrame, long long time);
+int ActionsDX(Action    action,
+              int       x,
+              int       y,
+              int       vx,
+              int       vy,
+              int       curFrame,
+              long long time,
+              int       mousex,
+              int       mousey);
+int ActionsDY(Action    action,
+              int       x,
+              int       y,
+              int       vx,
+              int       vy,
+              int       curFrame,
+              long long time,
+              int       mousex,
+              int       mousey);
 
 #endif  // ACTIONSDETAIL_H

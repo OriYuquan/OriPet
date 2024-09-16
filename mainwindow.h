@@ -43,10 +43,9 @@ class MainWindow : public QWidget
     void contextMenuEvent(QContextMenuEvent* event);  // 处理右键菜单事件
     void keyPressEvent(QKeyEvent* event);
     void keyReleaseEvent(QKeyEvent* event);
-    //    void mousePressEvent(QMouseEvent *event);
-    //    void mouseDoubleClickEvent(QMouseEvent *event);
-    //    void mouseReleaseEvent(QMouseEvent *event);
-    //    void mouseMoveEvent(QMouseEvent *event);
+    void mousePressEvent(QMouseEvent* event);
+    void mouseReleaseEvent(QMouseEvent* event);
+    // void mouseDoubleClickEvent(QMouseEvent* event);
 };
 
 #endif  // MAINWINDOW_H

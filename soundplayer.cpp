@@ -39,8 +39,8 @@ void SoundPlayer::loadAction(Action action)
 
 void SoundPlayer::soundPlay(int curFrame)
 {
-    if (SoundMap[actionPlaying].totalFrameNumber != 0 && curFrame % frequency == 1 &&
-        SoundMap[actionPlaying].frequency != 0)
+    if (SoundMap[actionPlaying].frequency != 0 && SoundMap[actionPlaying].totalFrameNumber != 0 &&
+        curFrame % frequency == 1)
     {
         // qDebug() << actionPlaying;
         if (mediaPlayer->state() == QMediaPlayer::PlayingState)

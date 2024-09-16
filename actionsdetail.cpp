@@ -135,6 +135,14 @@ void ActionsDetailLoad()
     ActionsMap[WallJumpClimbRight] =
         ActionsDetail("Source/WallJumpClimb/WallClimbJumpToIdle_", 11, false, 0, 0.6, false);
 
+    ActionsMap[MouseHoldLeft] =
+        ActionsDetail("Source/MouseHoid/ori19-", 50, true, 0, 0.0, true, false);
+    ActionsMap[MouseHoldRight] =
+        ActionsDetail("Source/MouseHoid/ori19-", 50, false, 0, 0.0, true, false);
+
+    ActionsMap[FeatherAfterMouseLeft]  = ActionsDetail("Source/Feather/ori16-", 37, true, 0, 0.8);
+    ActionsMap[FeatherAfterMouseRight] = ActionsDetail("Source/Feather/ori16-", 37, false, 0, 0.8);
+
     // 操作冷却时的转移映射
     ActionsColdTrans[StandFacingLeft]  = StandFacingLeft;
     ActionsColdTrans[StandFacingRight] = StandFacingRight;
@@ -217,6 +225,11 @@ void ActionsDetailLoad()
 
     ActionsColdTrans[WallJumpClimbLeft]  = WallStayLeft;
     ActionsColdTrans[WallJumpClimbRight] = WallStayRight;
+
+    ActionsColdTrans[MouseHoldLeft]          = FeatherAfterMouseLeft;
+    ActionsColdTrans[MouseHoldRight]         = FeatherAfterMouseRight;
+    ActionsColdTrans[FeatherAfterMouseLeft]  = FeatherAfterMouseLeft;
+    ActionsColdTrans[FeatherAfterMouseRight] = FeatherAfterMouseRight;
 
     // 状态机的转移函数
     ActionsProbability[StandFacingLeft]  = {{StandFacingRight, 1},
@@ -422,6 +435,11 @@ void ActionsDetailLoad()
                                               {WallLongJump1Right, 2},
                                               {WallLongJump2Right, 2}};
 
+    ActionsProbability[MouseHoldLeft]          = {{FeatherAfterMouseLeft, 1}};
+    ActionsProbability[MouseHoldRight]         = {{FeatherAfterMouseRight, 1}};
+    ActionsProbability[FeatherAfterMouseLeft]  = {{FallLeft, 7}, {DoubleJumpLeftUp, -1}};
+    ActionsProbability[FeatherAfterMouseRight] = {{FallRight, 7}, {DoubleJumpRightUp, -1}};
+
     // 音效加载
     SoundMap[RunSlowlyLeft] = SoundMap[RunSlowlyRight] =
         SoundsDetail("Sound/stepSound/seinFootstepsRock", 5, 2);
@@ -443,9 +461,9 @@ void ActionsDetailLoad()
             SoundMap[WallLongJump2Left]                        = SoundMap[WallLongJump2Left] =
                 SoundMap[WallJumpClimbLeft]                    = SoundMap[WallJumpClimbRight] =
                     SoundsDetail("Sound/wallJump/seinWallJumps", 5, 1);
-    SoundMap[FeatherLeft] = SoundMap[FeatherRight] =
-        SoundsDetail("Sound/feather/oriGlideStart", 3, 0);
-    SoundMap[MovingFeatherLeft] = SoundMap[MovingFeatherRight] =
+    SoundMap[FeatherLeft] = SoundMap[FeatherRight] = SoundMap[FeatherAfterMouseLeft] =
+        SoundMap[FeatherAfterMouseRight] = SoundsDetail("Sound/feather/oriGlideStart", 3, 0);
+    SoundMap[MovingFeatherLeft]          = SoundMap[MovingFeatherRight] =
         SoundsDetail("Sound/movingFeather/oriGlideMoveLeftRight", 5, 0);
     SoundMap[DashBeginLeft] = SoundMap[DashBeginRight] = SoundsDetail("Sound/dash/oriDash", 5, 1);
 
@@ -464,8 +482,15 @@ void ActionsDetailLoad()
 }
 
 // 位移函数
-pair<int, int>
-ActionsMovement(Action action, int x, int y, int vx, int vy, int curFrame, long long time)
+pair<int, int> ActionsMovement(Action    action,
+                               int       x,
+                               int       y,
+                               int       vx,
+                               int       vy,
+                               int       curFrame,
+                               long long time,
+                               int       mousex,
+                               int       mousey)
 {
     int dx = 0, dy = 0;
     if (action == RunSlowlyLeft || action == RunSlowlyRight)
@@ -622,15 +647,41 @@ ActionsMovement(Action action, int x, int y, int vx, int vy, int curFrame, long 
              ((ActionsMap[WallJumpClimbLeft].totalFrameNumber + 1) - 2 * curFrame);
         dy = -25 + curFrame;
     }
+    if (action == MouseHoldLeft || action == MouseHoldRight)
+    {
+        dx = mousex - x;
+        dy = mousey - y;
+    }
+    if (action == FeatherAfterMouseLeft || action == FeatherAfterMouseRight)
+    {
+        dx = vx * 0.92f;
+        dy = vy * 0.8f + 2;
+    }
 
     return {dx, dy};
 }
 
-int ActionsDX(Action action, int x, int y, int vx, int vy, int curFrame, long long time)
+int ActionsDX(Action    action,
+              int       x,
+              int       y,
+              int       vx,
+              int       vy,
+              int       curFrame,
+              long long time,
+              int       mousex,
+              int       mousey)
 {
-    return ActionsMovement(action, x, y, vx, vy, curFrame, time).first;
+    return ActionsMovement(action, x, y, vx, vy, curFrame, time, mousex, mousey).first;
 }
-int ActionsDY(Action action, int x, int y, int vx, int vy, int curFrame, long long time)
+int ActionsDY(Action    action,
+              int       x,
+              int       y,
+              int       vx,
+              int       vy,
+              int       curFrame,
+              long long time,
+              int       mousex,
+              int       mousey)
 {
-    return ActionsMovement(action, x, y, vx, vy, curFrame, time).second;
+    return ActionsMovement(action, x, y, vx, vy, curFrame, time, mousex, mousey).second;
 }
