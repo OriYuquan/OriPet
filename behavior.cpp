@@ -1,6 +1,5 @@
 ﻿#include "behavior.h"
 
-#include <QCursor>
 #include <QDateTime>
 #include <QDebug>
 #include <QKeyEvent>
@@ -19,8 +18,11 @@ Behavior::Behavior(QWidget* parent) : QWidget(parent)
     BottomEdge = SCREENHEIGHTFIX + SCREENHEIGHT - ORIHEIGHT * 1;
 
     leftKey = rightKey = upKey = downKey = jumpKey = featherKey = dashKey = false;
+    mouseLeftKey                                                          = false;
     jumpChance                                                            = 2;
     controlTime                                                           = 0;
+
+    mouseVx = mouseVy = mousex = mousey = 0;
 
     startTimer(100000);
     QDateTime currentDateTime = QDateTime::currentDateTime();
@@ -90,11 +92,11 @@ double Behavior::generalPossiblity(Action act)
 
         else if (act == FeatherLeft || act == FeatherRight)
         {
-            return (abs(vx) < 10) ? abs(vy) / 15 + 1 : 0;
+            return (abs(vx) < 10) ? abs(vy) / 12 + 1 : 0;
         }
         else if (act == DoubleJumptoMovingFallLeft || act == DoubleJumptoMovingFallLeft)
         {
-            return (abs(vx) >= 10) ? abs(vy) / 15 + 1 : 0;
+            return (abs(vx) >= 10) ? abs(vy) / 12 + 1 : 0;
         }
 
         return 0;
@@ -165,7 +167,7 @@ void Behavior::actionUpdate(int curFrame, long long time)
     Action pre = actionBehavior;
 
     // 检查是否存在控制
-    bool control = leftKey || rightKey || upKey || downKey || jumpKey || featherKey;
+    bool control = leftKey || rightKey || upKey || downKey || jumpKey || featherKey || dashKey;
     if (control)
     {
         controlTime = CONTROLTIME;
@@ -259,8 +261,9 @@ void Behavior::actionUpdate(int curFrame, long long time)
             }
             if (dashKey)
             {
-                actionBehavior = ActionsMap[actionBehavior].transform ? DashLeft : DashRight;
-                dashKey        = false;
+                actionBehavior =
+                    ActionsMap[actionBehavior].transform ? DashBeginLeft : DashBeginRight;
+                dashKey = false;
             }
         }
         if (y == TopEdge)
@@ -297,6 +300,8 @@ void Behavior::actionUpdate(int curFrame, long long time)
             {
                 if (rightKey)
                     actionBehavior = randomValue > 0.5 ? WallLongJump1Left : WallLongJump2Left;
+                else if (leftKey)
+                    actionBehavior = WallJumpClimbLeft;
                 else
                     actionBehavior = randomValue > 0.5 ? WallJump1Left : WallJump2Left;
                 jumpKey = false;
@@ -312,6 +317,8 @@ void Behavior::actionUpdate(int curFrame, long long time)
             {
                 if (leftKey)
                     actionBehavior = randomValue > 0.5 ? WallLongJump1Right : WallLongJump2Right;
+                else if (rightKey)
+                    actionBehavior = WallJumpClimbRight;
                 else
                     actionBehavior = randomValue > 0.5 ? WallJump1Right : WallJump2Right;
                 jumpKey = false;
@@ -496,7 +503,8 @@ void Behavior::actionUpdate(int curFrame, long long time)
         // qDebug() << i << ActionsLeastTimes[Action(i)];
     }
     qDebug() << x << " " << y << " " << vxCheck << " " << vyCheck << " " << curFrame << " "
-             << actionBehavior << " " << jumpChance;
+             << actionBehavior << " " << jumpChance << " " << mousex << " " << mousey << " "
+             << mouseVx << " " << mouseVy;
 
     if (actionBehavior == pre)
     {
@@ -536,6 +544,14 @@ int Behavior::getX() const
 int Behavior::getY() const
 {
     return int(y);
+}
+
+void Behavior::setMousePos(int x, int y)
+{
+    mouseVx = mousex - x;
+    mouseVy = mousey - y;
+    mousex  = x + TopEdge;
+    mousey  = y + LeftEdge;
 }
 
 Action Behavior::getAction() const
@@ -610,6 +626,20 @@ void Behavior::keyReleaseEvent(QKeyEvent* event)
     {
         featherKey = false;
     }
+}
+
+void Behavior::mousePressEvent(QMouseEvent* event)
+{
+    if (event->button() == Qt::LeftButton)
+        mouseLeftKey = true;
+}
+void Behavior::mouseReleaseEvent(QMouseEvent* event)
+{
+    if (event->button() == Qt::LeftButton)
+        mouseLeftKey = false;
+}
+void Behavior::mouseMoveEvent(QMouseEvent* event)
+{
 }
 
 void Behavior::timerEvent(QTimerEvent* event)

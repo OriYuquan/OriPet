@@ -89,8 +89,13 @@ enum Action
     MovingFeatherLeft,
     MovingFeatherRight,
 
-    DashLeft,
-    DashRight,
+    DashBeginLeft,
+    DashBeginRight,
+    DashEndLeft,
+    DashEndRight,
+
+    WallJumpClimbLeft,
+    WallJumpClimbRight,
 
     None
 };

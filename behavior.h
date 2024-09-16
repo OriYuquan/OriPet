@@ -11,9 +11,11 @@ class Behavior : public QWidget
     Q_OBJECT
    public:
     explicit Behavior(QWidget* parent = nullptr);
-    void   loadAction(Action act, int _x, int _y);
-    int    getX() const;
-    int    getY() const;
+    void loadAction(Action act, int _x, int _y);
+    int  getX() const;
+    int  getY() const;
+    void setMousePos(int x, int y);
+
     Action getAction() const;
 
     // 状态更新函数
@@ -25,8 +27,13 @@ class Behavior : public QWidget
     // 桌宠坐标与速度
     int x, y;
     int vx, vy;
+    // 鼠标坐标
+    int mousex, mousey;
+    int mouseVx, mouseVy;
     // 检查方向键是否在按下的状态
     bool leftKey, rightKey, upKey, downKey, jumpKey, featherKey, dashKey;
+    // 检查鼠标左键是否在按下的状态
+    bool mouseLeftKey;
     // 状态机的当前状态
     Action actionBehavior;
     // 控制冷却时间
@@ -51,10 +58,10 @@ class Behavior : public QWidget
    public:
     void keyPressEvent(QKeyEvent* event);
     void keyReleaseEvent(QKeyEvent* event);
-    //    void mousePressEvent(QMouseEvent *event);
-    //    void mouseDoubleClickEvent(QMouseEvent *event);
-    //    void mouseReleaseEvent(QMouseEvent *event);
-    //    void mouseMoveEvent(QMouseEvent *event);
+    void mousePressEvent(QMouseEvent* event);
+    void mouseReleaseEvent(QMouseEvent* event);
+    void mouseMoveEvent(QMouseEvent* event);
+    // void mouseDoubleClickEvent(QMouseEvent* event);
 
    protected:
     void timerEvent(QTimerEvent* event);

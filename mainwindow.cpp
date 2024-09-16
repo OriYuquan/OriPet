@@ -1,7 +1,9 @@
 ﻿#include "mainwindow.h"
 
+#include <QCursor>
 #include <QDebug>
 #include <QKeyEvent>
+#include <QPoint>
 
 MainWindow::MainWindow(QWidget* parent) : QWidget(parent)
 {
@@ -95,6 +97,9 @@ void MainWindow::contextMenuEvent(QContextMenuEvent* event)
 
 void MainWindow::timerEvent(QTimerEvent* event)
 {
+    QPoint mousePos = mapFromGlobal(QCursor::pos());
+    behavior->setMousePos(mousePos.x(), mousePos.y());
+
     player->update();
     soundPlayer->soundPlay(player->curFrame);
     behavior->actionUpdate(player->curFrame, player->timePlayed);
