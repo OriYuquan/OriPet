@@ -340,6 +340,10 @@ void Behavior::actionUpdate(int curFrame, long long time)
             }
             else if (featherKey)
             {
+                if (pre == FeatherAfterMouseLeft)
+                    pre = FeatherLeft;
+                if (pre == FeatherAfterMouseRight)
+                    pre = FeatherRight;
                 actionBehavior = int(actionBehavior) % 2 == 0 ? FeatherLeft : FeatherRight;
                 if (leftKey)
                 {
@@ -384,6 +388,11 @@ void Behavior::actionUpdate(int curFrame, long long time)
                         actionBehavior = ActionsMirror[actionBehavior];
                         mirror         = true;
                     }
+                    else if (actionBehavior == FeatherAfterMouseLeft ||
+                             actionBehavior == FeatherAfterMouseRight)
+                    {
+                        actionBehavior = MovingFallLeft;
+                    }
                 }
                 if (rightKey)
                 {
@@ -413,6 +422,11 @@ void Behavior::actionUpdate(int curFrame, long long time)
                     {
                         actionBehavior = ActionsMirror[actionBehavior];
                         mirror         = true;
+                    }
+                    else if (actionBehavior == FeatherAfterMouseLeft ||
+                             actionBehavior == FeatherAfterMouseRight)
+                    {
+                        actionBehavior = MovingFallRight;
                     }
                 }
             }
