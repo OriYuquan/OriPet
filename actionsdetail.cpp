@@ -460,9 +460,9 @@ void ActionsDetailLoad()
     ActionsProbability[MovingFeatherRight] = {
         {MovingFallRight, 7}, {DoubleJumpRightUp, -1}, {AirDashRight, -1}};
 
-    ActionsProbability[DashBeginLeft]  = {{DashEndLeft, 5}, {DashBeginLeft, 1}, {RunFastLeft, -1}};
+    ActionsProbability[DashBeginLeft]  = {{DashEndLeft, 4}, {DashBeginLeft, 2}, {RunFastLeft, -1}};
     ActionsProbability[DashBeginRight] = {
-        {DashEndRight, 5}, {DashBeginRight, 1}, {RunFastRight, -1}};
+        {DashEndRight, 4}, {DashBeginRight, 2}, {RunFastRight, -1}};
     ActionsProbability[DashEndLeft]  = {{StandFacingLeft, 1}};
     ActionsProbability[DashEndRight] = {{StandFacingRight, 1}};
 
