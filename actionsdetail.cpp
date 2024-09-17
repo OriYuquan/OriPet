@@ -114,9 +114,9 @@ void ActionsDetailLoad()
     ActionsMap[TopStayLeft]  = ActionsDetail("Source/TopStay/ori49-", 158, true, 0, 0.1);
     ActionsMap[TopStayRight] = ActionsDetail("Source/TopStay/ori49-", 158, false, 0, 0.1);
     ActionsMap[TopClimbLeft] =
-        ActionsDetail("Source/TopClimb/ori50-", 22, true, 0, 0.5, true, false);
+        ActionsDetail("Source/TopClimb/ori50-", 22, true, 0, 0.7, true, false);
     ActionsMap[TopClimbRight] =
-        ActionsDetail("Source/TopClimb/ori50-", 22, false, 0, 0.5, true, false);
+        ActionsDetail("Source/TopClimb/ori50-", 22, false, 0, 0.7, true, false);
     ActionsMap[FeatherLeft] = ActionsDetail("Source/Feather/ori16-", 37, true, 0, 0.8, true, false);
     ActionsMap[FeatherRight] =
         ActionsDetail("Source/Feather/ori16-", 37, false, 0, 0.8, true, false);
@@ -143,12 +143,20 @@ void ActionsDetailLoad()
     ActionsMap[FeatherAfterMouseLeft]  = ActionsDetail("Source/Feather/ori16-", 37, true, 0, 0.8);
     ActionsMap[FeatherAfterMouseRight] = ActionsDetail("Source/Feather/ori16-", 37, false, 0, 0.8);
 
-    ActionsMap[AirDashLeft]  = ActionsDetail("Source/AirDash/AirDash", 13, true, 0, 0.0);
-    ActionsMap[AirDashRight] = ActionsDetail("Source/AirDash/AirDash", 13, false, 0, 0.0);
+    ActionsMap[AirDashLeft]  = ActionsDetail("Source/AirDash/AirDash", 13, true, 0, 0.0, false);
+    ActionsMap[AirDashRight] = ActionsDetail("Source/AirDash/AirDash", 13, false, 0, 0.0, false);
     ActionsMap[AirDashtoFallLeft] =
         ActionsDetail("Source/AirDashtoFall/AirDashToFall_", 5, true, 0, 0.0);
     ActionsMap[AirDashtoFallRight] =
         ActionsDetail("Source/AirDashtoFall/AirDashToFall_", 5, false, 0, 0.0);
+
+    ActionsMap[GetDownLeft] = ActionsDetail("Source/GetDown/ori2-", 29, true, 0, 0.7, true, false);
+    ActionsMap[GetDownRight] =
+        ActionsDetail("Source/GetDown/ori2-", 29, false, 0, 0.7, true, false);
+    ActionsMap[GetDownWalkLeft] =
+        ActionsDetail("Source/GetDownWalk/ori3-", 36, true, 0, 0.8, true, false);
+    ActionsMap[GetDownWalkRight] =
+        ActionsDetail("Source/GetDownWalk/ori3-", 36, false, 0, 0.8, true, false);
 
     // 操作冷却时的转移映射
     ActionsColdTrans[StandFacingLeft]  = StandFacingLeft;
@@ -243,6 +251,11 @@ void ActionsDetailLoad()
     ActionsColdTrans[AirDashtoFallLeft]  = MovingFallLeft;
     ActionsColdTrans[AirDashtoFallRight] = MovingFallRight;
 
+    ActionsColdTrans[GetDownLeft]      = StandFacingLeft;
+    ActionsColdTrans[GetDownRight]     = StandFacingRight;
+    ActionsColdTrans[GetDownWalkLeft]  = StandFacingLeft;
+    ActionsColdTrans[GetDownWalkRight] = StandFacingRight;
+
     // 状态机的转移函数
     ActionsProbability[StandFacingLeft]  = {{StandFacingRight, 1},
                                             {RunSlowlyLeft, -1},
@@ -250,14 +263,16 @@ void ActionsDetailLoad()
                                             {Jump1LeftUp, 1},
                                             {Jump2LeftUp, 1},
                                             {RunFastLeft, -1},
-                                            {RunFastRight, 1}};
+                                            {RunFastRight, 1},
+                                            {GetDownLeft, 3}};
     ActionsProbability[StandFacingRight] = {{StandFacingLeft, 1},
                                             {RunSlowlyLeft, -1},
                                             {RunSlowlyRight, -1},
                                             {Jump1RightUp, 1},
                                             {Jump2RightUp, 1},
                                             {RunFastLeft, 1},
-                                            {RunFastRight, -1}};
+                                            {RunFastRight, -1},
+                                            {GetDownRight, 3}};
     ActionsProbability[RunSlowlyLeft]    = {{StandFacingLeft, 20},
                                             {StandFacingRight, 1},
                                             {RunSlowlyRight, -1},
@@ -479,10 +494,38 @@ void ActionsDetailLoad()
         {MovingFallLeft, 1}, {DoubleJumpLeftUp, -1}, {MovingFeatherLeft, 2}};
     ActionsProbability[AirDashtoFallRight] = {
         {MovingFallRight, 1}, {DoubleJumpRightUp, -1}, {MovingFeatherRight, 2}};
+    ActionsProbability[GetDownLeft]      = {{StandFacingLeft, 8},
+                                            {StandFacingRight, 2},
+                                            {RunSlowlyLeft, 1},
+                                            {Jump1LeftUp, 1},
+                                            {Jump2LeftUp, 1},
+                                            {RunFastLeft, 1},
+                                            {GetDownWalkLeft, -1},
+                                            {GetDownWalkRight, 1}};
+    ActionsProbability[GetDownRight]     = {{StandFacingLeft, 2},
+                                            {StandFacingRight, 8},
+                                            {RunSlowlyRight, 1},
+                                            {Jump1RightUp, 1},
+                                            {Jump2RightUp, 1},
+                                            {RunFastRight, 1},
+                                            {GetDownWalkLeft, 1},
+                                            {GetDownWalkRight, -1}};
+    ActionsProbability[GetDownWalkLeft]  = {{GetDownLeft, 5},
+                                            {GetDownRight, 1},
+                                            {StandFacingLeft, 5},
+                                            {StandFacingRight, 1},
+                                            {RunSlowlyLeft, -1},
+                                            {RunFastLeft, -1}};
+    ActionsProbability[GetDownWalkRight] = {{GetDownLeft, 1},
+                                            {GetDownRight, 5},
+                                            {StandFacingLeft, 1},
+                                            {StandFacingRight, 5},
+                                            {RunSlowlyRight, -1},
+                                            {RunFastRight, -1}};
 
     // 音效加载
-    SoundMap[RunSlowlyLeft] = SoundMap[RunSlowlyRight] =
-        SoundsDetail("Sound/stepSound/seinFootstepsRock", 5, 2);
+    SoundMap[RunSlowlyLeft] = SoundMap[RunSlowlyRight] = SoundMap[GetDownWalkLeft] =
+        SoundMap[GetDownWalkRight] = SoundsDetail("Sound/stepSound/seinFootstepsRock", 5, 2);
     SoundMap[LandStandLeft] = SoundMap[LandStandRight] = SoundMap[LandRunFastLeft] =
         SoundMap[LandRunFastRight] = SoundsDetail("Sound/land/seinLandsStone", 5, 1);
     SoundMap[Jump1LeftUp] = SoundMap[Jump1RightUp] = SoundMap[Jump2LeftUp] =
@@ -709,6 +752,11 @@ pair<int, int> ActionsMovement(Action    action,
         int dashVertor[5] = {12, 12, 12, 12, 12};
         dx                = (ActionsMap[action].transform ? -1 : 1) * dashVertor[curFrame - 1];
         dy                = vy + 2;
+    }
+    if (action == GetDownWalkLeft || action == GetDownWalkRight)
+    {
+        dx = (ActionsMap[action].transform ? -1 : 1) * 2;
+        dy = 0;
     }
 
     return {dx, dy};

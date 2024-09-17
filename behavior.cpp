@@ -34,11 +34,11 @@ double Behavior::generalPossiblity(Action act)
 {
     if (ActionsProbability[actionBehavior][act] < 0)
     {
-        if (act == RunSlowlyLeft || act == RunFastLeft)
+        if (act == RunSlowlyLeft || act == RunFastLeft || act == GetDownWalkLeft)
         {
             return 10.0 * (double) (x - LeftEdge) / (double) (RightEdge - LeftEdge);
         }
-        else if (act == RunSlowlyRight || act == RunFastRight)
+        else if (act == RunSlowlyRight || act == RunFastRight || act == GetDownWalkRight)
         {
             return 10.0 * (double) (RightEdge - LeftEdge - (x - LeftEdge)) /
                    (double) (RightEdge - LeftEdge);
@@ -339,9 +339,9 @@ void Behavior::actionUpdate(int curFrame, long long time)
         // 冷却时间调试输出
         // qDebug() << i << ActionsLeastTimes[Action(i)];
     }
-    //    qDebug() << x << " " << y << " " << vxCheck << " " << vyCheck << " " << curFrame << " "
-    //             << actionBehavior << " " << jumpChance << " " << mousex << " " << mousey << " "
-    //             << mouseLeftKey << " " << controlTime;
+    qDebug() << x << " " << y << " " << vxCheck << " " << vyCheck << " " << curFrame << " "
+             << actionBehavior << " " << jumpChance << " " << mousex << " " << mousey << " "
+             << mouseLeftKey << " " << controlTime;
 
     if (actionBehavior == pre)
     {
@@ -379,6 +379,14 @@ void Behavior::inputControl(Action& pre, bool& mirror, bool& restart, double ran
             actionBehavior = RunFastLeft;
         if (rightKey)
             actionBehavior = RunFastRight;
+        if (downKey)
+        {
+            actionBehavior = ActionsMap[actionBehavior].transform ? GetDownLeft : GetDownRight;
+            if (leftKey)
+                actionBehavior = GetDownWalkLeft;
+            if (rightKey)
+                actionBehavior = GetDownWalkRight;
+        }
         if (jumpKey)
         {
             if (pre == RunFastLeft || pre == RunFastRight)

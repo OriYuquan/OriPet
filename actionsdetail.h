@@ -106,6 +106,11 @@ enum Action
     FeatherAfterMouseLeft,
     FeatherAfterMouseRight,
 
+    GetDownLeft,
+    GetDownRight,
+    GetDownWalkLeft,
+    GetDownWalkRight,
+
     None
 };
 
