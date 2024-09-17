@@ -150,9 +150,9 @@ void ActionsDetailLoad()
     ActionsMap[AirDashtoFallRight] =
         ActionsDetail("Source/AirDashtoFall/AirDashToFall_", 5, false, 0, 0.0);
 
-    ActionsMap[GetDownLeft] = ActionsDetail("Source/GetDown/ori2-", 29, true, 0, 0.7, true, false);
+    ActionsMap[GetDownLeft] = ActionsDetail("Source/GetDown/ori2-", 29, true, 0, 0.6, true, false);
     ActionsMap[GetDownRight] =
-        ActionsDetail("Source/GetDown/ori2-", 29, false, 0, 0.7, true, false);
+        ActionsDetail("Source/GetDown/ori2-", 29, false, 0, 0.6, true, false);
     ActionsMap[GetDownWalkLeft] =
         ActionsDetail("Source/GetDownWalk/ori3-", 36, true, 0, 0.8, true, false);
     ActionsMap[GetDownWalkRight] =
@@ -494,7 +494,7 @@ void ActionsDetailLoad()
         {MovingFallLeft, 1}, {DoubleJumpLeftUp, -1}, {MovingFeatherLeft, 2}};
     ActionsProbability[AirDashtoFallRight] = {
         {MovingFallRight, 1}, {DoubleJumpRightUp, -1}, {MovingFeatherRight, 2}};
-    ActionsProbability[GetDownLeft]      = {{StandFacingLeft, 8},
+    ActionsProbability[GetDownLeft]      = {{StandFacingLeft, 12},
                                             {StandFacingRight, 2},
                                             {RunSlowlyLeft, 1},
                                             {Jump1LeftUp, 1},
@@ -503,7 +503,7 @@ void ActionsDetailLoad()
                                             {GetDownWalkLeft, -1},
                                             {GetDownWalkRight, 1}};
     ActionsProbability[GetDownRight]     = {{StandFacingLeft, 2},
-                                            {StandFacingRight, 8},
+                                            {StandFacingRight, 12},
                                             {RunSlowlyRight, 1},
                                             {Jump1RightUp, 1},
                                             {Jump2RightUp, 1},
@@ -512,14 +512,14 @@ void ActionsDetailLoad()
                                             {GetDownWalkRight, -1}};
     ActionsProbability[GetDownWalkLeft]  = {{GetDownLeft, 5},
                                             {GetDownRight, 1},
-                                            {StandFacingLeft, 5},
+                                            {StandFacingLeft, 6},
                                             {StandFacingRight, 1},
                                             {RunSlowlyLeft, -1},
                                             {RunFastLeft, -1}};
     ActionsProbability[GetDownWalkRight] = {{GetDownLeft, 1},
                                             {GetDownRight, 5},
                                             {StandFacingLeft, 1},
-                                            {StandFacingRight, 5},
+                                            {StandFacingRight, 6},
                                             {RunSlowlyRight, -1},
                                             {RunFastRight, -1}};
 
