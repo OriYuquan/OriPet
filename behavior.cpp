@@ -171,6 +171,13 @@ void Behavior::actionUpdate(int curFrame, long long time)
     y = max(y, TopEdge);
     y = min(y, BottomEdge);
 
+    // 跳跃次数更新
+    if (x == LeftEdge || x == RightEdge || y == BottomEdge || y == TopEdge)
+    {
+        jumpChance = 2;
+        dashChance = 1;
+    }
+
     Action pre = actionBehavior;
 
     // 检查是否存在控制
@@ -320,13 +327,6 @@ void Behavior::actionUpdate(int curFrame, long long time)
         {
             actionBehavior = ActionsMap[actionBehavior].transform ? LandStandLeft : LandStandRight;
         }
-    }
-
-    // 跳跃次数更新
-    if (x == LeftEdge || x == RightEdge || y == BottomEdge || y == TopEdge)
-    {
-        jumpChance = 2;
-        dashChance = 1;
     }
 
     // 动作冷却更新
