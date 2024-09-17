@@ -237,207 +237,7 @@ void Behavior::actionUpdate(int curFrame, long long time)
 
     // 按键控制
     if (ActionsMap[actionBehavior].control)
-    {
-        if (y == BottomEdge)
-        {
-            if (leftKey)
-                actionBehavior = RunFastLeft;
-            if (rightKey)
-                actionBehavior = RunFastRight;
-            if (jumpKey)
-            {
-                if (pre == RunFastLeft || pre == RunFastRight)
-                {
-                    actionBehavior = ActionsMap[actionBehavior].transform
-                                         ? (randomValue > 0.5 ? RunJump1LeftUp : RunJump2LeftUp)
-                                         : (randomValue > 0.5 ? RunJump1RightUp : RunJump2RightUp);
-                }
-                else
-                {
-                    actionBehavior = ActionsMap[actionBehavior].transform
-                                         ? (randomValue > 0.5 ? Jump1LeftUp : Jump2LeftUp)
-                                         : (randomValue > 0.5 ? Jump1RightUp : Jump2RightUp);
-                }
-                jumpKey = false;
-            }
-            if (dashKey)
-            {
-                actionBehavior =
-                    ActionsMap[actionBehavior].transform ? DashBeginLeft : DashBeginRight;
-                dashKey = false;
-            }
-        }
-        if (y == TopEdge)
-        {
-            if (leftKey)
-            {
-                actionBehavior = TopClimbLeft;
-            }
-            if (rightKey)
-            {
-                actionBehavior = TopClimbRight;
-            }
-            if (jumpKey)
-            {
-                if (pre == TopStayLeft || pre == TopStayRight)
-                {
-                    actionBehavior = int(actionBehavior) % 2 == 0 ? FallLeft : FallRight;
-                }
-                else if (pre == TopClimbLeft || pre == TopClimbRight)
-                {
-                    actionBehavior =
-                        int(actionBehavior) % 2 == 0 ? MovingFallLeft : MovingFallRight;
-                }
-                jumpKey = false;
-            }
-        }
-        if (x == LeftEdge)
-        {
-            if (upKey)
-                actionBehavior = ClimbUpLeft;
-            if (downKey)
-                actionBehavior = ClimbDownLeft;
-            if (jumpKey)
-            {
-                if (rightKey)
-                    actionBehavior = randomValue > 0.5 ? WallLongJump1Left : WallLongJump2Left;
-                else if (leftKey)
-                    actionBehavior = WallJumpClimbLeft;
-                else
-                    actionBehavior = randomValue > 0.5 ? WallJump1Left : WallJump2Left;
-                jumpKey = false;
-            }
-        }
-        if (x == RightEdge)
-        {
-            if (upKey)
-                actionBehavior = ClimbUpRight;
-            if (downKey)
-                actionBehavior = ClimbDownRight;
-            if (jumpKey)
-            {
-                if (leftKey)
-                    actionBehavior = randomValue > 0.5 ? WallLongJump1Right : WallLongJump2Right;
-                else if (rightKey)
-                    actionBehavior = WallJumpClimbRight;
-                else
-                    actionBehavior = randomValue > 0.5 ? WallJump1Right : WallJump2Right;
-                jumpKey = false;
-            }
-        }
-        if (x > LeftEdge && x < RightEdge && y < BottomEdge && y > TopEdge)
-        {
-            if (jumpKey)
-            {
-                if (jumpChance >= 1)
-                {
-                    actionBehavior =
-                        ActionsMap[actionBehavior].transform ? DoubleJumpLeftUp : DoubleJumpRightUp;
-                    restart = true;
-                    jumpChance--;
-                }
-                jumpKey = false;
-            }
-            else if (featherKey)
-            {
-                if (pre == FeatherAfterMouseLeft)
-                    pre = FeatherLeft;
-                if (pre == FeatherAfterMouseRight)
-                    pre = FeatherRight;
-                actionBehavior = int(actionBehavior) % 2 == 0 ? FeatherLeft : FeatherRight;
-                if (leftKey)
-                {
-                    vx             = -18;
-                    actionBehavior = MovingFeatherLeft;
-                }
-                if (rightKey)
-                {
-                    vx             = 18;
-                    actionBehavior = MovingFeatherRight;
-                }
-            }
-            else
-            {
-                if (leftKey)
-                {
-                    vx = -18;
-                    if (actionBehavior == DoubleJumpRightUp)
-                    {
-                        actionBehavior = DoubleJumpLeftUp;
-                        mirror         = true;
-                    }
-                    else if (actionBehavior == DoubleJumpRightDown)
-                    {
-                        actionBehavior = DoubleJumpLeftDown;
-                        mirror         = true;
-                    }
-                    else if (actionBehavior == FallLeft || actionBehavior == FallRight)
-                    {
-                        actionBehavior = MovingFallLeft;
-                    }
-                    else if (actionBehavior == MovingFallRight)
-                    {
-                        actionBehavior = MovingFallLeft;
-                        mirror         = true;
-                    }
-                    else if (actionBehavior == RunJump1RightUp ||
-                             actionBehavior == RunJump1RightDown ||
-                             actionBehavior == RunJump2RightUp ||
-                             actionBehavior == RunJump2RightDown)
-                    {
-                        actionBehavior = ActionsMirror[actionBehavior];
-                        mirror         = true;
-                    }
-                    else if (actionBehavior == FeatherAfterMouseLeft ||
-                             actionBehavior == FeatherAfterMouseRight)
-                    {
-                        actionBehavior = MovingFallLeft;
-                    }
-                }
-                if (rightKey)
-                {
-                    vx = 18;
-                    if (actionBehavior == DoubleJumpLeftUp)
-                    {
-                        actionBehavior = DoubleJumpRightUp;
-                        mirror         = true;
-                    }
-                    else if (actionBehavior == DoubleJumpLeftDown)
-                    {
-                        actionBehavior = DoubleJumpRightDown;
-                        mirror         = true;
-                    }
-                    else if (actionBehavior == FallLeft || actionBehavior == FallRight)
-                    {
-                        actionBehavior = MovingFallRight;
-                    }
-                    else if (actionBehavior == MovingFallLeft)
-                    {
-                        actionBehavior = MovingFallRight;
-                        mirror         = true;
-                    }
-                    else if (actionBehavior == RunJump1LeftUp ||
-                             actionBehavior == RunJump1LeftDown ||
-                             actionBehavior == RunJump2LeftUp || actionBehavior == RunJump2LeftDown)
-                    {
-                        actionBehavior = ActionsMirror[actionBehavior];
-                        mirror         = true;
-                    }
-                    else if (actionBehavior == FeatherAfterMouseLeft ||
-                             actionBehavior == FeatherAfterMouseRight)
-                    {
-                        actionBehavior = MovingFallRight;
-                    }
-                }
-            }
-        }
-
-        if (mouseLeftKey && mousex > LeftEdge && mousex < RightEdge && mousey < BottomEdge &&
-            mousey > TopEdge)
-        {
-            actionBehavior = int(actionBehavior) % 2 == 0 ? MouseHoldLeft : MouseHoldRight;
-        }
-    }
+        inputControl(pre, mirror, restart, randomValue);
 
     int vxCheck = pre == actionBehavior
                       ? vx
@@ -553,6 +353,209 @@ void Behavior::actionUpdate(int curFrame, long long time)
         {
             emit PlayerLoadNewActionSignal(actionBehavior);
             emit SoundPlayerLoadNewActionSignal(actionBehavior);
+        }
+    }
+}
+
+void Behavior::inputControl(Action& pre, bool& mirror, bool& restart, double randomValue)
+{
+    if (mouseLeftKey && mousex > LeftEdge && mousex < RightEdge && mousey < BottomEdge &&
+        mousey > TopEdge)
+    {
+        actionBehavior = int(actionBehavior) % 2 == 0 ? MouseHoldLeft : MouseHoldRight;
+        return;
+    }
+    if (y == BottomEdge)
+    {
+        if (leftKey)
+            actionBehavior = RunFastLeft;
+        if (rightKey)
+            actionBehavior = RunFastRight;
+        if (jumpKey)
+        {
+            if (pre == RunFastLeft || pre == RunFastRight)
+            {
+                actionBehavior = ActionsMap[actionBehavior].transform
+                                     ? (randomValue > 0.5 ? RunJump1LeftUp : RunJump2LeftUp)
+                                     : (randomValue > 0.5 ? RunJump1RightUp : RunJump2RightUp);
+            }
+            else
+            {
+                actionBehavior = ActionsMap[actionBehavior].transform
+                                     ? (randomValue > 0.5 ? Jump1LeftUp : Jump2LeftUp)
+                                     : (randomValue > 0.5 ? Jump1RightUp : Jump2RightUp);
+            }
+            jumpKey = false;
+        }
+        if (dashKey)
+        {
+            actionBehavior = ActionsMap[actionBehavior].transform ? DashBeginLeft : DashBeginRight;
+            dashKey        = false;
+        }
+    }
+    if (y == TopEdge)
+    {
+        if (leftKey)
+        {
+            actionBehavior = TopClimbLeft;
+        }
+        if (rightKey)
+        {
+            actionBehavior = TopClimbRight;
+        }
+        if (jumpKey)
+        {
+            if (pre == TopStayLeft || pre == TopStayRight)
+            {
+                actionBehavior = int(actionBehavior) % 2 == 0 ? FallLeft : FallRight;
+            }
+            else if (pre == TopClimbLeft || pre == TopClimbRight)
+            {
+                actionBehavior = int(actionBehavior) % 2 == 0 ? MovingFallLeft : MovingFallRight;
+            }
+            jumpKey = false;
+        }
+    }
+    if (x == LeftEdge)
+    {
+        if (upKey)
+            actionBehavior = ClimbUpLeft;
+        if (downKey)
+            actionBehavior = ClimbDownLeft;
+        if (jumpKey)
+        {
+            if (rightKey)
+                actionBehavior = randomValue > 0.5 ? WallLongJump1Left : WallLongJump2Left;
+            else if (leftKey)
+                actionBehavior = WallJumpClimbLeft;
+            else
+                actionBehavior = randomValue > 0.5 ? WallJump1Left : WallJump2Left;
+            jumpKey = false;
+        }
+    }
+    if (x == RightEdge)
+    {
+        if (upKey)
+            actionBehavior = ClimbUpRight;
+        if (downKey)
+            actionBehavior = ClimbDownRight;
+        if (jumpKey)
+        {
+            if (leftKey)
+                actionBehavior = randomValue > 0.5 ? WallLongJump1Right : WallLongJump2Right;
+            else if (rightKey)
+                actionBehavior = WallJumpClimbRight;
+            else
+                actionBehavior = randomValue > 0.5 ? WallJump1Right : WallJump2Right;
+            jumpKey = false;
+        }
+    }
+    if (x > LeftEdge && x < RightEdge && y < BottomEdge && y > TopEdge)
+    {
+        if (jumpKey)
+        {
+            if (jumpChance >= 1)
+            {
+                actionBehavior =
+                    ActionsMap[actionBehavior].transform ? DoubleJumpLeftUp : DoubleJumpRightUp;
+                restart = true;
+                jumpChance--;
+            }
+            jumpKey = false;
+        }
+        else if (featherKey)
+        {
+            if (pre == FeatherAfterMouseLeft)
+                pre = FeatherLeft;
+            if (pre == FeatherAfterMouseRight)
+                pre = FeatherRight;
+            actionBehavior = int(actionBehavior) % 2 == 0 ? FeatherLeft : FeatherRight;
+            if (leftKey)
+            {
+                vx             = -18;
+                actionBehavior = MovingFeatherLeft;
+            }
+            if (rightKey)
+            {
+                vx             = 18;
+                actionBehavior = MovingFeatherRight;
+            }
+        }
+        else if (dashKey)
+        {
+            // 空中冲刺
+            dashKey = false;
+        }
+        else
+        {
+            if (leftKey)
+            {
+                vx = -18;
+                if (actionBehavior == DoubleJumpRightUp)
+                {
+                    actionBehavior = DoubleJumpLeftUp;
+                    mirror         = true;
+                }
+                else if (actionBehavior == DoubleJumpRightDown)
+                {
+                    actionBehavior = DoubleJumpLeftDown;
+                    mirror         = true;
+                }
+                else if (actionBehavior == FallLeft || actionBehavior == FallRight)
+                {
+                    actionBehavior = MovingFallLeft;
+                }
+                else if (actionBehavior == MovingFallRight)
+                {
+                    actionBehavior = MovingFallLeft;
+                    mirror         = true;
+                }
+                else if (actionBehavior == RunJump1RightUp || actionBehavior == RunJump1RightDown ||
+                         actionBehavior == RunJump2RightUp || actionBehavior == RunJump2RightDown)
+                {
+                    actionBehavior = ActionsMirror[actionBehavior];
+                    mirror         = true;
+                }
+                else if (actionBehavior == FeatherAfterMouseLeft ||
+                         actionBehavior == FeatherAfterMouseRight)
+                {
+                    actionBehavior = MovingFallLeft;
+                }
+            }
+            if (rightKey)
+            {
+                vx = 18;
+                if (actionBehavior == DoubleJumpLeftUp)
+                {
+                    actionBehavior = DoubleJumpRightUp;
+                    mirror         = true;
+                }
+                else if (actionBehavior == DoubleJumpLeftDown)
+                {
+                    actionBehavior = DoubleJumpRightDown;
+                    mirror         = true;
+                }
+                else if (actionBehavior == FallLeft || actionBehavior == FallRight)
+                {
+                    actionBehavior = MovingFallRight;
+                }
+                else if (actionBehavior == MovingFallLeft)
+                {
+                    actionBehavior = MovingFallRight;
+                    mirror         = true;
+                }
+                else if (actionBehavior == RunJump1LeftUp || actionBehavior == RunJump1LeftDown ||
+                         actionBehavior == RunJump2LeftUp || actionBehavior == RunJump2LeftDown)
+                {
+                    actionBehavior = ActionsMirror[actionBehavior];
+                    mirror         = true;
+                }
+                else if (actionBehavior == FeatherAfterMouseLeft ||
+                         actionBehavior == FeatherAfterMouseRight)
+                {
+                    actionBehavior = MovingFallRight;
+                }
+            }
         }
     }
 }

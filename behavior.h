@@ -46,6 +46,8 @@ class Behavior : public QWidget
     Action NextActions(Action Action);
     // 通用概率函数
     double generalPossiblity(Action);
+    // 操作函数
+    void inputControl(Action& pre, bool& mirror, bool& restart, double randomValue);
 
    signals:
     void PlayerLoadNewActionSignal(Action);
