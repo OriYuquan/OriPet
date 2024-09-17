@@ -118,7 +118,9 @@ void MainWindow::keyReleaseEvent(QKeyEvent* event)
 
 void MainWindow::mousePressEvent(QMouseEvent* event)
 {
-    behavior->mousePressEvent(event);
+    // 只有点击在桌宠上时才相应操作
+    if (QApplication::widgetAt(event->globalPos()) == player)
+        behavior->mousePressEvent(event);
 }
 void MainWindow::mouseReleaseEvent(QMouseEvent* event)
 {

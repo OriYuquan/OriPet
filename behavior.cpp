@@ -531,9 +531,9 @@ void Behavior::actionUpdate(int curFrame, long long time)
         // 冷却时间调试输出
         // qDebug() << i << ActionsLeastTimes[Action(i)];
     }
-    qDebug() << x << " " << y << " " << vxCheck << " " << vyCheck << " " << curFrame << " "
-             << actionBehavior << " " << jumpChance << " " << mousex << " " << mousey << " "
-             << mouseLeftKey << " " << controlTime;
+    //    qDebug() << x << " " << y << " " << vxCheck << " " << vyCheck << " " << curFrame << " "
+    //             << actionBehavior << " " << jumpChance << " " << mousex << " " << mousey << " "
+    //             << mouseLeftKey << " " << controlTime;
 
     if (actionBehavior == pre)
     {
@@ -659,6 +659,8 @@ void Behavior::mousePressEvent(QMouseEvent* event)
 {
     if (event->button() == Qt::LeftButton)
         mouseLeftKey = true;
+    //    else
+    //        mouseLeftKey = false;
 }
 void Behavior::mouseReleaseEvent(QMouseEvent* event)
 {
