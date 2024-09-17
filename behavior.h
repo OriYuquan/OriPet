@@ -39,6 +39,8 @@ class Behavior : public QWidget
     int controlTime;
     // 二段跳剩余次数
     int jumpChance;
+    // 冲刺剩余次数
+    int dashChance;
     // 系统时间
     int hour;
 

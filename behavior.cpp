@@ -20,6 +20,7 @@ Behavior::Behavior(QWidget* parent) : QWidget(parent)
     leftKey = rightKey = upKey = downKey = jumpKey = featherKey = dashKey = mouseLeftKey = false;
     mouseLeftKey                                                                         = false;
     jumpChance                                                                           = 2;
+    dashChance                                                                           = 1;
     controlTime                                                                          = 0;
 
     mousex = mousey = 0;
@@ -98,6 +99,10 @@ double Behavior::generalPossiblity(Action act)
         {
             return (abs(vx) >= 10) ? abs(vy) / 12 + 1 : 0;
         }
+        else if (act == AirDashLeft || act == AirDashRight)
+        {
+            return (dashChance > 0) ? 3 : 0;
+        }
 
         return 0;
     }
@@ -139,6 +144,8 @@ Action Behavior::NextActions(Action currentAction)
             ActionsLeastTimes[it.key()] = ActionsMap[it.key()].leastTime;
             if (it.key() == DoubleJumpLeftUp || it.key() == DoubleJumpRightUp)
                 jumpChance--;
+            if (it.key() == AirDashLeft || it.key() == AirDashRight)
+                dashChance--;
             // qDebug() << ActionsMap[it.key()].leastTime;
             return it.key();
         }
@@ -225,13 +232,13 @@ void Behavior::actionUpdate(int curFrame, long long time)
             else if (vx < 0)
                 vx++;
             if (abs(vx) < 10)
-                actionBehavior = int(actionBehavior) % 2 == 0 ? FallLeft : FallRight;
+                actionBehavior = ActionsMap[actionBehavior].transform ? FallLeft : FallRight;
         }
         else if (pre == FeatherLeft || pre == FeatherRight || pre == MovingFeatherLeft ||
                  pre == MovingFeatherRight)
         {
             if (abs(vx) < 10)
-                actionBehavior = int(actionBehavior) % 2 == 0 ? FeatherLeft : FeatherRight;
+                actionBehavior = ActionsMap[actionBehavior].transform ? FeatherLeft : FeatherRight;
         }
     }
 
@@ -295,7 +302,7 @@ void Behavior::actionUpdate(int curFrame, long long time)
         else
         {
             emit SoundPlayerPathPlay("Sound/wallEnter/seinWallSlideEnterGrass", 5);
-            actionBehavior = int(actionBehavior) % 2 == 0 ? TopStayLeft : TopStayRight;
+            actionBehavior = ActionsMap[actionBehavior].transform ? TopStayLeft : TopStayRight;
         }
     }
     else if (y == BottomEdge && vyCheck > 0)
@@ -319,6 +326,7 @@ void Behavior::actionUpdate(int curFrame, long long time)
     if (x == LeftEdge || x == RightEdge || y == BottomEdge || y == TopEdge)
     {
         jumpChance = 2;
+        dashChance = 1;
     }
 
     // 动作冷却更新
@@ -362,7 +370,7 @@ void Behavior::inputControl(Action& pre, bool& mirror, bool& restart, double ran
     if (mouseLeftKey && mousex > LeftEdge && mousex < RightEdge && mousey < BottomEdge &&
         mousey > TopEdge)
     {
-        actionBehavior = int(actionBehavior) % 2 == 0 ? MouseHoldLeft : MouseHoldRight;
+        actionBehavior = ActionsMap[actionBehavior].transform ? MouseHoldLeft : MouseHoldRight;
         return;
     }
     if (y == BottomEdge)
@@ -407,11 +415,12 @@ void Behavior::inputControl(Action& pre, bool& mirror, bool& restart, double ran
         {
             if (pre == TopStayLeft || pre == TopStayRight)
             {
-                actionBehavior = int(actionBehavior) % 2 == 0 ? FallLeft : FallRight;
+                actionBehavior = ActionsMap[actionBehavior].transform ? FallLeft : FallRight;
             }
             else if (pre == TopClimbLeft || pre == TopClimbRight)
             {
-                actionBehavior = int(actionBehavior) % 2 == 0 ? MovingFallLeft : MovingFallRight;
+                actionBehavior =
+                    ActionsMap[actionBehavior].transform ? MovingFallLeft : MovingFallRight;
             }
             jumpKey = false;
         }
@@ -432,6 +441,11 @@ void Behavior::inputControl(Action& pre, bool& mirror, bool& restart, double ran
                 actionBehavior = randomValue > 0.5 ? WallJump1Left : WallJump2Left;
             jumpKey = false;
         }
+        if (dashKey && rightKey)
+        {
+            actionBehavior = AirDashRight;
+            dashChance--;
+        }
     }
     if (x == RightEdge)
     {
@@ -448,6 +462,11 @@ void Behavior::inputControl(Action& pre, bool& mirror, bool& restart, double ran
             else
                 actionBehavior = randomValue > 0.5 ? WallJump1Right : WallJump2Right;
             jumpKey = false;
+        }
+        if (dashKey && leftKey)
+        {
+            actionBehavior = AirDashLeft;
+            dashChance--;
         }
     }
     if (x > LeftEdge && x < RightEdge && y < BottomEdge && y > TopEdge)
@@ -469,7 +488,7 @@ void Behavior::inputControl(Action& pre, bool& mirror, bool& restart, double ran
                 pre = FeatherLeft;
             if (pre == FeatherAfterMouseRight)
                 pre = FeatherRight;
-            actionBehavior = int(actionBehavior) % 2 == 0 ? FeatherLeft : FeatherRight;
+            actionBehavior = ActionsMap[actionBehavior].transform ? FeatherLeft : FeatherRight;
             if (leftKey)
             {
                 vx             = -18;
@@ -484,6 +503,11 @@ void Behavior::inputControl(Action& pre, bool& mirror, bool& restart, double ran
         else if (dashKey)
         {
             // 空中冲刺
+            if (dashChance > 0)
+            {
+                actionBehavior = ActionsMap[actionBehavior].transform ? AirDashLeft : AirDashRight;
+                dashChance--;
+            }
             dashKey = false;
         }
         else

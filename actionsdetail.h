@@ -93,6 +93,10 @@ enum Action
     DashBeginRight,
     DashEndLeft,
     DashEndRight,
+    AirDashLeft,
+    AirDashRight,
+    AirDashtoFallLeft,
+    AirDashtoFallRight,
 
     WallJumpClimbLeft,
     WallJumpClimbRight,
