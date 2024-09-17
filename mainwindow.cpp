@@ -5,6 +5,8 @@
 #include <QKeyEvent>
 #include <QPoint>
 
+#include "aboutdialog.h"
+
 MainWindow::MainWindow(QWidget* parent) : QWidget(parent)
 {
     setCursor(Qt::PointingHandCursor);
@@ -74,12 +76,15 @@ void MainWindow::createActions()
     // 创建退出动作并连接到关闭槽
     quitAction = new QAction(tr("退出"), this);
     connect(quitAction, SIGNAL(triggered(bool)), qApp, SLOT(quit()));
+    aboutAction = new QAction(tr("关于"), this);
+    connect(aboutAction, SIGNAL(triggered(bool)), this, SLOT(aboutShowSlot()));
 }
 
 void MainWindow::createTrayMenu()
 {
     // 创建托盘菜单并添加退出动作
     trayMenu = new QMenu(this);
+    trayMenu->addAction(aboutAction);
     trayMenu->addAction(quitAction);
 }
 
@@ -104,6 +109,13 @@ void MainWindow::timerEvent(QTimerEvent* event)
     soundPlayer->soundPlay(player->curFrame);
     behavior->actionUpdate(player->curFrame, player->timePlayed);
     player->move(behavior->getX(), behavior->getY());
+}
+
+// 关于对话框
+void MainWindow::aboutShowSlot()
+{
+    AboutDialog aboutDialog(this);
+    aboutDialog.exec();
 }
 
 void MainWindow::keyPressEvent(QKeyEvent* event)

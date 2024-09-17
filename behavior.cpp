@@ -651,7 +651,7 @@ void Behavior::keyReleaseEvent(QKeyEvent* event)
     }
     if (event->key() == Qt::Key_X && !event->isAutoRepeat())
     {
-        featherKey = false;
+        dashKey = false;
     }
 }
 

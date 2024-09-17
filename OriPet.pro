@@ -31,14 +31,16 @@ SOURCES += \
     player.cpp \
     actionsdetail.cpp \
     behavior.cpp \
-    soundplayer.cpp
+    soundplayer.cpp \
+    aboutdialog.cpp
 
 HEADERS += \
         mainwindow.h \
     player.h \
     actionsdetail.h \
     behavior.h \
-    soundplayer.h
+    soundplayer.h \
+    aboutdialog.h
 
 RESOURCES +=
 

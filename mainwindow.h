@@ -27,7 +27,8 @@ class MainWindow : public QWidget
     QMenu*           trayMenu;   // 托盘菜单
     QMenu*           clickMenu;  // 右键菜单
 
-    QAction* quitAction;  // 退出动作
+    QAction* quitAction;   // 退出动作
+    QAction* aboutAction;  // 关于
 
     Player*      player;
     Behavior*    behavior;
@@ -46,6 +47,9 @@ class MainWindow : public QWidget
     void mousePressEvent(QMouseEvent* event);
     void mouseReleaseEvent(QMouseEvent* event);
     // void mouseDoubleClickEvent(QMouseEvent* event);
+
+   public slots:
+    void aboutShowSlot();
 };
 
 #endif  // MAINWINDOW_H
