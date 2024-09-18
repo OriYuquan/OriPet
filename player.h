@@ -30,6 +30,7 @@ class Player : public QWidget
     void loadAction(Action action);
     void pixUpdate();
     void mirrorAction();
+    void keepAction(Action action);
 };
 
 #endif  // PLAYER_H

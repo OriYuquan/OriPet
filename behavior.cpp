@@ -375,6 +375,14 @@ void Behavior::actionUpdate(int curFrame, long long time)
             emit PlayerMirrorSignal();
             emit PlayerNextPixSignal();
         }
+        else if ((actionBehavior == BashUpChargeLeft || actionBehavior == BashUpChargeRight ||
+                  actionBehavior == BashHorChargeLeft || actionBehavior == BashHorChargeRight) &&
+                 (pre == BashUpChargeLeft || pre == BashUpChargeRight || pre == BashHorChargeLeft ||
+                  pre == BashHorChargeRight))
+        {
+            emit PlayerKeepSignal(actionBehavior);
+            emit PlayerNextPixSignal();
+        }
         else
         {
             emit PlayerLoadNewActionSignal(actionBehavior);
@@ -397,8 +405,10 @@ void Behavior::inputControl(Action& pre,
     }
 
     // 猛击优先判断
-    bool side = mousex > (x - 30) && mousex < (x + 70) && mousey > (y - 20) && mousey < (y + 110);
-    if (bashKey && (side || pre == BashUpChargeLeft || pre == BashUpChargeRight))
+    bool side   = mousex > (x - 30) && mousex < (x + 90) && mousey > (y - 20) && mousey < (y + 110);
+    bool charge = pre == BashUpChargeLeft || pre == BashUpChargeRight || pre == BashHorChargeLeft ||
+                  pre == BashHorChargeRight;
+    if (bashKey && (side || charge))
     {
         if (pre == BashUpChargeLeft)
         {
@@ -410,10 +420,19 @@ void Behavior::inputControl(Action& pre,
             x = mousex - 40;
             y = mousey - 120;
         }
+        else if (pre == BashHorChargeLeft)
+        {
+            x = mousex + 40;
+            y = mousey - 120;
+        }
+        else if (pre == BashHorChargeRight)
+        {
+            x = mousex - 40;
+            y = mousey - 120;
+        }
 
         // 蓄力时间已满
-        if ((pre == BashUpChargeLeft || pre == BashUpChargeRight) &&
-            curFrame == ActionsMap[BashUpChargeLeft].totalFrameNumber)
+        if (charge && curFrame == ActionsMap[BashUpChargeLeft].totalFrameNumber)
         {
             actionBehavior = ActionsColdTrans[pre];
             bashKey        = false;
@@ -421,8 +440,20 @@ void Behavior::inputControl(Action& pre,
         }
         else
         {
-            actionBehavior =
-                ActionsMap[actionBehavior].transform ? BashUpChargeLeft : BashUpChargeRight;
+            if (vx != 0 || vy != 0)
+                actionBehavior =
+                    ActionsMap[actionBehavior].transform ? BashUpChargeLeft : BashUpChargeRight;
+            else
+                actionBehavior = pre;
+
+            if (leftKey)
+                actionBehavior = BashHorChargeLeft;
+            else if (rightKey)
+                actionBehavior = BashHorChargeRight;
+            else if (upKey)
+                actionBehavior =
+                    ActionsMap[actionBehavior].transform ? BashUpChargeLeft : BashUpChargeRight;
+
             return;
         }
     }

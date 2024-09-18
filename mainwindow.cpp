@@ -39,6 +39,7 @@ MainWindow::MainWindow(QWidget* parent) : QWidget(parent)
     connect(behavior, SIGNAL(PlayerLoadNewActionSignal(Action)), player, SLOT(loadAction(Action)));
     connect(behavior, SIGNAL(PlayerNextPixSignal()), player, SLOT(pixUpdate()));
     connect(behavior, SIGNAL(PlayerMirrorSignal()), player, SLOT(mirrorAction()));
+    connect(behavior, SIGNAL(PlayerKeepSignal(Action)), player, SLOT(keepAction(Action)));
     connect(behavior,
             SIGNAL(SoundPlayerLoadNewActionSignal(Action)),
             soundPlayer,

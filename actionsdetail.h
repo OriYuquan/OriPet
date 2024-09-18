@@ -6,7 +6,7 @@
 #include <QString>
 
 #define RATE 23
-#define CONTROLTIME 50
+#define CONTROLTIME 100
 
 // 添加枚举量 + 添加动作文件 + 添加音效文件 + 添加状态机转移（特殊转移状态函数） + 添加速度函数
 
@@ -122,6 +122,11 @@ enum Action
     BashUpChargeRight,
     BashUpLeft,
     BashUpRight,
+
+    BashHorChargeLeft,
+    BashHorChargeRight,
+    BashHorLeft,
+    BashHorRight,
 
     None
 };

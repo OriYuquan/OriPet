@@ -60,6 +60,7 @@ class Behavior : public QWidget
     void PlayerLoadNewActionSignal(Action);
     void PlayerNextPixSignal();
     void PlayerMirrorSignal();
+    void PlayerKeepSignal(Action);
     void SoundPlayerLoadNewActionSignal(Action);
     void SoundPlayerPathPlay(QString, int);
 

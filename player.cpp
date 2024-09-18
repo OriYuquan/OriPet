@@ -45,3 +45,8 @@ void Player::mirrorAction()
 {
     actionPlaying = ActionsMirror[actionPlaying];
 }
+
+void Player::keepAction(Action action)
+{
+    actionPlaying = action;
+}
