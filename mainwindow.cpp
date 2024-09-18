@@ -3,7 +3,10 @@
 #include <QCursor>
 #include <QDebug>
 #include <QKeyEvent>
+#include <QLabel>
+#include <QLayout>
 #include <QPoint>
+#include <QSlider>
 
 #include "aboutdialog.h"
 
@@ -23,20 +26,6 @@ MainWindow::MainWindow(QWidget* parent) : QWidget(parent)
 
     // FPS设定为30
     startTimer(RATE);
-
-    // 创建系统托盘图标
-    tray = new QSystemTrayIcon(this);
-    tray->setIcon(QIcon("Ori.ico"));
-    tray->setToolTip(tr("奥里桌宠"));
-
-    // 创建动作和菜单
-    createActions();
-    createTrayMenu();
-    createClickMenu();
-
-    // 连接托盘图标的右键菜单
-    tray->setContextMenu(trayMenu);
-    tray->show();  // 显示托盘图标
 
     // 播放器初始化
     player = new Player(this);
@@ -59,6 +48,20 @@ MainWindow::MainWindow(QWidget* parent) : QWidget(parent)
             liveSoundPlayer,
             SLOT(loadPathAndPlay(QString, int)));
 
+    // 创建系统托盘图标
+    tray = new QSystemTrayIcon(this);
+    tray->setIcon(QIcon("Ori.ico"));
+    tray->setToolTip(tr("奥里桌宠"));
+
+    // 创建动作和菜单
+    createActions();
+    createTrayMenu();
+    createClickMenu();
+
+    // 连接托盘图标的右键菜单
+    tray->setContextMenu(trayMenu);
+    tray->show();  // 显示托盘图标
+
     player->loadAction(StandFacingRight);
     soundPlayer->loadAction(StandFacingRight);
     behavior->loadAction(
@@ -76,14 +79,64 @@ void MainWindow::createActions()
     // 创建退出动作并连接到关闭槽
     quitAction = new QAction(tr("退出"), this);
     connect(quitAction, SIGNAL(triggered(bool)), qApp, SLOT(quit()));
+
+    // 关于动作
     aboutAction = new QAction(tr("关于"), this);
     connect(aboutAction, SIGNAL(triggered(bool)), this, SLOT(aboutShowSlot()));
+
+    // 控制动作
+    controlAction = new QAction(tr("是否启用交互"), this);
+    controlAction->setCheckable(true);  // 设置为可勾选
+    controlAction->setChecked(true);    // 设置初始状态为勾选
+    connect(controlAction, SIGNAL(toggled(bool)), behavior, SLOT(setControllable(bool)));
+
+    // 音量控制
+    volumeAction = new QWidgetAction(this);
+    // 创建一个小部件容器，用于放置滑块和标签
+    QWidget*     volumeWidget = new QWidget(this);
+    QVBoxLayout* mainLayout   = new QVBoxLayout(volumeWidget);
+    // 创建一个标签用于显示当前音量
+    QLabel* volumeLabel = new QLabel(tr("音量：") + QString::number(20));
+    volumeLabel->setAlignment(Qt::AlignCenter);  // 让标签居中
+    // 创建一个水平布局用于放置滑块及其两端的标签
+    QHBoxLayout* sliderLayout = new QHBoxLayout();
+    // 创建滑块并设置范围
+    QSlider* volumeSlider = new QSlider(Qt::Horizontal);
+    volumeSlider->setRange(0, 100);  // 设置音量范围
+    volumeSlider->setValue(20);      // 默认值
+    // 创建滑块两端的标签，显示最小值和最大值
+    QLabel* minLabel = new QLabel("0");
+    QLabel* maxLabel = new QLabel("100");
+    // 将最小值标签、滑块和最大值标签添加到水平布局
+    sliderLayout->addWidget(minLabel);
+    sliderLayout->addWidget(volumeSlider);
+    sliderLayout->addWidget(maxLabel);
+    // 将标签和滑块布局添加到主布局中
+    mainLayout->addWidget(volumeLabel);
+    mainLayout->addLayout(sliderLayout);
+    // 连接滑块的 valueChanged 信号来更新标签的文本
+    connect(volumeSlider, &QSlider::valueChanged, [volumeLabel](int value) {
+        volumeLabel->setText(tr("音量：") + QString::number(value));
+    });
+    connect(volumeSlider, SIGNAL(valueChanged(int)), soundPlayer, SLOT(setVolume(int)));
+    connect(volumeSlider, SIGNAL(valueChanged(int)), liveSoundPlayer, SLOT(setVolume(int)));
+    // 将 volumeWidget 设置为默认小部件
+    volumeAction->setDefaultWidget(volumeWidget);
+
+    // 动作限制
+    limitAction = new QAction(tr("是否启用动作限制"), this);
+    limitAction->setCheckable(true);  // 设置为可勾选
+    limitAction->setChecked(false);   // 设置初始状态为勾选
+    connect(limitAction, SIGNAL(toggled(bool)), behavior, SLOT(setLimitable(bool)));
 }
 
 void MainWindow::createTrayMenu()
 {
     // 创建托盘菜单并添加退出动作
     trayMenu = new QMenu(this);
+    trayMenu->addAction(volumeAction);
+    trayMenu->addAction(controlAction);
+    trayMenu->addAction(limitAction);
     trayMenu->addAction(aboutAction);
     trayMenu->addAction(quitAction);
 }
@@ -92,13 +145,16 @@ void MainWindow::createClickMenu()
 {
     // 创建右键菜单并添加退出动作
     clickMenu = new QMenu(this);
+    clickMenu->addAction(controlAction);
+    clickMenu->addAction(limitAction);
     clickMenu->addAction(quitAction);
 }
 
 void MainWindow::contextMenuEvent(QContextMenuEvent* event)
 {
     // 显示右键菜单
-    clickMenu->exec(event->globalPos());
+    if (controlAction->isChecked())
+        clickMenu->exec(event->globalPos());
 }
 
 void MainWindow::timerEvent(QTimerEvent* event)

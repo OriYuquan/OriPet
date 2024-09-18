@@ -22,6 +22,8 @@ Behavior::Behavior(QWidget* parent) : QWidget(parent)
     jumpChance                                                                           = 2;
     dashChance                                                                           = 1;
     controlTime                                                                          = 0;
+    controllable                                                                         = true;
+    limitable                                                                            = false;
 
     mousex = mousey = 0;
 
@@ -125,7 +127,8 @@ Action Behavior::NextActions(Action currentAction)
     QMap<Action, double> values;
     for (auto it = nextActions.cbegin(); it != nextActions.cend(); ++it)
     {
-        if (ActionsLeastTimes[it.key()] == 0)
+        if (ActionsLeastTimes[it.key()] == 0 &&
+            (!limitable || ActionLimit.find(it.key()) == ActionLimit.end()))
         {
             values[it.key()] = generalPossiblity(it.key());
             totalWeight += values[it.key()];
@@ -181,8 +184,8 @@ void Behavior::actionUpdate(int curFrame, long long time)
     Action pre = actionBehavior;
 
     // 检查是否存在控制
-    bool control =
-        leftKey || rightKey || upKey || downKey || jumpKey || featherKey || dashKey || mouseLeftKey;
+    bool control = controllable && (leftKey || rightKey || upKey || downKey || jumpKey ||
+                                    featherKey || dashKey || mouseLeftKey);
     if (control)
     {
         controlTime = CONTROLTIME;
@@ -250,7 +253,7 @@ void Behavior::actionUpdate(int curFrame, long long time)
     }
 
     // 按键控制
-    if (ActionsMap[actionBehavior].control)
+    if (controllable && ActionsMap[actionBehavior].control)
         inputControl(pre, mirror, restart, randomValue);
 
     int vxCheck = pre == actionBehavior
@@ -703,6 +706,16 @@ void Behavior::mouseReleaseEvent(QMouseEvent* event)
 {
     if (event->button() == Qt::LeftButton)
         mouseLeftKey = false;
+}
+
+void Behavior::setControllable(bool control)
+{
+    controllable = control;
+}
+
+void Behavior::setLimitable(bool limit)
+{
+    limitable = limit;
 }
 
 void Behavior::timerEvent(QTimerEvent* event)

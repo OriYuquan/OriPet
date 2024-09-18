@@ -12,6 +12,7 @@ QMap<Action, QMap<Action, double>> ActionsProbability;
 QMap<Action, int>                  ActionsLeastTimes;
 QMap<Action, Action>               ActionsMirror;
 QMap<Action, Action>               ActionsColdTrans;
+QSet<Action>                       ActionLimit;
 
 int ORIWIDTH = 130, ORIHEIGHT = 200;
 int SCREENWIDTHFIX = -538, SCREENHEIGHTFIX = -225;
@@ -157,6 +158,28 @@ void ActionsDetailLoad()
         ActionsDetail("Source/GetDownWalk/ori3-", 36, true, 0, 0.8, true, false);
     ActionsMap[GetDownWalkRight] =
         ActionsDetail("Source/GetDownWalk/ori3-", 36, false, 0, 0.8, true, false);
+
+    // 动作限制集合
+    ActionLimit = {Jump1LeftUp,       Jump1RightUp,
+
+                   Jump2LeftUp,       Jump2RightUp,
+
+                   RunFastLeft,       RunFastRight,
+
+                   RunJump1LeftUp,    RunJump1RightUp,
+
+                   RunJump2LeftUp,    RunJump2RightUp,
+
+                   DoubleJumpLeftUp,  DoubleJumpRightUp,
+
+                   LandRunFastLeft,   LandRunFastRight,
+
+                   WallJump1Left,     WallJump1Right,     WallJump2Left,     WallJump2Right,
+                   WallLongJump1Left, WallLongJump1Right, WallLongJump2Left, WallLongJump2Right,
+
+                   DashBeginLeft,     DashBeginRight,     AirDashLeft,       AirDashRight,
+
+                   WallJumpClimbLeft, WallJumpClimbRight};
 
     // 操作冷却时的转移映射
     ActionsColdTrans[StandFacingLeft]  = StandFacingLeft;

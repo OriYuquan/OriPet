@@ -2,6 +2,7 @@
 #define ACTIONSDETAIL_H
 
 #include <QMap>
+#include <QSet>
 #include <QString>
 
 #define RATE 23
@@ -159,6 +160,9 @@ struct SoundsDetail
 extern QMap<Action, ActionsDetail> ActionsMap;
 extern QMap<Action, SoundsDetail>  SoundMap;
 extern QMap<Action, Action>        ActionsMirror;
+
+// 动作限制
+extern QSet<Action> ActionLimit;
 
 // 转移概率矩阵
 extern QMap<Action, QMap<Action, double>> ActionsProbability;

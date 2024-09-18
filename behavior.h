@@ -9,6 +9,7 @@
 class Behavior : public QWidget
 {
     Q_OBJECT
+
    public:
     explicit Behavior(QWidget* parent = nullptr);
     void loadAction(Action act, int _x, int _y);
@@ -43,6 +44,10 @@ class Behavior : public QWidget
     int dashChance;
     // 系统时间
     int hour;
+    // 是否接受控制
+    bool controllable;
+    // 是否接受动作限制
+    bool limitable;
 
     // 动作转移函数
     Action NextActions(Action Action);
@@ -67,6 +72,10 @@ class Behavior : public QWidget
 
    protected:
     void timerEvent(QTimerEvent* event);
+
+   public slots:
+    void setControllable(bool control);
+    void setLimitable(bool limit);
 };
 
 #endif  // BEHAVIOR_H

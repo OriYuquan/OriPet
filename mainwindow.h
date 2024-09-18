@@ -8,6 +8,7 @@
 #include <QMenu>
 #include <QSystemTrayIcon>
 #include <QWidget>
+#include <QWidgetAction>
 
 #include "actionsdetail.h"
 #include "behavior.h"
@@ -27,8 +28,11 @@ class MainWindow : public QWidget
     QMenu*           trayMenu;   // 托盘菜单
     QMenu*           clickMenu;  // 右键菜单
 
-    QAction* quitAction;   // 退出动作
-    QAction* aboutAction;  // 关于
+    QAction*       quitAction;     // 退出动作
+    QAction*       aboutAction;    // 关于
+    QAction*       controlAction;  // 是否可以控制
+    QWidgetAction* volumeAction;   // 音量控制
+    QAction*       limitAction;    // 是否动作限制
 
     Player*      player;
     Behavior*    behavior;
