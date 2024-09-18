@@ -488,7 +488,19 @@ void Behavior::inputControl(Action& pre, bool& mirror, bool& restart, double ran
                 restart = true;
                 jumpChance--;
             }
-            jumpKey = false;
+            jumpKey    = false;
+            featherKey = false;
+        }
+        else if (dashKey)
+        {
+            // 空中冲刺
+            if (dashChance > 0)
+            {
+                actionBehavior = ActionsMap[actionBehavior].transform ? AirDashLeft : AirDashRight;
+                dashChance--;
+            }
+            dashKey    = false;
+            featherKey = false;
         }
         else if (featherKey)
         {
@@ -507,16 +519,6 @@ void Behavior::inputControl(Action& pre, bool& mirror, bool& restart, double ran
                 vx             = 18;
                 actionBehavior = MovingFeatherRight;
             }
-        }
-        else if (dashKey)
-        {
-            // 空中冲刺
-            if (dashChance > 0)
-            {
-                actionBehavior = ActionsMap[actionBehavior].transform ? AirDashLeft : AirDashRight;
-                dashChance--;
-            }
-            dashKey = false;
         }
         else
         {
