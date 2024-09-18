@@ -112,6 +112,12 @@ enum Action
     GetDownWalkLeft,
     GetDownWalkRight,
 
+    RunLeft,
+    RunRight,
+
+    WalkLeft,
+    WalkRight,
+
     None
 };
 

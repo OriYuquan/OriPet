@@ -36,13 +36,23 @@ double Behavior::generalPossiblity(Action act)
 {
     if (ActionsProbability[actionBehavior][act] < 0)
     {
-        if (act == RunSlowlyLeft || act == RunFastLeft || act == GetDownWalkLeft)
+        if (act == RunSlowlyLeft || act == RunFastLeft || act == GetDownWalkLeft || act == WalkLeft)
         {
             return 10.0 * (double) (x - LeftEdge) / (double) (RightEdge - LeftEdge);
         }
-        else if (act == RunSlowlyRight || act == RunFastRight || act == GetDownWalkRight)
+        else if (act == RunSlowlyRight || act == RunFastRight || act == GetDownWalkRight ||
+                 act == WalkRight)
         {
             return 10.0 * (double) (RightEdge - LeftEdge - (x - LeftEdge)) /
+                   (double) (RightEdge - LeftEdge);
+        }
+        else if (act == RunLeft)
+        {
+            return 2.0 * (double) (x - LeftEdge) / (double) (RightEdge - LeftEdge);
+        }
+        else if (act == RunRight)
+        {
+            return 2.0 * (double) (RightEdge - LeftEdge - (x - LeftEdge)) /
                    (double) (RightEdge - LeftEdge);
         }
         else if (act == ClimbUpLeft || act == ClimbUpRight)
