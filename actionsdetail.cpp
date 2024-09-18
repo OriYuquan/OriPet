@@ -1,5 +1,6 @@
 ﻿#include "actionsdetail.h"
 
+#include <QCursor>
 #include <QGuiApplication>
 #include <QScreen>
 
@@ -166,6 +167,13 @@ void ActionsDetailLoad()
     ActionsMap[WalkLeft]  = ActionsDetail("Source/Walk/walk_", 30, true, 100, 0.8);
     ActionsMap[WalkRight] = ActionsDetail("Source/Walk/walk_", 30, false, 100, 0.8);
 
+    ActionsMap[BashUpChargeLeft] =
+        ActionsDetail("Source/BashUpCharge/BashChargeUpwards_", 90, true, 0, 0.0, true, false);
+    ActionsMap[BashUpChargeRight] =
+        ActionsDetail("Source/BashUpCharge/BashChargeUpwards_", 90, false, 0, 0.0, true, false);
+    ActionsMap[BashUpLeft]  = ActionsDetail("Source/BashUp/BashUpwards_", 30, true, 0, 0.0, false);
+    ActionsMap[BashUpRight] = ActionsDetail("Source/BashUp/BashUpwards_", 30, false, 0, 0.0, false);
+
     // 动作限制集合
     ActionLimit = {Jump1LeftUp,       Jump1RightUp,
 
@@ -289,6 +297,11 @@ void ActionsDetailLoad()
 
     ActionsColdTrans[WalkLeft]  = StandFacingLeft;
     ActionsColdTrans[WalkRight] = StandFacingRight;
+
+    ActionsColdTrans[BashUpChargeLeft]  = BashUpLeft;
+    ActionsColdTrans[BashUpChargeRight] = BashUpRight;
+    ActionsColdTrans[BashUpLeft]        = FallLeft;
+    ActionsColdTrans[BashUpRight]       = FallRight;
 
     // 状态机的转移函数
     ActionsProbability[StandFacingLeft]  = {{StandFacingRight, 1},
@@ -605,6 +618,11 @@ void ActionsDetailLoad()
                                      {RunFastRight, 10},
                                      {RunRight, 2}};
 
+    ActionsProbability[BashUpChargeLeft]  = {{BashUpLeft, 1}};
+    ActionsProbability[BashUpChargeRight] = {{BashUpRight, 1}};
+    ActionsProbability[BashUpLeft]        = {{FallLeft, 1}};
+    ActionsProbability[BashUpRight]       = {{FallRight, 1}};
+
     // 音效加载
     SoundMap[RunSlowlyLeft] = SoundMap[RunSlowlyRight] = SoundMap[GetDownWalkLeft] =
         SoundMap[GetDownWalkRight] = SoundMap[RunLeft] = SoundMap[RunRight] = SoundMap[WalkLeft] =
@@ -647,6 +665,8 @@ void ActionsDetailLoad()
         }
     }
 }
+
+int bashBeginMouseX, bashBeginMouseY;
 
 // 位移函数
 pair<int, int> ActionsMovement(Action    action,
@@ -850,6 +870,34 @@ pair<int, int> ActionsMovement(Action    action,
     {
         dx = (ActionsMap[action].transform ? -1 : 1) * 4;
         dy = 0;
+    }
+
+    if (action == BashUpChargeLeft || action == BashUpChargeRight)
+    {
+        if (curFrame == 1)
+        {
+            QPoint pos      = QCursor::pos();
+            bashBeginMouseX = pos.x();
+            bashBeginMouseY = pos.y();
+        }
+        else
+        {
+            QCursor::setPos(bashBeginMouseX, bashBeginMouseY);
+        }
+    }
+    if (action == BashUpLeft || action == BashUpRight)
+    {
+        dx = 0;
+        dy = -(ActionsMap[BashUpLeft].totalFrameNumber - curFrame) *
+             (ActionsMap[BashUpLeft].totalFrameNumber - curFrame) *
+             (ActionsMap[BashUpLeft].totalFrameNumber - curFrame) * 0.003;
+
+        bashBeginMouseX += 0;
+        bashBeginMouseY += (ActionsMap[BashUpLeft].totalFrameNumber - curFrame) *
+                           (ActionsMap[BashUpLeft].totalFrameNumber - curFrame) *
+                           (ActionsMap[BashUpLeft].totalFrameNumber - curFrame) *
+                           (ActionsMap[BashUpLeft].totalFrameNumber - curFrame) * 0.00002;
+        QCursor::setPos(bashBeginMouseX, bashBeginMouseY);
     }
 
     return {dx, dy};

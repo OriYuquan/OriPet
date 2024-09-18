@@ -118,6 +118,11 @@ enum Action
     WalkLeft,
     WalkRight,
 
+    BashUpChargeLeft,
+    BashUpChargeRight,
+    BashUpLeft,
+    BashUpRight,
+
     None
 };
 

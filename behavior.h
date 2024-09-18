@@ -31,7 +31,7 @@ class Behavior : public QWidget
     // 鼠标坐标
     int mousex, mousey;
     // 检查方向键是否在按下的状态
-    bool leftKey, rightKey, upKey, downKey, jumpKey, featherKey, dashKey;
+    bool leftKey, rightKey, upKey, downKey, jumpKey, featherKey, dashKey, bashKey;
     // 检查鼠标左键是否在按下的状态
     bool mouseLeftKey;
     // 状态机的当前状态
@@ -54,7 +54,7 @@ class Behavior : public QWidget
     // 通用概率函数
     double generalPossiblity(Action);
     // 操作函数
-    void inputControl(Action& pre, bool& mirror, bool& restart, double randomValue);
+    void inputControl(Action& pre, bool& mirror, bool& restart, double randomValue, int curFrame);
 
    signals:
     void PlayerLoadNewActionSignal(Action);

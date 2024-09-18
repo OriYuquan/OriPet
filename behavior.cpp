@@ -1,5 +1,6 @@
 ﻿#include "behavior.h"
 
+#include <QCursor>
 #include <QDateTime>
 #include <QDebug>
 #include <QKeyEvent>
@@ -17,13 +18,14 @@ Behavior::Behavior(QWidget* parent) : QWidget(parent)
     TopEdge    = SCREENHEIGHTFIX - ORIWIDTH * 0;
     BottomEdge = SCREENHEIGHTFIX + SCREENHEIGHT - ORIHEIGHT * 1;
 
-    leftKey = rightKey = upKey = downKey = jumpKey = featherKey = dashKey = mouseLeftKey = false;
-    mouseLeftKey                                                                         = false;
-    jumpChance                                                                           = 2;
-    dashChance                                                                           = 1;
-    controlTime                                                                          = 0;
-    controllable                                                                         = true;
-    limitable                                                                            = false;
+    leftKey = rightKey = upKey = downKey = jumpKey = featherKey = dashKey = mouseLeftKey = bashKey =
+        false;
+    mouseLeftKey = false;
+    jumpChance   = 2;
+    dashChance   = 1;
+    controlTime  = 0;
+    controllable = true;
+    limitable    = false;
 
     mousex = mousey = 0;
 
@@ -195,7 +197,7 @@ void Behavior::actionUpdate(int curFrame, long long time)
 
     // 检查是否存在控制
     bool control = controllable && (leftKey || rightKey || upKey || downKey || jumpKey ||
-                                    featherKey || dashKey || mouseLeftKey);
+                                    featherKey || dashKey || mouseLeftKey || bashKey);
     if (control)
     {
         controlTime = CONTROLTIME;
@@ -263,8 +265,10 @@ void Behavior::actionUpdate(int curFrame, long long time)
     }
 
     // 按键控制
-    if (controllable && ActionsMap[actionBehavior].control)
-        inputControl(pre, mirror, restart, randomValue);
+    if (controllable && ActionsMap[pre].control)
+    {
+        inputControl(pre, mirror, restart, randomValue, curFrame);
+    }
 
     int vxCheck = pre == actionBehavior
                       ? vx
@@ -354,7 +358,8 @@ void Behavior::actionUpdate(int curFrame, long long time)
     }
     qDebug() << x << " " << y << " " << vxCheck << " " << vyCheck << " " << curFrame << " "
              << actionBehavior << " " << jumpChance << " " << mousex << " " << mousey << " "
-             << mouseLeftKey << " " << controlTime;
+             << mouseLeftKey << " " << controlTime << " " << QCursor::pos().x() << " "
+             << QCursor::pos().y();
 
     if (actionBehavior == pre)
     {
@@ -378,7 +383,11 @@ void Behavior::actionUpdate(int curFrame, long long time)
     }
 }
 
-void Behavior::inputControl(Action& pre, bool& mirror, bool& restart, double randomValue)
+void Behavior::inputControl(Action& pre,
+                            bool&   mirror,
+                            bool&   restart,
+                            double  randomValue,
+                            int     curFrame)
 {
     if (mouseLeftKey && mousex > LeftEdge && mousex < RightEdge && mousey < BottomEdge &&
         mousey > TopEdge)
@@ -386,6 +395,38 @@ void Behavior::inputControl(Action& pre, bool& mirror, bool& restart, double ran
         actionBehavior = ActionsMap[actionBehavior].transform ? MouseHoldLeft : MouseHoldRight;
         return;
     }
+
+    // 猛击优先判断
+    bool side = mousex > (x - 30) && mousex < (x + 70) && mousey > (y - 20) && mousey < (y + 110);
+    if (bashKey && (side || pre == BashUpChargeLeft || pre == BashUpChargeRight))
+    {
+        if (pre == BashUpChargeLeft)
+        {
+            x = mousex + 40;
+            y = mousey - 120;
+        }
+        else if (pre == BashUpChargeRight)
+        {
+            x = mousex - 40;
+            y = mousey - 120;
+        }
+
+        // 蓄力时间已满
+        if ((pre == BashUpChargeLeft || pre == BashUpChargeRight) &&
+            curFrame == ActionsMap[BashUpChargeLeft].totalFrameNumber)
+        {
+            actionBehavior = ActionsColdTrans[pre];
+            bashKey        = false;
+            return;
+        }
+        else
+        {
+            actionBehavior =
+                ActionsMap[actionBehavior].transform ? BashUpChargeLeft : BashUpChargeRight;
+            return;
+        }
+    }
+
     if (y == BottomEdge)
     {
         if (leftKey)
@@ -627,8 +668,8 @@ int Behavior::getY() const
 
 void Behavior::setMousePos(int x, int y)
 {
-    mousex = x + LeftEdge - 32;
-    mousey = y + TopEdge + 30;
+    mousex = x - 32 + LeftEdge;
+    mousey = y + 30 + TopEdge;
 }
 
 Action Behavior::getAction() const
@@ -671,6 +712,10 @@ void Behavior::keyPressEvent(QKeyEvent* event)
     {
         dashKey = true;
     }
+    if (event->key() == Qt::Key_C && !event->isAutoRepeat())
+    {
+        bashKey = true;
+    }
 }
 
 void Behavior::keyReleaseEvent(QKeyEvent* event)
@@ -703,14 +748,16 @@ void Behavior::keyReleaseEvent(QKeyEvent* event)
     {
         dashKey = false;
     }
+    if (event->key() == Qt::Key_C && !event->isAutoRepeat())
+    {
+        bashKey = false;
+    }
 }
 
 void Behavior::mousePressEvent(QMouseEvent* event)
 {
     if (event->button() == Qt::LeftButton)
         mouseLeftKey = true;
-    //    else
-    //        mouseLeftKey = false;
 }
 void Behavior::mouseReleaseEvent(QMouseEvent* event)
 {
