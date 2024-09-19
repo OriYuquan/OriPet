@@ -128,6 +128,21 @@ enum Action
     BashHorLeft,
     BashHorRight,
 
+    BashDownChargeLeft,
+    BashDownChargeRight,
+    BashDownLeft,
+    BashDownRight,
+
+    BashDiaUpChargeLeft,
+    BashDiaUpChargeRight,
+    BashDiaUpLeft,
+    BashDiaUpRight,
+
+    BashDiaDownChargeLeft,
+    BashDiaDownChargeRight,
+    BashDiaDownLeft,
+    BashDiaDownRight,
+
     None
 };
 

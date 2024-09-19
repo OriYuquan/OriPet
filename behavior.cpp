@@ -185,14 +185,14 @@ void Behavior::actionUpdate(int curFrame, long long time)
     y = max(y, TopEdge);
     y = min(y, BottomEdge);
 
+    Action pre = actionBehavior;
+
     // 跳跃次数更新
-    if (x == LeftEdge || x == RightEdge || y == BottomEdge || y == TopEdge)
+    if (x == LeftEdge || x == RightEdge || y == BottomEdge || y == TopEdge || isBashCharging(pre))
     {
         jumpChance = 2;
         dashChance = 1;
     }
-
-    Action pre = actionBehavior;
 
     // 检查是否存在控制
     bool control = (leftKey || rightKey || upKey || downKey || jumpKey || featherKey || dashKey ||
@@ -390,7 +390,10 @@ void Behavior::actionUpdate(int curFrame, long long time)
 bool Behavior::isBashCharging(Action action)
 {
     return action == BashUpChargeLeft || action == BashUpChargeRight ||
-           action == BashHorChargeLeft || action == BashHorChargeRight;
+           action == BashHorChargeLeft || action == BashHorChargeRight ||
+           action == BashDownChargeLeft || action == BashDownChargeRight ||
+           action == BashDiaUpChargeLeft || action == BashDiaUpChargeRight ||
+           action == BashDiaDownChargeLeft || action == BashDiaDownChargeRight;
 }
 
 void Behavior::inputControl(Action& pre,
@@ -407,7 +410,7 @@ void Behavior::inputControl(Action& pre,
     }
 
     // 猛击优先判断
-    bool side = mousex > (x - 50) && mousex < (x + 100) && mousey > (y - 20) && mousey < (y + 110);
+    bool side = mousex > (x - 70) && mousex < (x + 110) && mousey > (y - 30) && mousey < (y + 130);
     if (bashKey && (side || isBashCharging(pre)))
     {
         if (pre == BashUpChargeLeft)
@@ -430,6 +433,36 @@ void Behavior::inputControl(Action& pre,
             x = mousex - 25;
             y = mousey - 130;
         }
+        else if (pre == BashDownChargeLeft)
+        {
+            x = mousex;
+            y = mousey - 120;
+        }
+        else if (pre == BashDownChargeRight)
+        {
+            x = mousex + 20;
+            y = mousey - 120;
+        }
+        else if (pre == BashDiaUpChargeLeft)
+        {
+            x = mousex + 30;
+            y = mousey - 120;
+        }
+        else if (pre == BashDiaUpChargeRight)
+        {
+            x = mousex - 20;
+            y = mousey - 120;
+        }
+        else if (pre == BashDiaDownChargeLeft)
+        {
+            x = mousex + 10;
+            y = mousey - 120;
+        }
+        else if (pre == BashDiaDownChargeRight)
+        {
+            x = mousex + 10;
+            y = mousey - 120;
+        }
 
         // 蓄力时间已满
         if (isBashCharging(pre) && curFrame == ActionsMap[BashUpChargeLeft].totalFrameNumber)
@@ -440,22 +473,37 @@ void Behavior::inputControl(Action& pre,
         }
         else
         {
-            if (vx != 0 || vy != 0)
+            if (!isBashCharging(pre))
                 actionBehavior =
                     ActionsMap[actionBehavior].transform ? BashUpChargeLeft : BashUpChargeRight;
             else
                 actionBehavior = pre;
 
-            if (leftKey)
+            if (upKey && leftKey)
+                actionBehavior = BashDiaUpChargeLeft;
+            else if (upKey && rightKey)
+                actionBehavior = BashDiaUpChargeRight;
+            else if (downKey && leftKey)
+                actionBehavior = BashDiaDownChargeLeft;
+            else if (downKey && rightKey)
+                actionBehavior = BashDiaDownChargeRight;
+            else if (leftKey)
                 actionBehavior = BashHorChargeLeft;
             else if (rightKey)
                 actionBehavior = BashHorChargeRight;
             else if (upKey)
                 actionBehavior =
                     ActionsMap[actionBehavior].transform ? BashUpChargeLeft : BashUpChargeRight;
+            else if (downKey)
+                actionBehavior =
+                    ActionsMap[actionBehavior].transform ? BashDownChargeLeft : BashDownChargeRight;
 
             return;
         }
+    }
+    else if (bashKey)
+    {
+        bashKey = false;
     }
 
     if (y == BottomEdge)
@@ -710,40 +758,40 @@ Action Behavior::getAction() const
 
 void Behavior::keyPressEvent(QKeyEvent* event)
 {
-    if (event->key() == Qt::Key_Left && !event->isAutoRepeat())
+    if (event->key() == Qt::Key_A && !event->isAutoRepeat())
     {
         leftKey  = true;
         rightKey = false;
     }
-    if (event->key() == Qt::Key_Right && !event->isAutoRepeat())
+    if (event->key() == Qt::Key_D && !event->isAutoRepeat())
     {
         rightKey = true;
         leftKey  = false;
     }
-    if (event->key() == Qt::Key_Up && !event->isAutoRepeat())
+    if (event->key() == Qt::Key_W && !event->isAutoRepeat())
     {
         upKey   = true;
         downKey = false;
     }
-    if (event->key() == Qt::Key_Down && !event->isAutoRepeat())
+    if (event->key() == Qt::Key_S && !event->isAutoRepeat())
     {
         downKey = true;
         upKey   = false;
     }
-    if (event->key() == Qt::Key_Space && !event->isAutoRepeat())
+    if (event->key() == Qt::Key_K && !event->isAutoRepeat())
     {
         jumpKey    = true;
         featherKey = false;
     }
-    if (event->key() == Qt::Key_Z && !event->isAutoRepeat())
+    if (event->key() == Qt::Key_I && !event->isAutoRepeat())
     {
         featherKey = true;
     }
-    if (event->key() == Qt::Key_X && !event->isAutoRepeat())
+    if (event->key() == Qt::Key_L && !event->isAutoRepeat())
     {
         dashKey = true;
     }
-    if (event->key() == Qt::Key_C && !event->isAutoRepeat())
+    if (event->key() == Qt::Key_J && !event->isAutoRepeat())
     {
         bashKey = true;
     }
@@ -751,35 +799,35 @@ void Behavior::keyPressEvent(QKeyEvent* event)
 
 void Behavior::keyReleaseEvent(QKeyEvent* event)
 {
-    if (event->key() == Qt::Key_Left && !event->isAutoRepeat())
+    if (event->key() == Qt::Key_A && !event->isAutoRepeat())
     {
         leftKey = false;
     }
-    if (event->key() == Qt::Key_Right && !event->isAutoRepeat())
+    if (event->key() == Qt::Key_D && !event->isAutoRepeat())
     {
         rightKey = false;
     }
-    if (event->key() == Qt::Key_Up && !event->isAutoRepeat())
+    if (event->key() == Qt::Key_W && !event->isAutoRepeat())
     {
         upKey = false;
     }
-    if (event->key() == Qt::Key_Down && !event->isAutoRepeat())
+    if (event->key() == Qt::Key_S && !event->isAutoRepeat())
     {
         downKey = false;
     }
-    if (event->key() == Qt::Key_Space && !event->isAutoRepeat())
+    if (event->key() == Qt::Key_K && !event->isAutoRepeat())
     {
         jumpKey = false;
     }
-    if (event->key() == Qt::Key_Z && !event->isAutoRepeat())
+    if (event->key() == Qt::Key_I && !event->isAutoRepeat())
     {
         featherKey = false;
     }
-    if (event->key() == Qt::Key_X && !event->isAutoRepeat())
+    if (event->key() == Qt::Key_L && !event->isAutoRepeat())
     {
         dashKey = false;
     }
-    if (event->key() == Qt::Key_C && !event->isAutoRepeat())
+    if (event->key() == Qt::Key_J && !event->isAutoRepeat())
     {
         bashKey = false;
     }

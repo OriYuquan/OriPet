@@ -183,6 +183,33 @@ void ActionsDetailLoad()
     ActionsMap[BashHorRight] =
         ActionsDetail("Source/BashHor/BashHorizontal_", 30, false, 0, 0.0, false);
 
+    ActionsMap[BashDownChargeLeft] =
+        ActionsDetail("Source/BashDownCharge/BashChargeDownwards_", 90, true, 0, 0.0, true, false);
+    ActionsMap[BashDownChargeRight] =
+        ActionsDetail("Source/BashDownCharge/BashChargeDownwards_", 90, false, 0, 0.0, true, false);
+    ActionsMap[BashDownLeft] =
+        ActionsDetail("Source/BashDown/BashDownwards_", 30, true, 0, 0.0, false);
+    ActionsMap[BashDownRight] =
+        ActionsDetail("Source/BashDown/BashDownwards_", 30, false, 0, 0.0, false);
+
+    ActionsMap[BashDiaUpChargeLeft] = ActionsDetail(
+        "Source/BashDiaUpCharge/BashChargeDiagonalup_", 90, true, 0, 0.0, true, false);
+    ActionsMap[BashDiaUpChargeRight] = ActionsDetail(
+        "Source/BashDiaUpCharge/BashChargeDiagonalup_", 90, false, 0, 0.0, true, false);
+    ActionsMap[BashDiaUpLeft] =
+        ActionsDetail("Source/BashDiaUp/BashDiagonalUp_", 30, true, 0, 0.0, false);
+    ActionsMap[BashDiaUpRight] =
+        ActionsDetail("Source/BashDiaUp/BashDiagonalUp_", 30, false, 0, 0.0, false);
+
+    ActionsMap[BashDiaDownChargeLeft] = ActionsDetail(
+        "Source/BashDiaDownCharge/BashChargeDiagonalDown_", 90, true, 0, 0.0, true, false);
+    ActionsMap[BashDiaDownChargeRight] = ActionsDetail(
+        "Source/BashDiaDownCharge/BashChargeDiagonalDown_", 90, false, 0, 0.0, true, false);
+    ActionsMap[BashDiaDownLeft] =
+        ActionsDetail("Source/BashDiaDown/BashDiagonalDown_", 30, true, 0, 0.0, false);
+    ActionsMap[BashDiaDownRight] =
+        ActionsDetail("Source/BashDiaDown/BashDiagonalDown_", 30, false, 0, 0.0, false);
+
     // 动作限制集合
     ActionLimit = {Jump1LeftUp,       Jump1RightUp,
 
@@ -316,6 +343,21 @@ void ActionsDetailLoad()
     ActionsColdTrans[BashHorChargeRight] = BashHorRight;
     ActionsColdTrans[BashHorLeft]        = FallLeft;
     ActionsColdTrans[BashHorRight]       = FallRight;
+
+    ActionsColdTrans[BashDownChargeLeft]  = BashDownLeft;
+    ActionsColdTrans[BashDownChargeRight] = BashDownRight;
+    ActionsColdTrans[BashDownLeft]        = FallLeft;
+    ActionsColdTrans[BashDownRight]       = FallRight;
+
+    ActionsColdTrans[BashDiaUpChargeLeft]  = BashDiaUpLeft;
+    ActionsColdTrans[BashDiaUpChargeRight] = BashDiaUpRight;
+    ActionsColdTrans[BashDiaUpLeft]        = FallLeft;
+    ActionsColdTrans[BashDiaUpRight]       = FallRight;
+
+    ActionsColdTrans[BashDiaDownChargeLeft]  = BashDiaDownLeft;
+    ActionsColdTrans[BashDiaDownChargeRight] = BashDiaDownRight;
+    ActionsColdTrans[BashDiaDownLeft]        = FallLeft;
+    ActionsColdTrans[BashDiaDownRight]       = FallRight;
 
     // 状态机的转移函数
     ActionsProbability[StandFacingLeft]  = {{StandFacingRight, 1},
@@ -642,6 +684,21 @@ void ActionsDetailLoad()
     ActionsProbability[BashHorLeft]        = {{FallLeft, 1}};
     ActionsProbability[BashHorRight]       = {{FallRight, 1}};
 
+    ActionsProbability[BashDownChargeLeft]  = {{BashDownLeft, 1}};
+    ActionsProbability[BashDownChargeRight] = {{BashDownRight, 1}};
+    ActionsProbability[BashDownLeft]        = {{FallLeft, 1}};
+    ActionsProbability[BashDownRight]       = {{FallRight, 1}};
+
+    ActionsProbability[BashDiaUpChargeLeft]  = {{BashDiaUpLeft, 1}};
+    ActionsProbability[BashDiaUpChargeRight] = {{BashDiaUpRight, 1}};
+    ActionsProbability[BashDiaUpLeft]        = {{FallLeft, 1}};
+    ActionsProbability[BashDiaUpRight]       = {{FallRight, 1}};
+
+    ActionsProbability[BashDiaDownChargeLeft]  = {{BashDiaDownLeft, 1}};
+    ActionsProbability[BashDiaDownChargeRight] = {{BashDiaDownRight, 1}};
+    ActionsProbability[BashDiaDownLeft]        = {{FallLeft, 1}};
+    ActionsProbability[BashDiaDownRight]       = {{FallRight, 1}};
+
     // 音效加载
     SoundMap[RunSlowlyLeft] = SoundMap[RunSlowlyRight] = SoundMap[GetDownWalkLeft] =
         SoundMap[GetDownWalkRight] = SoundMap[RunLeft] = SoundMap[RunRight] = SoundMap[WalkLeft] =
@@ -672,9 +729,16 @@ void ActionsDetailLoad()
         SoundMap[AirDashRight]                         = SoundsDetail("Sound/dash/oriDash", 5, 1);
 
     SoundMap[BashUpChargeLeft] = SoundMap[BashUpChargeRight] = SoundMap[BashHorChargeLeft] =
-        SoundMap[BashHorChargeRight] = SoundsDetail("Sound/bashCharge/oriBashStart", 1, 1);
+        SoundMap[BashHorChargeRight]                         = SoundMap[BashDownChargeLeft] =
+            SoundMap[BashDownChargeRight]                    = SoundMap[BashDiaUpChargeLeft] =
+                SoundMap[BashDiaUpChargeRight]               = SoundMap[BashDiaDownChargeLeft] =
+                    SoundMap[BashDiaDownChargeRight] =
+                        SoundsDetail("Sound/bashCharge/oriBashStart", 1, 1);
+
     SoundMap[BashUpLeft] = SoundMap[BashUpRight] = SoundMap[BashHorLeft] = SoundMap[BashHorRight] =
-        SoundsDetail("Sound/bash/oriBashEnd", 3, 1);
+        SoundMap[BashDownLeft] = SoundMap[BashDownRight] = SoundMap[BashDiaUpLeft] =
+            SoundMap[BashDiaUpRight] = SoundMap[BashDiaDownLeft] = SoundMap[BashDiaDownRight] =
+                SoundsDetail("Sound/bash/oriBashEnd", 3, 1);
 
     // 镜像动作初始化
     for (int i = 0; i < int(None); i++)
@@ -910,34 +974,50 @@ pair<int, int> ActionsMovement(Action    action,
             QCursor::setPos(bashBeginMouseX, bashBeginMouseY);
         }
     }
+
     if (action == BashUpLeft || action == BashUpRight)
     {
         dx = 0;
-        dy = -(ActionsMap[BashUpLeft].totalFrameNumber - curFrame) *
-             (ActionsMap[BashUpLeft].totalFrameNumber - curFrame) *
-             (ActionsMap[BashUpLeft].totalFrameNumber - curFrame) * 0.0035;
+        dy = -(120 / curFrame + 4 - curFrame * 0.35);
 
         bashBeginMouseX += 0;
-        bashBeginMouseY += (ActionsMap[BashUpLeft].totalFrameNumber - curFrame) *
-                           (ActionsMap[BashUpLeft].totalFrameNumber - curFrame) *
-                           (ActionsMap[BashUpLeft].totalFrameNumber - curFrame) *
-                           (ActionsMap[BashUpLeft].totalFrameNumber - curFrame) * 0.00002;
+        bashBeginMouseY += (30 / curFrame);
         QCursor::setPos(bashBeginMouseX, bashBeginMouseY);
     }
     if (action == BashHorLeft || action == BashHorRight)
     {
-        dx = (ActionsMap[action].transform ? -1 : 1) *
-             (ActionsMap[BashUpLeft].totalFrameNumber - curFrame) *
-             (ActionsMap[BashUpLeft].totalFrameNumber - curFrame) *
-             (ActionsMap[BashUpLeft].totalFrameNumber - curFrame) * 0.0035;
-        dy = vy + 1;
+        dx = (ActionsMap[action].transform ? -1 : 1) * (120 / curFrame + 4);
+        dy = curFrame * 0.7;
 
-        bashBeginMouseX += -(ActionsMap[action].transform ? -1 : 1) *
-                           (ActionsMap[BashUpLeft].totalFrameNumber - curFrame) *
-                           (ActionsMap[BashUpLeft].totalFrameNumber - curFrame) *
-                           (ActionsMap[BashUpLeft].totalFrameNumber - curFrame) *
-                           (ActionsMap[BashUpLeft].totalFrameNumber - curFrame) * 0.00002;
+        bashBeginMouseX += -(ActionsMap[action].transform ? -1 : 1) * (30 / curFrame);
         bashBeginMouseY += 0;
+        QCursor::setPos(bashBeginMouseX, bashBeginMouseY);
+    }
+    if (action == BashDownLeft || action == BashDownRight)
+    {
+        dx = 0;
+        dy = (120 / curFrame + 4 + curFrame * 0.35);
+
+        bashBeginMouseX += 0;
+        bashBeginMouseY += -(30 / curFrame);
+        QCursor::setPos(bashBeginMouseX, bashBeginMouseY);
+    }
+    if (action == BashDiaUpLeft || action == BashDiaUpRight)
+    {
+        dx = (ActionsMap[action].transform ? -1 : 1) * (120 / curFrame + 5) * 0.72;
+        dy = -(120 / curFrame + 4 - curFrame * 0.35) * 0.72;
+
+        bashBeginMouseX += -(ActionsMap[action].transform ? -1 : 1) * (30 / curFrame) * 0.72;
+        bashBeginMouseY += (30 / curFrame) * 0.72;
+        QCursor::setPos(bashBeginMouseX, bashBeginMouseY);
+    }
+    if (action == BashDiaDownLeft || action == BashDiaDownRight)
+    {
+        dx = (ActionsMap[action].transform ? -1 : 1) * (120 / curFrame + 5) * 0.72;
+        dy = (120 / curFrame + 4 + curFrame * 0.9) * 0.72;
+
+        bashBeginMouseX += -(ActionsMap[action].transform ? -1 : 1) * (30 / curFrame) * 0.72;
+        bashBeginMouseY += -(30 / curFrame) * 0.72;
         QCursor::setPos(bashBeginMouseX, bashBeginMouseY);
     }
 
