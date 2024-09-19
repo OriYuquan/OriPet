@@ -24,7 +24,6 @@ Behavior::Behavior(QWidget* parent) : QWidget(parent)
     jumpChance   = 2;
     dashChance   = 1;
     controlTime  = 0;
-    controllable = true;
     limitable    = false;
 
     mousex = mousey = 0;
@@ -196,8 +195,8 @@ void Behavior::actionUpdate(int curFrame, long long time)
     Action pre = actionBehavior;
 
     // 检查是否存在控制
-    bool control = controllable && (leftKey || rightKey || upKey || downKey || jumpKey ||
-                                    featherKey || dashKey || mouseLeftKey || bashKey);
+    bool control = (leftKey || rightKey || upKey || downKey || jumpKey || featherKey || dashKey ||
+                    mouseLeftKey || bashKey);
     if (control)
     {
         controlTime = CONTROLTIME;
@@ -265,7 +264,7 @@ void Behavior::actionUpdate(int curFrame, long long time)
     }
 
     // 按键控制
-    if (controllable && ActionsMap[pre].control)
+    if (ActionsMap[pre].control)
     {
         inputControl(pre, mirror, restart, randomValue, curFrame);
     }
@@ -794,11 +793,6 @@ void Behavior::mouseReleaseEvent(QMouseEvent* event)
 {
     if (event->button() == Qt::LeftButton)
         mouseLeftKey = false;
-}
-
-void Behavior::setControllable(bool control)
-{
-    controllable = control;
 }
 
 void Behavior::setLimitable(bool limit)

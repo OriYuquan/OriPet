@@ -12,8 +12,8 @@
 
 MainWindow::MainWindow(QWidget* parent) : QWidget(parent)
 {
-    setCursor(Qt::PointingHandCursor);
-    // 资源文件信息加载
+    // setCursor(Qt::PointingHandCursor);
+    //  资源文件信息加载
     ActionsDetailLoad();
 
     // 设置窗口属性
@@ -89,7 +89,19 @@ void MainWindow::createActions()
     controlAction = new QAction(tr("是否启用交互"), this);
     controlAction->setCheckable(true);  // 设置为可勾选
     controlAction->setChecked(true);    // 设置初始状态为勾选
-    connect(controlAction, SIGNAL(toggled(bool)), behavior, SLOT(setControllable(bool)));
+    connect(controlAction, &QAction::toggled, [this](bool control) {
+        if (control)
+        {
+            setWindowFlags(Qt::SubWindow | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint |
+                           Qt::NoDropShadowWindowHint);
+        }
+        else
+        {
+            setWindowFlags(Qt::SubWindow | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint |
+                           Qt::NoDropShadowWindowHint | Qt::WindowTransparentForInput);
+        }
+        show();
+    });
 
     // 音量控制
     volumeAction = new QWidgetAction(this);
@@ -154,8 +166,7 @@ void MainWindow::createClickMenu()
 void MainWindow::contextMenuEvent(QContextMenuEvent* event)
 {
     // 显示右键菜单
-    if (controlAction->isChecked())
-        clickMenu->exec(event->globalPos());
+    clickMenu->exec(event->globalPos());
 }
 
 void MainWindow::timerEvent(QTimerEvent* event)
@@ -177,7 +188,8 @@ void MainWindow::aboutShowSlot()
 
 void MainWindow::keyPressEvent(QKeyEvent* event)
 {
-    behavior->keyPressEvent(event);
+    if (controlAction->isChecked())
+        behavior->keyPressEvent(event);
 }
 
 void MainWindow::keyReleaseEvent(QKeyEvent* event)
