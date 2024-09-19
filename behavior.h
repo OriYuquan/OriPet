@@ -53,6 +53,8 @@ class Behavior : public QWidget
     double generalPossiblity(Action);
     // 操作函数
     void inputControl(Action& pre, bool& mirror, bool& restart, double randomValue, int curFrame);
+    // 是否在猛击充能
+    bool isBashCharging(Action Action);
 
    signals:
     void PlayerLoadNewActionSignal(Action);

@@ -374,10 +374,7 @@ void Behavior::actionUpdate(int curFrame, long long time)
             emit PlayerMirrorSignal();
             emit PlayerNextPixSignal();
         }
-        else if ((actionBehavior == BashUpChargeLeft || actionBehavior == BashUpChargeRight ||
-                  actionBehavior == BashHorChargeLeft || actionBehavior == BashHorChargeRight) &&
-                 (pre == BashUpChargeLeft || pre == BashUpChargeRight || pre == BashHorChargeLeft ||
-                  pre == BashHorChargeRight))
+        else if (isBashCharging(pre) && isBashCharging(actionBehavior))
         {
             emit PlayerKeepSignal(actionBehavior);
             emit PlayerNextPixSignal();
@@ -388,6 +385,12 @@ void Behavior::actionUpdate(int curFrame, long long time)
             emit SoundPlayerLoadNewActionSignal(actionBehavior);
         }
     }
+}
+
+bool Behavior::isBashCharging(Action action)
+{
+    return action == BashUpChargeLeft || action == BashUpChargeRight ||
+           action == BashHorChargeLeft || action == BashHorChargeRight;
 }
 
 void Behavior::inputControl(Action& pre,
@@ -404,34 +407,32 @@ void Behavior::inputControl(Action& pre,
     }
 
     // 猛击优先判断
-    bool side   = mousex > (x - 30) && mousex < (x + 90) && mousey > (y - 20) && mousey < (y + 110);
-    bool charge = pre == BashUpChargeLeft || pre == BashUpChargeRight || pre == BashHorChargeLeft ||
-                  pre == BashHorChargeRight;
-    if (bashKey && (side || charge))
+    bool side = mousex > (x - 50) && mousex < (x + 100) && mousey > (y - 20) && mousey < (y + 110);
+    if (bashKey && (side || isBashCharging(pre)))
     {
         if (pre == BashUpChargeLeft)
         {
             x = mousex + 40;
-            y = mousey - 120;
+            y = mousey - 130;
         }
         else if (pre == BashUpChargeRight)
         {
             x = mousex - 40;
-            y = mousey - 120;
+            y = mousey - 130;
         }
         else if (pre == BashHorChargeLeft)
         {
-            x = mousex + 40;
-            y = mousey - 120;
+            x = mousex + 35;
+            y = mousey - 130;
         }
         else if (pre == BashHorChargeRight)
         {
-            x = mousex - 40;
-            y = mousey - 120;
+            x = mousex - 25;
+            y = mousey - 130;
         }
 
         // 蓄力时间已满
-        if (charge && curFrame == ActionsMap[BashUpChargeLeft].totalFrameNumber)
+        if (isBashCharging(pre) && curFrame == ActionsMap[BashUpChargeLeft].totalFrameNumber)
         {
             actionBehavior = ActionsColdTrans[pre];
             bashKey        = false;
