@@ -425,17 +425,17 @@ void Behavior::inputControl(Action& pre,
         }
         else if (pre == BashHorChargeLeft)
         {
-            x = mousex + 35;
+            x = mousex + 25;
             y = mousey - 130;
         }
         else if (pre == BashHorChargeRight)
         {
-            x = mousex - 25;
+            x = mousex - 15;
             y = mousey - 130;
         }
         else if (pre == BashDownChargeLeft)
         {
-            x = mousex;
+            x = mousex - 10;
             y = mousey - 120;
         }
         else if (pre == BashDownChargeRight)
