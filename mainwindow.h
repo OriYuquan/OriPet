@@ -33,6 +33,7 @@ class MainWindow : public QWidget
     QAction*       controlAction;  // 是否可以控制
     QWidgetAction* volumeAction;   // 音量控制
     QAction*       limitAction;    // 是否动作限制
+    QAction*       baseSetAction;  // 基准设置
 
     Player*      player;
     Behavior*    behavior;
@@ -54,6 +55,7 @@ class MainWindow : public QWidget
 
    public slots:
     void aboutShowSlot();
+    void baseInputShowSlot();
 };
 
 #endif  // MAINWINDOW_H

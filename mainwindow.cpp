@@ -1,18 +1,22 @@
 ﻿#include "mainwindow.h"
 
 #include <QCursor>
+#include <QDataStream>
 #include <QDebug>
+#include <QFile>
+#include <QInputDialog>
 #include <QKeyEvent>
 #include <QLabel>
 #include <QLayout>
 #include <QPoint>
+#include <QPushButton>
 #include <QSlider>
 
 #include "aboutdialog.h"
 
 MainWindow::MainWindow(QWidget* parent) : QWidget(parent)
 {
-    // setCursor(Qt::PointingHandCursor);
+    setCursor(Qt::PointingHandCursor);
     //  资源文件信息加载
     ActionsDetailLoad();
 
@@ -141,6 +145,10 @@ void MainWindow::createActions()
     limitAction->setCheckable(true);  // 设置为可勾选
     limitAction->setChecked(false);   // 设置初始状态为勾选
     connect(limitAction, SIGNAL(toggled(bool)), behavior, SLOT(setLimitable(bool)));
+
+    // 基准设置
+    baseSetAction = new QAction(tr("水平基准设置"), this);
+    connect(baseSetAction, SIGNAL(triggered(bool)), this, SLOT(baseInputShowSlot()));
 }
 
 void MainWindow::createTrayMenu()
@@ -150,6 +158,7 @@ void MainWindow::createTrayMenu()
     trayMenu->addAction(volumeAction);
     trayMenu->addAction(controlAction);
     trayMenu->addAction(limitAction);
+    trayMenu->addAction(baseSetAction);
     trayMenu->addAction(aboutAction);
     trayMenu->addAction(quitAction);
 }
@@ -184,6 +193,54 @@ void MainWindow::aboutShowSlot()
 {
     AboutDialog aboutDialog(this);
     aboutDialog.exec();
+}
+
+// 基准输入对话框
+void MainWindow::baseInputShowSlot()
+{
+    QInputDialog dialog(this);
+    QIcon        icon("Ori.icon");
+    dialog.setWindowIcon(icon);
+
+    dialog.setWindowTitle(tr("水平基准修改"));
+    dialog.setLabelText(tr("请输入水平基准值\n重启桌宠生效"));
+
+    // 从设置文件里读取基准数据
+    QFile file("baseMark.data");
+    int   value = 25;
+    if (file.open(QIODevice::ReadOnly))
+    {
+        QDataStream in(&file);
+        in >> value;  // 从文件中读取一个整数
+    }
+    // 关闭文件
+    file.close();
+
+    // 设置输入框的默认值、范围和步长
+    dialog.setIntValue(value);
+    dialog.setIntMinimum(0);
+    dialog.setIntMaximum(100);
+    dialog.setIntStep(1);
+
+    dialog.setOkButtonText(tr("确定"));
+    dialog.setCancelButtonText(tr("取消"));
+    dialog.setInputMode(QInputDialog::IntInput);
+
+    // 显示对话框并获取输入结果
+    if (dialog.exec() == QDialog::Accepted)
+    {
+        int newValue = dialog.intValue();
+
+        QFile file("baseMark.data");
+
+        if (file.open(QIODevice::WriteOnly))
+        {
+            QDataStream out(&file);
+            out << newValue;  // 将整数写入文件
+        }
+        // 关闭文件
+        file.close();
+    }
 }
 
 void MainWindow::keyPressEvent(QKeyEvent* event)

@@ -1,6 +1,8 @@
 ﻿#include "actionsdetail.h"
 
 #include <QCursor>
+#include <QDataStream>
+#include <QFile>
 #include <QGuiApplication>
 #include <QScreen>
 
@@ -27,9 +29,21 @@ void ActionsDetailLoad()
     QScreen* screen = QGuiApplication::primaryScreen();
     if (screen)
     {
+        // 从设置文件里读取基准数据
+        QFile file("baseMark.data");
+        int   value = 25;
+        if (file.open(QIODevice::ReadOnly))
+        {
+            QDataStream in(&file);
+            in >> value;  // 从文件中读取一个整数
+        }
+
+        // 关闭文件
+        file.close();
+
         // 获取屏幕分辨率
         SCREENWIDTH  = screen->size().width() + 52;
-        SCREENHEIGHT = screen->size().height() + 25;
+        SCREENHEIGHT = screen->size().height() + value;
     }
 
     // 路径、图片数量、冷却时间、重复概率、能否被控制。控制时是否需要完整播放后转移
