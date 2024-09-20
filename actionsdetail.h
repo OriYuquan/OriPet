@@ -151,6 +151,9 @@ enum Action
     StandtoLookUpListenLeft,
     StandtoLookUpListenRight,
 
+    LookUpLeft,
+    LookUpRight,
+
     None
 };
 

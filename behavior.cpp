@@ -116,6 +116,23 @@ double Behavior::generalPossiblity(Action act)
         {
             return (dashChance > 0) ? 3 : 0;
         }
+        else if (act == StandtoLookUpListenLeft || act == StandtoLookUpListenRight)
+        {
+            if ((act == StandtoLookUpListenLeft &&
+                 x > ((LeftEdge + RightEdge) * 2 / 3 + LeftEdge)) ||
+                (act == StandtoLookUpListenRight && x < ((LeftEdge + RightEdge) / 3 + LeftEdge)))
+                return 7;
+            else
+                return 1;
+        }
+        else if (act == LookUpLeft || act == LookUpRight)
+        {
+            if ((act == LookUpLeft && mousex < x && mousex > x - 500 && mousey < 800) ||
+                (act == LookUpRight && mousex > x && mousex < x + 500 && mousey < 800))
+                return 15;
+            else
+                return 1;
+        }
 
         return 0;
     }
@@ -357,8 +374,7 @@ void Behavior::actionUpdate(int curFrame, long long time)
     }
     qDebug() << x << " " << y << " " << vxCheck << " " << vyCheck << " " << curFrame << " "
              << actionBehavior << " " << jumpChance << " " << mousex << " " << mousey << " "
-             << mouseLeftKey << " " << controlTime << " " << QCursor::pos().x() << " "
-             << QCursor::pos().y();
+             << mouseLeftKey << " " << controlTime;
 
     if (actionBehavior == pre)
     {
@@ -508,6 +524,10 @@ void Behavior::inputControl(Action& pre,
 
     if (y == BottomEdge)
     {
+        if (upKey)
+        {
+            actionBehavior = ActionsMap[actionBehavior].transform ? LookUpLeft : LookUpRight;
+        }
         if (leftKey)
             actionBehavior = RunFastLeft;
         if (rightKey)

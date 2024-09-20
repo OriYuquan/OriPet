@@ -227,13 +227,17 @@ void ActionsDetailLoad()
     ActionsMap[QuitStepLeft]  = ActionsDetail("Source/QuitStep/ori38-", 96, true, 0, 0.8);
     ActionsMap[QuitStepRight] = ActionsDetail("Source/QuitStep/ori38-", 96, false, 0, 0.8);
 
-    ActionsMap[LookUpListenLeft] = ActionsDetail("Source/LookUpListen/ori21-", 50, true, 500, 0.85);
+    ActionsMap[LookUpListenLeft] = ActionsDetail("Source/LookUpListen/ori21-", 50, true, 700, 0.85);
     ActionsMap[LookUpListenRight] =
-        ActionsDetail("Source/LookUpListen/ori21-", 50, false, 500, 0.85);
+        ActionsDetail("Source/LookUpListen/ori21-", 50, false, 700, 0.85);
     ActionsMap[StandtoLookUpListenLeft] =
         ActionsDetail("Source/StandtoLookUpListen/ori24-", 21, true, 0, 0.0);
     ActionsMap[StandtoLookUpListenRight] =
         ActionsDetail("Source/StandtoLookUpListen/ori24-", 21, false, 0, 0.0);
+
+    ActionsMap[LookUpLeft] = ActionsDetail("Source/LookUp/ori22-", 30, true, 200, 0.9, true, false);
+    ActionsMap[LookUpRight] =
+        ActionsDetail("Source/LookUp/ori22-", 30, false, 200, 0.9, true, false);
 
     // 动作限制集合
     ActionLimit = {Jump1LeftUp,       Jump1RightUp,
@@ -392,6 +396,9 @@ void ActionsDetailLoad()
     ActionsColdTrans[StandtoLookUpListenLeft]  = StandFacingLeft;
     ActionsColdTrans[StandtoLookUpListenRight] = StandFacingRight;
 
+    ActionsColdTrans[LookUpLeft]  = StandFacingLeft;
+    ActionsColdTrans[LookUpRight] = StandFacingRight;
+
     // 状态机的转移函数
     ActionsProbability[StandFacingLeft]  = {{StandFacingRight, 1},
                                             {RunSlowlyLeft, -1},
@@ -405,7 +412,8 @@ void ActionsDetailLoad()
                                             {WalkLeft, -1},
                                             {WalkRight, -1},
                                             {QuitStepLeft, 2},
-                                            {StandtoLookUpListenLeft, 5}};
+                                            {StandtoLookUpListenLeft, -1},
+                                            {LookUpLeft, -1}};
     ActionsProbability[StandFacingRight] = {{StandFacingLeft, 1},
                                             {RunSlowlyLeft, 1},
                                             {RunSlowlyRight, -1},
@@ -418,7 +426,8 @@ void ActionsDetailLoad()
                                             {WalkLeft, -1},
                                             {WalkRight, -1},
                                             {QuitStepRight, 2},
-                                            {StandtoLookUpListenRight, 5}};
+                                            {StandtoLookUpListenRight, -1},
+                                            {LookUpRight, -1}};
     ActionsProbability[RunSlowlyLeft]    = {{StandFacingLeft, 20},
                                             {StandFacingRight, 1},
                                             {RunSlowlyRight, -1},
@@ -775,6 +784,31 @@ void ActionsDetailLoad()
                                                     {QuitStepRight, 2}};
     ActionsProbability[StandtoLookUpListenLeft]  = {{LookUpListenLeft, 1}};
     ActionsProbability[StandtoLookUpListenRight] = {{LookUpListenRight, 1}};
+
+    ActionsProbability[LookUpLeft]  = {{StandFacingLeft, 10},
+                                       {StandFacingRight, 1},
+                                       {RunSlowlyLeft, -1},
+                                       {RunSlowlyRight, 1},
+                                       {Jump1LeftUp, 3},
+                                       {Jump2LeftUp, 3},
+                                       {RunFastLeft, -1},
+                                       {RunFastRight, 1},
+                                       {GetDownLeft, 3},
+                                       {WalkLeft, -1},
+                                       {WalkRight, -1},
+                                       {QuitStepLeft, 2}};
+    ActionsProbability[LookUpRight] = {{StandFacingLeft, 1},
+                                       {StandFacingRight, 10},
+                                       {RunSlowlyLeft, 1},
+                                       {RunSlowlyRight, -1},
+                                       {Jump1RightUp, 3},
+                                       {Jump2RightUp, 3},
+                                       {RunFastLeft, 1},
+                                       {RunFastRight, -1},
+                                       {GetDownRight, 3},
+                                       {WalkLeft, -1},
+                                       {WalkRight, -1},
+                                       {QuitStepRight, 2}};
 
     // 音效加载
     SoundMap[RunSlowlyLeft] = SoundMap[RunSlowlyRight] = SoundMap[GetDownWalkLeft] =
