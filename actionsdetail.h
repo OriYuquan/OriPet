@@ -146,6 +146,11 @@ enum Action
     QuitStepLeft,
     QuitStepRight,
 
+    LookUpListenLeft,
+    LookUpListenRight,
+    StandtoLookUpListenLeft,
+    StandtoLookUpListenRight,
+
     None
 };
 

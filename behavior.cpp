@@ -455,7 +455,7 @@ void Behavior::inputControl(Action& pre,
         }
         else if (pre == BashDiaDownChargeLeft)
         {
-            x = mousex + 10;
+            x = mousex + 0;
             y = mousey - 120;
         }
         else if (pre == BashDiaDownChargeRight)
