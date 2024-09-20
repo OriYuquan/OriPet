@@ -143,6 +143,9 @@ enum Action
     BashDiaDownLeft,
     BashDiaDownRight,
 
+    QuitStepLeft,
+    QuitStepRight,
+
     None
 };
 

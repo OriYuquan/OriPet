@@ -224,6 +224,9 @@ void ActionsDetailLoad()
     ActionsMap[BashDiaDownRight] =
         ActionsDetail("Source/BashDiaDown/BashDiagonalDown_", 30, false, 0, 0.0, false);
 
+    ActionsMap[QuitStepLeft]  = ActionsDetail("Source/QuitStep/ori38-", 96, true, 0, 0.8, false);
+    ActionsMap[QuitStepRight] = ActionsDetail("Source/QuitStep/ori38-", 96, false, 0, 0.8, false);
+
     // 动作限制集合
     ActionLimit = {Jump1LeftUp,       Jump1RightUp,
 
@@ -373,29 +376,34 @@ void ActionsDetailLoad()
     ActionsColdTrans[BashDiaDownLeft]        = FallLeft;
     ActionsColdTrans[BashDiaDownRight]       = FallRight;
 
+    ActionsColdTrans[QuitStepLeft]  = StandFacingLeft;
+    ActionsColdTrans[QuitStepRight] = StandFacingRight;
+
     // 状态机的转移函数
     ActionsProbability[StandFacingLeft]  = {{StandFacingRight, 1},
                                             {RunSlowlyLeft, -1},
                                             {RunSlowlyRight, 1},
-                                            {Jump1LeftUp, 2},
-                                            {Jump2LeftUp, 2},
+                                            {Jump1LeftUp, 3},
+                                            {Jump2LeftUp, 3},
                                             {RunFastLeft, -1},
                                             {RunFastRight, 1},
                                             {GetDownLeft, 3},
                                             {RunLeft, -1},
                                             {WalkLeft, -1},
-                                            {WalkRight, -1}};
+                                            {WalkRight, -1},
+                                            {QuitStepLeft, 2}};
     ActionsProbability[StandFacingRight] = {{StandFacingLeft, 1},
                                             {RunSlowlyLeft, 1},
                                             {RunSlowlyRight, -1},
-                                            {Jump1RightUp, 2},
-                                            {Jump2RightUp, 2},
+                                            {Jump1RightUp, 3},
+                                            {Jump2RightUp, 3},
                                             {RunFastLeft, 1},
                                             {RunFastRight, -1},
                                             {GetDownRight, 3},
                                             {RunRight, -1},
                                             {WalkLeft, -1},
-                                            {WalkRight, -1}};
+                                            {WalkRight, -1},
+                                            {QuitStepRight, 2}};
     ActionsProbability[RunSlowlyLeft]    = {{StandFacingLeft, 20},
                                             {StandFacingRight, 1},
                                             {RunSlowlyRight, -1},
@@ -713,10 +721,24 @@ void ActionsDetailLoad()
     ActionsProbability[BashDiaDownLeft]        = {{FallLeft, 1}};
     ActionsProbability[BashDiaDownRight]       = {{FallRight, 1}};
 
+    ActionsProbability[QuitStepLeft]  = {{StandFacingLeft, 20},
+                                         {StandFacingRight, 1},
+                                         {RunSlowlyRight, -1},
+                                         {RunFastLeft, -1},
+                                         {RunFastRight, 1},
+                                         {WalkLeft, 2}};
+    ActionsProbability[QuitStepRight] = {{StandFacingLeft, 20},
+                                         {StandFacingRight, 2},
+                                         {RunSlowlyLeft, -1},
+                                         {RunFastLeft, 1},
+                                         {RunFastRight, -1},
+                                         {WalkRight, 2}};
+
     // 音效加载
     SoundMap[RunSlowlyLeft] = SoundMap[RunSlowlyRight] = SoundMap[GetDownWalkLeft] =
         SoundMap[GetDownWalkRight] = SoundMap[RunLeft] = SoundMap[RunRight] = SoundMap[WalkLeft] =
-            SoundMap[WalkRight] = SoundsDetail("Sound/stepSound/seinFootstepsRock", 5, 2);
+            SoundMap[WalkRight] = SoundMap[QuitStepLeft] = SoundMap[QuitStepRight] =
+                SoundsDetail("Sound/stepSound/seinFootstepsRock", 5, 2);
     SoundMap[LandStandLeft] = SoundMap[LandStandRight] = SoundMap[LandRunFastLeft] =
         SoundMap[LandRunFastRight] = SoundsDetail("Sound/land/seinLandsStone", 5, 1);
     SoundMap[Jump1LeftUp] = SoundMap[Jump1RightUp] = SoundMap[Jump2LeftUp] =
@@ -1033,6 +1055,11 @@ pair<int, int> ActionsMovement(Action    action,
         bashBeginMouseX += -(ActionsMap[action].transform ? -1 : 1) * (30 / curFrame) * 0.72;
         bashBeginMouseY += -(30 / curFrame) * 0.72;
         QCursor::setPos(bashBeginMouseX, bashBeginMouseY);
+    }
+    if (action == QuitStepLeft || action == QuitStepRight)
+    {
+        dx = (ActionsMap[action].transform ? -1 : 1) * (curFrame % 2 ? 1 : 2);
+        dy = 0;
     }
 
     return {dx, dy};
