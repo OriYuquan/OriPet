@@ -119,8 +119,8 @@ double Behavior::generalPossiblity(Action act)
         else if (act == StandtoLookUpListenLeft || act == StandtoLookUpListenRight)
         {
             if ((act == StandtoLookUpListenLeft &&
-                 x > ((LeftEdge + RightEdge) * 2 / 3 + LeftEdge)) ||
-                (act == StandtoLookUpListenRight && x < ((LeftEdge + RightEdge) / 3 + LeftEdge)))
+                 x > ((RightEdge - LeftEdge) * 2 / 3 + LeftEdge)) ||
+                (act == StandtoLookUpListenRight && x < ((RightEdge - LeftEdge) / 3 + LeftEdge)))
                 return 7;
             else
                 return 1;
