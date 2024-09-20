@@ -1112,8 +1112,11 @@ pair<int, int> ActionsMovement(Action    action,
         dy = 0;
     }
 
-    if (action == BashUpChargeLeft || action == BashUpChargeRight || action == BashHorChargeLeft ||
-        action == BashHorChargeRight)
+    if (action == BashUpChargeLeft || action == BashUpChargeRight || action == BashDownChargeLeft ||
+        action == BashDownChargeRight || action == BashHorChargeLeft ||
+        action == BashHorChargeRight || action == BashDiaUpChargeLeft ||
+        action == BashDiaUpChargeRight || action == BashDiaDownChargeLeft ||
+        action == BashDiaDownChargeRight)
     {
         if (curFrame == 1)
         {
