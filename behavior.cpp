@@ -23,12 +23,12 @@ Behavior::Behavior(QWidget* parent) : QWidget(parent)
     mouseLeftKey = false;
     jumpChance   = 2;
     dashChance   = 1;
-    controlTime  = 0;
-    limitable    = false;
+    controlTime = freeTime = 0;
+    limitable              = false;
 
     mousex = mousey = 0;
 
-    startTimer(100000);
+    startTimer(10000);
     QDateTime currentDateTime = QDateTime::currentDateTime();
     hour                      = currentDateTime.time().hour();
 }
@@ -127,9 +127,16 @@ double Behavior::generalPossiblity(Action act)
         }
         else if (act == LookUpLeft || act == LookUpRight)
         {
-            if ((act == LookUpLeft && mousex < x && mousex > x - 500 && mousey < 800) ||
-                (act == LookUpRight && mousex > x && mousex < x + 500 && mousey < 800))
-                return 15;
+            if ((act == LookUpLeft && mousex < x && mousex > x - 600 && mousey < 800) ||
+                (act == LookUpRight && mousex > x && mousex < x + 600 && mousey < 800))
+                return 20;
+            else
+                return 1;
+        }
+        else if (act == YawnLeft || act == YawnRight)
+        {
+            if (freeTime > 24000 && (hour >= 23 || hour < 7))
+                return 25;
             else
                 return 1;
         }
@@ -216,10 +223,12 @@ void Behavior::actionUpdate(int curFrame, long long time)
                     mouseLeftKey || bashKey);
     if (control)
     {
+        freeTime    = 0;
         controlTime = CONTROLTIME;
     }
     else
     {
+        freeTime    = (freeTime > 1000000) ? freeTime : freeTime + 1;
         controlTime = (controlTime == 0) ? 0 : controlTime - 1;
     }
 
@@ -374,7 +383,7 @@ void Behavior::actionUpdate(int curFrame, long long time)
     }
     qDebug() << x << " " << y << " " << vxCheck << " " << vyCheck << " " << curFrame << " "
              << actionBehavior << " " << jumpChance << " " << mousex << " " << mousey << " "
-             << mouseLeftKey << " " << controlTime;
+             << mouseLeftKey << " " << controlTime << " " << freeTime << " " << hour;
 
     if (actionBehavior == pre)
     {

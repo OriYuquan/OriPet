@@ -239,6 +239,9 @@ void ActionsDetailLoad()
     ActionsMap[LookUpRight] =
         ActionsDetail("Source/LookUp/ori22-", 30, false, 200, 0.9, true, false);
 
+    ActionsMap[YawnLeft]  = ActionsDetail("Source/Yawn/ori44-", 68, true, 1000, 0.0);
+    ActionsMap[YawnRight] = ActionsDetail("Source/Yawn/ori44-", 68, false, 1000, 0.0);
+
     // 动作限制集合
     ActionLimit = {Jump1LeftUp,       Jump1RightUp,
 
@@ -399,6 +402,9 @@ void ActionsDetailLoad()
     ActionsColdTrans[LookUpLeft]  = StandFacingLeft;
     ActionsColdTrans[LookUpRight] = StandFacingRight;
 
+    ActionsColdTrans[YawnLeft]  = StandFacingLeft;
+    ActionsColdTrans[YawnRight] = StandFacingRight;
+
     // 状态机的转移函数
     ActionsProbability[StandFacingLeft]  = {{StandFacingRight, 1},
                                             {RunSlowlyLeft, -1},
@@ -413,7 +419,8 @@ void ActionsDetailLoad()
                                             {WalkRight, -1},
                                             {QuitStepLeft, 2},
                                             {StandtoLookUpListenLeft, -1},
-                                            {LookUpLeft, -1}};
+                                            {LookUpLeft, -1},
+                                            {YawnLeft, -1}};
     ActionsProbability[StandFacingRight] = {{StandFacingLeft, 1},
                                             {RunSlowlyLeft, 1},
                                             {RunSlowlyRight, -1},
@@ -427,7 +434,8 @@ void ActionsDetailLoad()
                                             {WalkRight, -1},
                                             {QuitStepRight, 2},
                                             {StandtoLookUpListenRight, -1},
-                                            {LookUpRight, -1}};
+                                            {LookUpRight, -1},
+                                            {YawnRight, -1}};
     ActionsProbability[RunSlowlyLeft]    = {{StandFacingLeft, 20},
                                             {StandFacingRight, 1},
                                             {RunSlowlyRight, -1},
@@ -809,6 +817,30 @@ void ActionsDetailLoad()
                                        {WalkLeft, -1},
                                        {WalkRight, -1},
                                        {QuitStepRight, 2}};
+    ActionsProbability[YawnLeft]    = {{StandFacingLeft, 10},
+                                       {StandFacingRight, 1},
+                                       {RunSlowlyLeft, -1},
+                                       {RunSlowlyRight, 1},
+                                       {Jump1LeftUp, 3},
+                                       {Jump2LeftUp, 3},
+                                       {RunFastLeft, -1},
+                                       {RunFastRight, 1},
+                                       {GetDownLeft, 3},
+                                       {WalkLeft, -1},
+                                       {WalkRight, -1},
+                                       {QuitStepLeft, 2}};
+    ActionsProbability[YawnRight]   = {{StandFacingLeft, 1},
+                                       {StandFacingRight, 10},
+                                       {RunSlowlyLeft, 1},
+                                       {RunSlowlyRight, -1},
+                                       {Jump1RightUp, 3},
+                                       {Jump2RightUp, 3},
+                                       {RunFastLeft, 1},
+                                       {RunFastRight, -1},
+                                       {GetDownRight, 3},
+                                       {WalkLeft, -1},
+                                       {WalkRight, -1},
+                                       {QuitStepRight, 2}};
 
     // 音效加载
     SoundMap[RunSlowlyLeft] = SoundMap[RunSlowlyRight] = SoundMap[GetDownWalkLeft] =
@@ -851,6 +883,8 @@ void ActionsDetailLoad()
         SoundMap[BashDownLeft] = SoundMap[BashDownRight] = SoundMap[BashDiaUpLeft] =
             SoundMap[BashDiaUpRight] = SoundMap[BashDiaDownLeft] = SoundMap[BashDiaDownRight] =
                 SoundsDetail("Sound/bash/oriBashEnd", 3, 1);
+
+    SoundMap[YawnLeft] = SoundMap[YawnRight] = SoundsDetail("Sound/idle/seinIdleYawn", 1, 1);
 
     // 镜像动作初始化
     for (int i = 0; i < int(None); i++)

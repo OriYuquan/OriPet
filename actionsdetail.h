@@ -154,6 +154,9 @@ enum Action
     LookUpLeft,
     LookUpRight,
 
+    YawnLeft,
+    YawnRight,
+
     None
 };
 

@@ -37,7 +37,7 @@ class Behavior : public QWidget
     // 状态机的当前状态
     Action actionBehavior;
     // 控制冷却时间
-    int controlTime;
+    int controlTime, freeTime;
     // 二段跳剩余次数
     int jumpChance;
     // 冲刺剩余次数
