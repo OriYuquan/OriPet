@@ -55,8 +55,6 @@ class Behavior : public QWidget
     void inputControl(Action& pre, bool& mirror, bool& restart, double randomValue, int curFrame);
     // 是否在猛击充能
     bool isBashCharging(Action action);
-    // 是否在下落
-    bool isFalling(Action action);
 
    signals:
     void PlayerLoadNewActionSignal(Action);

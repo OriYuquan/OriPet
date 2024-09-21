@@ -242,8 +242,9 @@ void Behavior::actionUpdate(int curFrame, long long time)
     // 检查是否可以进行状态转移
     // 如果操控已冷却，状态机转移
     if (controlTime == 0 &&
-        (curFrame == ActionsMap[actionBehavior].totalFrameNumber || isFalling(actionBehavior)) &&
-        ActionsMap[actionBehavior].keepPossiblity < randomValue)
+        (curFrame == ActionsMap[actionBehavior].totalFrameNumber ||
+         ActionsMap[actionBehavior].keepPossiblity < 0.0) &&
+        abs(ActionsMap[actionBehavior].keepPossiblity) < randomValue)
     {
         actionBehavior = NextActions(actionBehavior);
     }
@@ -424,12 +425,6 @@ bool Behavior::isBashCharging(Action action)
            action == BashDownChargeLeft || action == BashDownChargeRight ||
            action == BashDiaUpChargeLeft || action == BashDiaUpChargeRight ||
            action == BashDiaDownChargeLeft || action == BashDiaDownChargeRight;
-}
-
-bool Behavior::isFalling(Action action)
-{
-    return action == FallLeft || action == FallRight || action == MovingFallLeft ||
-           action == MovingFallRight;
 }
 
 void Behavior::inputControl(Action& pre,
