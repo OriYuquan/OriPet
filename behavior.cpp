@@ -106,11 +106,11 @@ double Behavior::generalPossiblity(Action act)
 
         else if (act == FeatherLeft || act == FeatherRight)
         {
-            return (abs(vx) < 10) ? abs(vy) / 10 + 2 : 0;
+            return (abs(vx) < 10) ? (abs(vy) / 10 + 5 - jumpChance - dashChance) : 0;
         }
         else if (act == DoubleJumptoMovingFallLeft || act == DoubleJumptoMovingFallLeft)
         {
-            return (abs(vx) >= 10) ? abs(vy) / 10 + 2 : 0;
+            return (abs(vx) >= 10) ? (abs(vy) / 10 + 5 - jumpChance - dashChance) : 0;
         }
         else if (act == AirDashLeft || act == AirDashRight)
         {
