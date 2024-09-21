@@ -72,20 +72,21 @@ double Behavior::generalPossiblity(Action act)
         }
         else if (act == DoubleJumptoFallLeft)
         {
-            return (vx == 0) ? 1 : 0;
+            return (abs(vx) < 10) ? 1 : 0;
         }
         else if (act == DoubleJumptoFallRight)
         {
-            return (vx == 0) ? 1 : 0;
+            return (abs(vx) < 10) ? 1 : 0;
         }
         else if (act == DoubleJumptoMovingFallLeft)
         {
-            return (vx < 0) ? 1 : 0;
+            return (abs(vx) >= 10) ? 1 : 0;
         }
         else if (act == DoubleJumptoMovingFallRight)
         {
-            return (vx > 0) ? 1 : 0;
+            return (abs(vx) >= 10) ? 1 : 0;
         }
+
         else if (act == TopClimbLeft)
         {
             if (y == TopEdge)
@@ -108,12 +109,13 @@ double Behavior::generalPossiblity(Action act)
 
         else if (act == FeatherLeft || act == FeatherRight)
         {
-            return (abs(vx) < 10) ? (abs(vy) / 10 + 7 - 2 * jumpChance - dashChance) : 0;
+            return (abs(vx) < 10) ? (abs(vy) / 10 + 8 - 2 * (jumpChance + dashChance)) : 0;
         }
-        else if (act == DoubleJumptoMovingFallLeft || act == DoubleJumptoMovingFallLeft)
+        else if (act == MovingFeatherLeft || act == MovingFeatherRight)
         {
-            return (abs(vx) >= 10) ? (abs(vy) / 10 + 7 - 2 * jumpChance - dashChance) : 0;
+            return (abs(vx) >= 10) ? (abs(vy) / 10 + 8 - 2 * (jumpChance + dashChance)) : 0;
         }
+
         else if (act == AirDashLeft || act == AirDashRight)
         {
             return (dashChance > 0) ? 3 : 0;
