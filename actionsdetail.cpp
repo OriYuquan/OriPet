@@ -110,10 +110,10 @@ void ActionsDetailLoad()
     ActionsMap[DoubleJumptoMovingFallRight] =
         ActionsDetail("Source/DoubleJumptoMovinfFall/doubleJumpToFall_", 5, false, 0, 0.0);
 
-    ActionsMap[FallLeft]        = ActionsDetail("Source/Fall/FallIdle_", 13, true, 0, 0.5);
-    ActionsMap[FallRight]       = ActionsDetail("Source/Fall/FallIdle_", 13, false, 0, 0.5);
-    ActionsMap[MovingFallLeft]  = ActionsDetail("Source/MovingFall/Fall_", 35, true, 0, 0.5);
-    ActionsMap[MovingFallRight] = ActionsDetail("Source/MovingFall/Fall_", 35, false, 0, 0.5);
+    ActionsMap[FallLeft]        = ActionsDetail("Source/Fall/FallIdle_", 13, true, 0, 0.4);
+    ActionsMap[FallRight]       = ActionsDetail("Source/Fall/FallIdle_", 13, false, 0, 0.4);
+    ActionsMap[MovingFallLeft]  = ActionsDetail("Source/MovingFall/Fall_", 35, true, 0, 0.4);
+    ActionsMap[MovingFallRight] = ActionsDetail("Source/MovingFall/Fall_", 35, false, 0, 0.4);
 
     ActionsMap[LandRunFastLeft]   = ActionsDetail("Source/LandRunFast/ori45-", 7, true, 0, 0.0);
     ActionsMap[LandRunFastRight]  = ActionsDetail("Source/LandRunFast/ori45-", 7, false, 0, 0.0);
@@ -623,14 +623,15 @@ void ActionsDetailLoad()
         {TopStayLeft, 6}, {TopStayRight, 1}, {TopClimbRight, 1}, {MovingFallLeft, 10}};
     ActionsProbability[TopClimbRight] = {
         {TopStayLeft, 1}, {TopStayRight, 6}, {TopStayLeft, 1}, {MovingFallRight, 10}};
-    ActionsProbability[FallLeft] = {
-        {DoubleJumpLeftUp, -1}, {DoubleJumpRightUp, -1}, {FeatherLeft, -1}, {AirDashLeft, -1}};
+
+    ActionsProbability[FallLeft]  = {{DoubleJumpLeftUp, -1}, {FeatherLeft, -1}, {AirDashLeft, -1}};
     ActionsProbability[FallRight] = {
-        {DoubleJumpLeftUp, -1}, {DoubleJumpRightUp, -1}, {FeatherRight, -1}, {AirDashRight, -1}};
+        {DoubleJumpRightUp, -1}, {FeatherRight, -1}, {AirDashRight, -1}};
     ActionsProbability[MovingFallLeft] = {
-        {DoubleJumpLeftUp, -1}, {MovingFeatherLeft, -1}, {AirDashLeft, -1}};
+        {DoubleJumpLeftUp, -1}, {FeatherLeft, -1}, {MovingFeatherLeft, -1}, {AirDashLeft, -1}};
     ActionsProbability[MovingFallRight] = {
-        {DoubleJumpRightUp, -1}, {MovingFeatherRight, -1}, {AirDashRight, -1}};
+        {DoubleJumpRightUp, -1}, {FeatherRight, -1}, {MovingFeatherRight, -1}, {AirDashRight, -1}};
+
     ActionsProbability[FeatherLeft]  = {{FallLeft, 7}, {DoubleJumpLeftUp, -1}, {AirDashLeft, -1}};
     ActionsProbability[FeatherRight] = {
         {FallRight, 7}, {DoubleJumpRightUp, -1}, {AirDashRight, -1}};
