@@ -222,6 +222,10 @@ extern int SCREENWIDTHFIX, SCREENHEIGHTFIX;
 extern int SCREENWIDTH, SCREENHEIGHT;
 extern int PNGWIDTH, PNGHEIGHT;
 
+// 猛击坐标
+extern int originalMouseX;
+extern int originalMousey;
+
 // 映射关系初始化
 void ActionsDetailLoad();
 

@@ -440,53 +440,53 @@ void Behavior::inputControl(Action& pre,
     {
         if (pre == BashUpChargeLeft)
         {
-            x = mousex + 40;
-            y = mousey - 130;
+            x = originalMouseX + 40;
+            y = originalMousey - 130;
         }
         else if (pre == BashUpChargeRight)
         {
-            x = mousex - 40;
-            y = mousey - 130;
+            x = originalMouseX - 40;
+            y = originalMousey - 130;
         }
         else if (pre == BashHorChargeLeft)
         {
-            x = mousex + 25;
-            y = mousey - 130;
+            x = originalMouseX + 25;
+            y = originalMousey - 130;
         }
         else if (pre == BashHorChargeRight)
         {
-            x = mousex - 15;
-            y = mousey - 130;
+            x = originalMouseX - 25;
+            y = originalMousey - 130;
         }
         else if (pre == BashDownChargeLeft)
         {
-            x = mousex - 10;
-            y = mousey - 120;
+            x = originalMouseX - 10;
+            y = originalMousey - 120;
         }
         else if (pre == BashDownChargeRight)
         {
-            x = mousex + 20;
-            y = mousey - 120;
+            x = originalMouseX + 20;
+            y = originalMousey - 120;
         }
         else if (pre == BashDiaUpChargeLeft)
         {
-            x = mousex + 30;
-            y = mousey - 120;
+            x = originalMouseX + 25;
+            y = originalMousey - 120;
         }
         else if (pre == BashDiaUpChargeRight)
         {
-            x = mousex - 20;
-            y = mousey - 120;
+            x = originalMouseX - 20;
+            y = originalMousey - 120;
         }
         else if (pre == BashDiaDownChargeLeft)
         {
-            x = mousex + 0;
-            y = mousey - 120;
+            x = originalMouseX + 0;
+            y = originalMousey - 120;
         }
         else if (pre == BashDiaDownChargeRight)
         {
-            x = mousex + 10;
-            y = mousey - 120;
+            x = originalMouseX + 10;
+            y = originalMousey - 120;
         }
 
         // 蓄力时间已满

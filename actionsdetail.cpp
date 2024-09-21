@@ -907,6 +907,7 @@ void ActionsDetailLoad()
 }
 
 int bashBeginMouseX, bashBeginMouseY;
+int originalMouseX, originalMousey;
 
 // 位移函数
 pair<int, int> ActionsMovement(Action    action,
@@ -1123,6 +1124,8 @@ pair<int, int> ActionsMovement(Action    action,
             QPoint pos      = QCursor::pos();
             bashBeginMouseX = pos.x();
             bashBeginMouseY = pos.y();
+            originalMouseX  = mousex;
+            originalMousey  = mousey;
         }
         else
         {
