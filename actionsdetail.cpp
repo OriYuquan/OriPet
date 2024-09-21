@@ -855,10 +855,12 @@ void ActionsDetailLoad()
                 SoundsDetail("Sound/stepSound/seinFootstepsRock", 5, 2);
     SoundMap[LandStandLeft] = SoundMap[LandStandRight] = SoundMap[LandRunFastLeft] =
         SoundMap[LandRunFastRight] = SoundsDetail("Sound/land/seinLandsStone", 5, 1);
+
     SoundMap[Jump1LeftUp] = SoundMap[Jump1RightUp] = SoundMap[Jump2LeftUp] =
         SoundMap[Jump2RightUp] = SoundMap[RunJump1LeftUp] = SoundMap[RunJump1RightUp] =
             SoundMap[RunJump2LeftUp]                      = SoundMap[RunJump2RightUp] =
                 SoundsDetail("Sound/jump/seinJumpsGrass", 5, 1);
+
     SoundMap[ClimbUpLeft] = SoundMap[ClimbUpRight] = SoundMap[ClimbDownLeft] =
         SoundMap[ClimbDownRight] = SoundMap[TopClimbLeft] = SoundMap[TopClimbRight] =
             SoundsDetail("Sound/wallClimb/seinWallClimbStepsGrass", 5, 1);
@@ -866,9 +868,10 @@ void ActionsDetailLoad()
         SoundsDetail("Sound/stepSound/seinFootstepsRock", 5, 10);
     SoundMap[DoubleJumpLeftUp] = SoundMap[DoubleJumpRightUp] =
         SoundsDetail("Sound/doubleJump/seinDoubleJumps", 5, 1);
+
     SoundMap[WallJump1Left] = SoundMap[WallJump1Right] = SoundMap[WallJump2Left] =
         SoundMap[WallJump2Right] = SoundMap[WallLongJump1Left] = SoundMap[WallLongJump1Right] =
-            SoundMap[WallLongJump2Left]                        = SoundMap[WallLongJump2Left] =
+            SoundMap[WallLongJump2Left]                        = SoundMap[WallLongJump2Right] =
                 SoundMap[WallJumpClimbLeft]                    = SoundMap[WallJumpClimbRight] =
                     SoundsDetail("Sound/wallJump/seinWallJumps", 5, 1);
     SoundMap[FeatherLeft] = SoundMap[FeatherRight] = SoundMap[FeatherAfterMouseLeft] =
