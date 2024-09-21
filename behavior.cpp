@@ -58,11 +58,13 @@ double Behavior::generalPossiblity(Action act)
         }
         else if (act == ClimbUpLeft || act == ClimbUpRight)
         {
-            return 12.0 * (double) (y - TopEdge) / (double) (BottomEdge - TopEdge);
+            if ((act == ClimbUpLeft && x == LeftEdge) || (act == ClimbUpRight && x == RightEdge))
+                return 12.0 * (double) (y - TopEdge) / (double) (BottomEdge - TopEdge);
         }
         else if (act == ClimbDownLeft || act == ClimbDownRight)
         {
-            if (x == LeftEdge || x == RightEdge)
+            if ((act == ClimbDownLeft && x == LeftEdge) ||
+                (act == ClimbDownRight && x == RightEdge))
                 return 12.0 * (double) (BottomEdge - TopEdge - (y - TopEdge)) /
                        (double) (BottomEdge - TopEdge);
             else
