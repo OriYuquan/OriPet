@@ -109,11 +109,11 @@ double Behavior::generalPossiblity(Action act)
 
         else if (act == FeatherLeft || act == FeatherRight)
         {
-            return (abs(vx) < 10) ? (abs(vy) / 10 + 8 - 2 * (jumpChance + dashChance)) : 0;
+            return (abs(vx) < 10) ? (abs(vy) / 10 + 5 - (jumpChance + dashChance)) : 0;
         }
         else if (act == MovingFeatherLeft || act == MovingFeatherRight)
         {
-            return (abs(vx) >= 10) ? (abs(vy) / 10 + 8 - 2 * (jumpChance + dashChance)) : 0;
+            return (abs(vx) >= 10) ? (abs(vy) / 10 + 5 - (jumpChance + dashChance)) : 0;
         }
 
         else if (act == AirDashLeft || act == AirDashRight)
@@ -241,7 +241,8 @@ void Behavior::actionUpdate(int curFrame, long long time)
     double           randomValue = generator.bounded(1.0);
     // 检查是否可以进行状态转移
     // 如果操控已冷却，状态机转移
-    if (controlTime == 0 && curFrame == ActionsMap[actionBehavior].totalFrameNumber &&
+    if (controlTime == 0 &&
+        (curFrame == ActionsMap[actionBehavior].totalFrameNumber || isFalling(actionBehavior)) &&
         ActionsMap[actionBehavior].keepPossiblity < randomValue)
     {
         actionBehavior = NextActions(actionBehavior);
@@ -423,6 +424,12 @@ bool Behavior::isBashCharging(Action action)
            action == BashDownChargeLeft || action == BashDownChargeRight ||
            action == BashDiaUpChargeLeft || action == BashDiaUpChargeRight ||
            action == BashDiaDownChargeLeft || action == BashDiaDownChargeRight;
+}
+
+bool Behavior::isFalling(Action action)
+{
+    return action == FallLeft || action == FallRight || action == MovingFallLeft ||
+           action == MovingFallRight;
 }
 
 void Behavior::inputControl(Action& pre,

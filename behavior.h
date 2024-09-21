@@ -48,13 +48,15 @@ class Behavior : public QWidget
     bool limitable;
 
     // 动作转移函数
-    Action NextActions(Action Action);
+    Action NextActions(Action action);
     // 通用概率函数
     double generalPossiblity(Action);
     // 操作函数
     void inputControl(Action& pre, bool& mirror, bool& restart, double randomValue, int curFrame);
     // 是否在猛击充能
-    bool isBashCharging(Action Action);
+    bool isBashCharging(Action action);
+    // 是否在下落
+    bool isFalling(Action action);
 
    signals:
     void PlayerLoadNewActionSignal(Action);
