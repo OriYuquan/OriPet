@@ -152,7 +152,6 @@ void MainWindow::createActions()
     // 基准设置
     baseSetAction = new QAction(tr("水平基准设置"), this);
     connect(baseSetAction, SIGNAL(triggered(bool)), this, SLOT(baseInputShowSlot()));
-    baseSetAction->setEnabled(false);
 
     // debug信息显示
     debugAction = new QAction(tr("调试信息显示"), this);
@@ -222,6 +221,7 @@ void MainWindow::timerEvent(QTimerEvent* event)
 void MainWindow::aboutShowSlot()
 {
     AboutDialog aboutDialog(this);
+    aboutDialog.setWindowFlags(Qt::MSWindowsFixedSizeDialogHint);
     aboutDialog.exec();
 }
 
@@ -229,11 +229,33 @@ void MainWindow::aboutShowSlot()
 void MainWindow::baseInputShowSlot()
 {
     QInputDialog dialog(this);
-    QIcon        icon("Ori.icon");
-    dialog.setWindowIcon(icon);
+
+    dialog.setStyleSheet(R"(
+                         QInputDialog {
+                             background-color: rgba(43, 45, 48, 255);
+                             border-radius: 5px;
+                         }
+
+                         QInputDialog QLabel {
+                             color: white;
+                             font-size: 22px;
+                         }
+
+                         QInputDialog QLineEdit {
+                             background-color: rgba(43, 45, 48, 255);
+                             color: black;
+                             border-radius: 5px;
+                         }
+
+                         QInputDialog QPushButton {
+                             background-color: rgba(83, 85, 88, 0.7);
+                             color: white;
+                         }
+                     )");
 
     dialog.setWindowTitle(tr("水平基准修改"));
     dialog.setLabelText(tr("请输入水平基准值\n重启桌宠生效"));
+    dialog.setWindowFlags(Qt::MSWindowsFixedSizeDialogHint);
 
     // 从设置文件里读取基准数据
     QFile file("baseMark.data");
