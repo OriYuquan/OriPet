@@ -25,9 +25,10 @@ class MainWindow : public QWidget
     ~MainWindow();
 
    private:
-    QSystemTrayIcon* tray;       // 托盘图标
-    QMenu*           trayMenu;   // 托盘菜单
-    QMenu*           clickMenu;  // 右键菜单
+    QSystemTrayIcon* tray;        // 托盘图标
+    QMenu*           trayMenu;    // 托盘菜单
+    QMenu*           clickMenu;   // 右键菜单
+    QMenu*           actionMenu;  // 右键动作菜单
 
     QAction*       quitAction;     // 退出动作
     QAction*       aboutAction;    // 关于
@@ -45,6 +46,7 @@ class MainWindow : public QWidget
     QLabel* debugLabel;
 
     void createActions();     // 创建动作
+    void createActionMenu();  // 创建动作菜单
     void createTrayMenu();    // 创建托盘菜单
     void createClickMenu();   // 创建右键菜单
     void debugMessageShow();  // 调试信息显示

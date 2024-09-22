@@ -177,9 +177,22 @@ void MainWindow::createClickMenu()
 {
     // 创建右键菜单并添加退出动作
     clickMenu = new QMenu(this);
+    createActionMenu();
+    clickMenu->addMenu(actionMenu);
     clickMenu->addAction(controlAction);
     clickMenu->addAction(limitAction);
     clickMenu->addAction(quitAction);
+}
+
+void MainWindow::createActionMenu()
+{
+    actionMenu = new QMenu(tr("动作"));
+    actionMenu->setStyleSheet("QMenu::icon { width: 0px; }");
+    QAction* actCuteAction = new QAction(tr("卖萌"), this);
+    actionMenu->addAction(actCuteAction);
+
+    QAction* sleepAction = new QAction(tr("睡觉"), this);
+    actionMenu->addAction(sleepAction);
 }
 
 void MainWindow::contextMenuEvent(QContextMenuEvent* event)
@@ -197,6 +210,7 @@ void MainWindow::timerEvent(QTimerEvent* event)
     behavior->actionUpdate(player->curFrame, player->timePlayed);
     player->move(behavior->getX(), behavior->getY());
 
+    // debug窗口是否显示
     if (debugAction->isChecked())
         debugMessageShow();
     else
