@@ -152,6 +152,7 @@ void MainWindow::createActions()
     // 基准设置
     baseSetAction = new QAction(tr("水平基准设置"), this);
     connect(baseSetAction, SIGNAL(triggered(bool)), this, SLOT(baseInputShowSlot()));
+    baseSetAction->setEnabled(false);
 
     // debug信息显示
     debugAction = new QAction(tr("调试信息显示"), this);
