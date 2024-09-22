@@ -12,7 +12,8 @@ class Behavior : public QWidget
 
    public:
     explicit Behavior(QWidget* parent = nullptr);
-    void   loadAction(Action act, int _x, int _y);
+    void   loadAction(Action act);
+    void   loadPos(int x, int y);
     int    getX() const;
     int    getY() const;
     void   setMousePos(int x, int y);

@@ -72,8 +72,8 @@ MainWindow::MainWindow(QWidget* parent) : QWidget(parent)
 
     player->loadAction(StandFacingRight);
     soundPlayer->loadAction(StandFacingRight);
-    behavior->loadAction(
-        StandFacingRight, SCREENWIDTHFIX + 100, SCREENHEIGHTFIX + SCREENHEIGHT - ORIHEIGHT);
+    behavior->loadAction(StandFacingRight);
+    behavior->loadPos(SCREENWIDTHFIX + 100, SCREENHEIGHTFIX + SCREENHEIGHT - ORIHEIGHT);
 
     player->move(behavior->getX(), behavior->getY());
 }

@@ -2,6 +2,7 @@
 
 #include <QCursor>
 #include <QDataStream>
+#include <QDebug>
 #include <QFile>
 #include <QGuiApplication>
 #include <QScreen>
@@ -244,6 +245,13 @@ void ActionsDetailLoad()
     ActionsMap[YawnLeft]  = ActionsDetail("Source/Yawn/ori44-", 68, true, 1000, 0.0);
     ActionsMap[YawnRight] = ActionsDetail("Source/Yawn/ori44-", 68, false, 1000, 0.0);
 
+    ActionsMap[ActCuteLeft]  = ActionsDetail("Source/ActCute/Cute1Idle_", 105, true, 0, 0.5);
+    ActionsMap[ActCuteRight] = ActionsDetail("Source/ActCute/Cute1Idle_", 105, false, 0, 0.5);
+    ActionsMap[StandLefttoActCuteRight] =
+        ActionsDetail("Source/StandtoActCute/StandToCute1_", 85, true, 2000, 0.0);
+    ActionsMap[StandRighttoActCuteLeft] =
+        ActionsDetail("Source/StandtoActCute/StandToCute1_", 85, false, 2000, 0.0);
+
     // 动作限制集合
     ActionLimit = {Jump1LeftUp,       Jump1RightUp,
 
@@ -407,6 +415,11 @@ void ActionsDetailLoad()
     ActionsColdTrans[YawnLeft]  = StandFacingLeft;
     ActionsColdTrans[YawnRight] = StandFacingRight;
 
+    ActionsColdTrans[ActCuteLeft]             = ActCuteLeft;
+    ActionsColdTrans[ActCuteRight]            = ActCuteRight;
+    ActionsColdTrans[StandLefttoActCuteRight] = ActCuteRight;
+    ActionsColdTrans[StandRighttoActCuteLeft] = ActCuteLeft;
+
     // 状态机的转移函数
     ActionsProbability[StandFacingLeft]  = {{StandFacingRight, 1},
                                             {RunSlowlyLeft, -1},
@@ -422,7 +435,8 @@ void ActionsDetailLoad()
                                             {QuitStepLeft, 2},
                                             {StandtoLookUpListenLeft, -1},
                                             {LookUpLeft, -1},
-                                            {YawnLeft, -1}};
+                                            {YawnLeft, -1},
+                                            {StandLefttoActCuteRight, 5}};
     ActionsProbability[StandFacingRight] = {{StandFacingLeft, 1},
                                             {RunSlowlyLeft, 1},
                                             {RunSlowlyRight, -1},
@@ -437,7 +451,8 @@ void ActionsDetailLoad()
                                             {QuitStepRight, 2},
                                             {StandtoLookUpListenRight, -1},
                                             {LookUpRight, -1},
-                                            {YawnRight, -1}};
+                                            {YawnRight, -1},
+                                            {StandRighttoActCuteLeft, 5}};
     ActionsProbability[RunSlowlyLeft]    = {{StandFacingLeft, 20},
                                             {StandFacingRight, 1},
                                             {RunSlowlyRight, -1},
@@ -775,7 +790,8 @@ void ActionsDetailLoad()
                                          {RunFastRight, -1},
                                          {WalkRight, 2}};
 
-    ActionsProbability[LookUpListenLeft]         = {{StandFacingLeft, 10},
+    // LookUpListenLeft和 LookUpListenRight作为一般动作的转移基准
+    ActionsProbability[LookUpListenLeft]         = {{StandFacingLeft, 18},
                                                     {StandFacingRight, 1},
                                                     {RunSlowlyLeft, -1},
                                                     {RunSlowlyRight, 1},
@@ -783,73 +799,35 @@ void ActionsDetailLoad()
                                                     {Jump2LeftUp, 3},
                                                     {RunFastLeft, -1},
                                                     {RunFastRight, 1},
-                                                    {GetDownLeft, 3},
+                                                    {GetDownLeft, 1},
                                                     {WalkLeft, -1},
                                                     {WalkRight, -1},
                                                     {QuitStepLeft, 2}};
     ActionsProbability[LookUpListenRight]        = {{StandFacingLeft, 1},
-                                                    {StandFacingRight, 10},
+                                                    {StandFacingRight, 18},
                                                     {RunSlowlyLeft, 1},
                                                     {RunSlowlyRight, -1},
                                                     {Jump1RightUp, 3},
                                                     {Jump2RightUp, 3},
                                                     {RunFastLeft, 1},
                                                     {RunFastRight, -1},
-                                                    {GetDownRight, 3},
+                                                    {GetDownRight, 1},
                                                     {WalkLeft, -1},
                                                     {WalkRight, -1},
                                                     {QuitStepRight, 2}};
     ActionsProbability[StandtoLookUpListenLeft]  = {{LookUpListenLeft, 1}};
     ActionsProbability[StandtoLookUpListenRight] = {{LookUpListenRight, 1}};
 
-    ActionsProbability[LookUpLeft]  = {{StandFacingLeft, 10},
-                                       {StandFacingRight, 1},
-                                       {RunSlowlyLeft, -1},
-                                       {RunSlowlyRight, 1},
-                                       {Jump1LeftUp, 3},
-                                       {Jump2LeftUp, 3},
-                                       {RunFastLeft, -1},
-                                       {RunFastRight, 1},
-                                       {GetDownLeft, 3},
-                                       {WalkLeft, -1},
-                                       {WalkRight, -1},
-                                       {QuitStepLeft, 2}};
-    ActionsProbability[LookUpRight] = {{StandFacingLeft, 1},
-                                       {StandFacingRight, 10},
-                                       {RunSlowlyLeft, 1},
-                                       {RunSlowlyRight, -1},
-                                       {Jump1RightUp, 3},
-                                       {Jump2RightUp, 3},
-                                       {RunFastLeft, 1},
-                                       {RunFastRight, -1},
-                                       {GetDownRight, 3},
-                                       {WalkLeft, -1},
-                                       {WalkRight, -1},
-                                       {QuitStepRight, 2}};
-    ActionsProbability[YawnLeft]    = {{StandFacingLeft, 10},
-                                       {StandFacingRight, 1},
-                                       {RunSlowlyLeft, -1},
-                                       {RunSlowlyRight, 1},
-                                       {Jump1LeftUp, 3},
-                                       {Jump2LeftUp, 3},
-                                       {RunFastLeft, -1},
-                                       {RunFastRight, 1},
-                                       {GetDownLeft, 3},
-                                       {WalkLeft, -1},
-                                       {WalkRight, -1},
-                                       {QuitStepLeft, 2}};
-    ActionsProbability[YawnRight]   = {{StandFacingLeft, 1},
-                                       {StandFacingRight, 10},
-                                       {RunSlowlyLeft, 1},
-                                       {RunSlowlyRight, -1},
-                                       {Jump1RightUp, 3},
-                                       {Jump2RightUp, 3},
-                                       {RunFastLeft, 1},
-                                       {RunFastRight, -1},
-                                       {GetDownRight, 3},
-                                       {WalkLeft, -1},
-                                       {WalkRight, -1},
-                                       {QuitStepRight, 2}};
+    ActionsProbability[LookUpLeft]  = ActionsProbability[LookUpListenLeft];
+    ActionsProbability[LookUpRight] = ActionsProbability[LookUpListenRight];
+
+    ActionsProbability[YawnLeft]  = ActionsProbability[LookUpListenLeft];
+    ActionsProbability[YawnRight] = ActionsProbability[LookUpListenRight];
+
+    ActionsProbability[StandLefttoActCuteRight] = {{ActCuteRight, 1}};
+    ActionsProbability[StandRighttoActCuteLeft] = {{ActCuteLeft, 1}};
+    ActionsProbability[ActCuteLeft]             = ActionsProbability[LookUpListenLeft];
+    ActionsProbability[ActCuteRight]            = ActionsProbability[LookUpListenRight];
 
     // 音效加载
     SoundMap[RunSlowlyLeft] = SoundMap[RunSlowlyRight] = SoundMap[GetDownWalkLeft] =

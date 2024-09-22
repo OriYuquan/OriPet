@@ -157,6 +157,11 @@ enum Action
     YawnLeft,
     YawnRight,
 
+    ActCuteLeft,
+    ActCuteRight,
+    StandLefttoActCuteRight,
+    StandRighttoActCuteLeft,
+
     None
 };
 

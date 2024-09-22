@@ -26,7 +26,7 @@ Behavior::Behavior(QWidget* parent) : QWidget(parent)
     controlTime = freeTime = 0;
     limitable              = false;
 
-    mousex = mousey = 0;
+    x = y = vx = vy = mousex = mousey = 0;
 
     startTimer(10000);
     QDateTime currentDateTime = QDateTime::currentDateTime();
@@ -164,13 +164,13 @@ Action Behavior::NextActions(Action currentAction)
     // 计算权重总和
     double               totalWeight = 0;
     QMap<Action, double> values;
-    for (auto it = nextActions.cbegin(); it != nextActions.cend(); ++it)
+    for (Action key : nextActions.keys())
     {
-        if (ActionsLeastTimes[it.key()] == 0 &&
-            (!limitable || ActionLimit.find(it.key()) == ActionLimit.end()))
+        if (ActionsLeastTimes[key] == 0 &&
+            (!limitable || ActionLimit.find(key) == ActionLimit.end()))
         {
-            values[it.key()] = generalPossiblity(it.key());
-            totalWeight += values[it.key()];
+            values[key] = generalPossiblity(key);
+            totalWeight += values[key];
         }
     }
 
@@ -769,12 +769,15 @@ void Behavior::inputControl(Action& pre,
     }
 }
 
-void Behavior::loadAction(Action act, int _x, int _y)
+void Behavior::loadAction(Action act)
 {
     actionBehavior = act;
-    x              = _x;
-    y              = _y;
-    vx = vy = 0;
+}
+
+void Behavior::loadPos(int _x, int _y)
+{
+    x = _x;
+    y = _y;
 }
 
 int Behavior::getX() const
