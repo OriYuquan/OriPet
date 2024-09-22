@@ -238,7 +238,7 @@ void MainWindow::baseInputShowSlot()
 
                          QInputDialog QLabel {
                              color: white;
-                             font-size: 22px;
+                             font-size: 20px;
                          }
 
                          QInputDialog QLineEdit {
