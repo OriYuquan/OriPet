@@ -12,15 +12,15 @@ class Behavior : public QWidget
 
    public:
     explicit Behavior(QWidget* parent = nullptr);
-    void loadAction(Action act, int _x, int _y);
-    int  getX() const;
-    int  getY() const;
-    void setMousePos(int x, int y);
-
+    void   loadAction(Action act, int _x, int _y);
+    int    getX() const;
+    int    getY() const;
+    void   setMousePos(int x, int y);
     Action getAction() const;
-
     // 状态更新函数
     void actionUpdate(int curFrame, long long time);
+
+    QString debugMessage;
 
    private:
     // 边界判断常量

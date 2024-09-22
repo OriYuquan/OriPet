@@ -127,12 +127,14 @@ void ActionsDetailLoad()
         ActionsDetail("Source/WallLongJump2/WallJumpAway2_", 30, false, 0, 0.0);
     ActionsMap[WallLongJump2Right] =
         ActionsDetail("Source/WallLongJump2/WallJumpAway2_", 30, true, 0, 0.0);
+
     ActionsMap[TopStayLeft]  = ActionsDetail("Source/TopStay/ori49-", 158, true, 0, 0.1);
     ActionsMap[TopStayRight] = ActionsDetail("Source/TopStay/ori49-", 158, false, 0, 0.1);
     ActionsMap[TopClimbLeft] =
         ActionsDetail("Source/TopClimb/ori50-", 22, true, 0, 0.7, true, false);
     ActionsMap[TopClimbRight] =
         ActionsDetail("Source/TopClimb/ori50-", 22, false, 0, 0.7, true, false);
+
     ActionsMap[FeatherLeft] = ActionsDetail("Source/Feather/ori16-", 37, true, 0, 0.8, true, false);
     ActionsMap[FeatherRight] =
         ActionsDetail("Source/Feather/ori16-", 37, false, 0, 0.8, true, false);
@@ -564,12 +566,12 @@ void ActionsDetailLoad()
     ActionsProbability[RunJump2LeftDown]  = {{LandStandLeft, 1}, {LandRunFastLeft, 3}};
     ActionsProbability[RunJump2RightDown] = {{LandStandRight, 1}, {LandRunFastRight, 3}};
 
-    ActionsProbability[DoubleJumpLeftUp]    = {{DoubleJumpLeftDown, 5},
+    ActionsProbability[DoubleJumpLeftUp]    = {{DoubleJumpLeftDown, 6},
                                                {DoubleJumpLeftUp, -1},
                                                {FeatherLeft, -1},
                                                {MovingFeatherLeft, -1},
                                                {AirDashLeft, -1}};
-    ActionsProbability[DoubleJumpRightUp]   = {{DoubleJumpRightDown, 5},
+    ActionsProbability[DoubleJumpRightUp]   = {{DoubleJumpRightDown, 6},
                                                {DoubleJumpRightUp, -1},
                                                {FeatherRight, -1},
                                                {MovingFeatherRight, -1},

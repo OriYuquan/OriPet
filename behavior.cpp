@@ -72,19 +72,19 @@ double Behavior::generalPossiblity(Action act)
         }
         else if (act == DoubleJumptoFallLeft)
         {
-            return (abs(vx) < 10) ? 1 : 0;
+            return (abs(vx) < 10) ? 2 : 0;
         }
         else if (act == DoubleJumptoFallRight)
         {
-            return (abs(vx) < 10) ? 1 : 0;
+            return (abs(vx) < 10) ? 2 : 0;
         }
         else if (act == DoubleJumptoMovingFallLeft)
         {
-            return (abs(vx) >= 10) ? 1 : 0;
+            return (abs(vx) >= 10) ? 2 : 0;
         }
         else if (act == DoubleJumptoMovingFallRight)
         {
-            return (abs(vx) >= 10) ? 1 : 0;
+            return (abs(vx) >= 10) ? 2 : 0;
         }
 
         else if (act == TopClimbLeft)
@@ -387,9 +387,16 @@ void Behavior::actionUpdate(int curFrame, long long time)
         // 冷却时间调试输出
         // qDebug() << i << ActionsLeastTimes[Action(i)];
     }
-    qDebug() << x << " " << y << " " << vxCheck << " " << vyCheck << " " << curFrame << " "
-             << actionBehavior << " " << jumpChance << " " << mousex << " " << mousey << " "
-             << mouseLeftKey << " " << controlTime << " " << freeTime << " " << hour;
+    debugMessage = "x:" + QString::number(x) + "\ny:" + QString::number(y) +
+                   "\nvx:" + QString::number(vxCheck) + "\nvy:" + QString::number(vyCheck) +
+                   "\ncurFrame:" + QString::number(curFrame) +
+                   "\naction:" + QString::number(actionBehavior) +
+                   "\njumpChance:" + QString::number(jumpChance) +
+                   "\ndashChance:" + QString::number(dashChance) +
+                   "\nmouseKey:" + QString::number(int(mouseLeftKey)) +
+                   "\ncontrolTime:" + QString::number(controlTime) +
+                   "\nmouseX:" + QString::number(mousex) + "\nmouseY:" + QString::number(mousey);
+    // qDebug() << debugMessage;
 
     if (actionBehavior == pre)
     {

@@ -16,6 +16,9 @@
 
 MainWindow::MainWindow(QWidget* parent) : QWidget(parent)
 {
+    debugLabel = new QLabel(this);
+    debugLabel->setAttribute(Qt::WA_TransparentForMouseEvents);
+
     setCursor(Qt::PointingHandCursor);
     //  资源文件信息加载
     ActionsDetailLoad();
@@ -149,6 +152,11 @@ void MainWindow::createActions()
     // 基准设置
     baseSetAction = new QAction(tr("水平基准设置"), this);
     connect(baseSetAction, SIGNAL(triggered(bool)), this, SLOT(baseInputShowSlot()));
+
+    // debug信息显示
+    debugAction = new QAction(tr("调试信息显示"), this);
+    debugAction->setCheckable(true);  // 设置为可勾选
+    debugAction->setChecked(false);   // 设置初始状态为勾选
 }
 
 void MainWindow::createTrayMenu()
@@ -159,6 +167,8 @@ void MainWindow::createTrayMenu()
     trayMenu->addAction(controlAction);
     trayMenu->addAction(limitAction);
     trayMenu->addAction(baseSetAction);
+    // 调试信息显示
+    trayMenu->addAction(debugAction);
     trayMenu->addAction(aboutAction);
     trayMenu->addAction(quitAction);
 }
@@ -186,6 +196,11 @@ void MainWindow::timerEvent(QTimerEvent* event)
     soundPlayer->soundPlay(player->curFrame);
     behavior->actionUpdate(player->curFrame, player->timePlayed);
     player->move(behavior->getX(), behavior->getY());
+
+    if (debugAction->isChecked())
+        debugMessageShow();
+    else
+        debugLabel->clear();
 }
 
 // 关于对话框
@@ -263,4 +278,14 @@ void MainWindow::mousePressEvent(QMouseEvent* event)
 void MainWindow::mouseReleaseEvent(QMouseEvent* event)
 {
     behavior->mouseReleaseEvent(event);
+}
+
+void MainWindow::debugMessageShow()
+{
+    debugLabel->setText(behavior->debugMessage);
+    debugLabel->resize(500, 500);
+    debugLabel->setStyleSheet("background-color: rgba(0, 0, 0, 0); color: white;");
+    // 显示 QLabel
+    debugLabel->move(2400, 1100);
+    debugLabel->show();
 }
