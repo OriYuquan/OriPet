@@ -21,11 +21,12 @@ class Behavior : public QWidget
     // 状态更新函数
     void actionUpdate(int curFrame, long long time);
 
+    // debug信息
     QString debugMessage;
-
-   private:
     // 边界判断常量
     int LeftEdge, RightEdge, BottomEdge, TopEdge;
+
+   private:
     // 桌宠坐标与速度
     int x, y;
     int vx, vy;

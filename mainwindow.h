@@ -47,6 +47,7 @@ class MainWindow : public QWidget
 
     void createActions();     // 创建动作
     void createActionMenu();  // 创建动作菜单
+    void actionMenuUpdate();  // 动作菜单可选性更新
     void createTrayMenu();    // 创建托盘菜单
     void createClickMenu();   // 创建右键菜单
     void debugMessageShow();  // 调试信息显示

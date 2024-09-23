@@ -124,6 +124,21 @@ void MainWindow::createActions()
     QSlider* volumeSlider = new QSlider(Qt::Horizontal);
     volumeSlider->setRange(0, 100);  // 设置音量范围
     volumeSlider->setValue(20);      // 默认值
+    volumeSlider->setStyleSheet("QSlider::handle:horizontal {"
+                                "    background: white;"  // 滑块的颜色
+                                "}"
+                                ""
+                                "QSlider::handle:horizontal:pressed {"
+                                "    background: #87ceeb;"  // 滑块被按下时的颜色
+                                "}"
+                                ""
+                                "QSlider::sub-page:horizontal {"
+                                "    background: lightblue;"  // 滑槽左侧（已滑动部分）的颜色
+                                "}"
+                                ""
+                                "QSlider::add-page:horizontal {"
+                                "    background: #cccccc;"  // 滑槽右侧（未滑动部分）的颜色
+                                "}");
     // 创建滑块两端的标签，显示最小值和最大值
     QLabel* minLabel = new QLabel("0");
     QLabel* maxLabel = new QLabel("100");
@@ -190,9 +205,25 @@ void MainWindow::createActionMenu()
     actionMenu->setStyleSheet("QMenu::icon { width: 0px; }");
     QAction* actCuteAction = new QAction(tr("卖萌"), this);
     actionMenu->addAction(actCuteAction);
+    connect(actCuteAction, &QAction::triggered, behavior, [=]() {
+        if (behavior->getY() == behavior->BottomEdge)
+        {
+            Action actCute = ActionsMap[behavior->getAction()].transform ? StandLefttoActCuteRight
+                                                                         : StandRighttoActCuteLeft;
+            behavior->loadAction(actCute);
+        }
+    });
 
-    QAction* sleepAction = new QAction(tr("睡觉"), this);
-    actionMenu->addAction(sleepAction);
+    //    QAction* sleepAction = new QAction(tr("睡觉"), this);
+    //    actionMenu->addAction(sleepAction);
+}
+
+void MainWindow::actionMenuUpdate()
+{
+    if (behavior->getY() != behavior->BottomEdge)
+        actionMenu->setEnabled(false);
+    else
+        actionMenu->setEnabled(true);
 }
 
 void MainWindow::contextMenuEvent(QContextMenuEvent* event)
@@ -209,6 +240,9 @@ void MainWindow::timerEvent(QTimerEvent* event)
     soundPlayer->soundPlay(player->curFrame);
     behavior->actionUpdate(player->curFrame, player->timePlayed);
     player->move(behavior->getX(), behavior->getY());
+
+    // 更新动作菜单可选性
+    actionMenuUpdate();
 
     // debug窗口是否显示
     if (debugAction->isChecked())

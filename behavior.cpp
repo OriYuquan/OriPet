@@ -771,7 +771,11 @@ void Behavior::inputControl(Action& pre,
 
 void Behavior::loadAction(Action act)
 {
+    if (actionBehavior == act)
+        return;
     actionBehavior = act;
+    emit PlayerLoadNewActionSignal(actionBehavior);
+    emit SoundPlayerLoadNewActionSignal(actionBehavior);
 }
 
 void Behavior::loadPos(int _x, int _y)
