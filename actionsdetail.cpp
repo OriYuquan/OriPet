@@ -684,13 +684,13 @@ void ActionsDetailLoad()
     ActionsProbability[FeatherAfterMouseRight] = {{FallRight, 7}, {DoubleJumpRightUp, -1}};
 
     ActionsProbability[AirDashLeft] = {
-        {AirDashtoFallLeft, 7}, {DoubleJumpLeftUp, -1}, {MovingFeatherLeft, 2}};
+        {AirDashtoFallLeft, 8}, {DoubleJumpLeftUp, -1}, {MovingFeatherLeft, 2}};
     ActionsProbability[AirDashRight] = {
-        {AirDashtoFallRight, 7}, {DoubleJumpRightUp, -1}, {MovingFeatherRight, 2}};
+        {AirDashtoFallRight, 8}, {DoubleJumpRightUp, -1}, {MovingFeatherRight, 2}};
     ActionsProbability[AirDashtoFallLeft] = {
-        {MovingFallLeft, 9}, {DoubleJumpLeftUp, -1}, {MovingFeatherLeft, 2}};
+        {MovingFallLeft, 10}, {DoubleJumpLeftUp, -1}, {MovingFeatherLeft, 2}};
     ActionsProbability[AirDashtoFallRight] = {
-        {MovingFallRight, 9}, {DoubleJumpRightUp, -1}, {MovingFeatherRight, 2}};
+        {MovingFallRight, 10}, {DoubleJumpRightUp, -1}, {MovingFeatherRight, 2}};
     ActionsProbability[GetDownLeft]      = {{StandFacingLeft, 12},
                                             {StandFacingRight, 2},
                                             {RunSlowlyLeft, 2},

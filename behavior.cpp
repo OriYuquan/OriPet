@@ -118,7 +118,7 @@ double Behavior::generalPossiblity(Action act)
 
         else if (act == AirDashLeft || act == AirDashRight)
         {
-            return (dashChance > 0) ? 3 : 0;
+            return (dashChance > 0) ? 2 : 0;
         }
         else if (act == StandtoLookUpListenLeft || act == StandtoLookUpListenRight)
         {
