@@ -31,9 +31,6 @@ MainWindow::MainWindow(QWidget* parent) : QWidget(parent)
     // 任务栏宽度修正
     setGeometry(QRect(0, 0, SCREENWIDTH, SCREENHEIGHT - 100));
 
-    // FPS设定为30
-    startTimer(RATE);
-
     // 播放器初始化
     player = new Player(this);
     // 音频播放器初始化
@@ -76,6 +73,9 @@ MainWindow::MainWindow(QWidget* parent) : QWidget(parent)
     behavior->loadPos(SCREENWIDTHFIX + 100, SCREENHEIGHTFIX + SCREENHEIGHT - ORIHEIGHT);
 
     player->move(behavior->getX(), behavior->getY());
+
+    // FPS设定为30
+    startTimer(RATE);
 }
 
 MainWindow::~MainWindow()
