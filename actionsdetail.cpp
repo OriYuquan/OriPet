@@ -608,14 +608,27 @@ void ActionsDetailLoad()
     ActionsProbability[DoubleJumptoMovingFallRight] = {{MovingFallRight, 1}};
     ActionsProbability[LandRunFastLeft]             = {{RunFastLeft, 1}};
     ActionsProbability[LandRunFastRight]            = {{RunFastRight, 1}};
-    ActionsProbability[WallJump1Left]               = {
-        {FallLeft, 7}, {DoubleJumpRightUp, -1}, {FeatherLeft, 2}, {AirDashLeft, -1}};
-    ActionsProbability[WallJump1Right] = {
-        {FallRight, 7}, {DoubleJumpLeftUp, -1}, {FeatherRight, 2}, {AirDashRight, -1}};
-    ActionsProbability[WallJump2Left] = {
-        {FallLeft, 7}, {DoubleJumpRightUp, -1}, {FeatherLeft, 2}, {AirDashLeft, -1}};
-    ActionsProbability[WallJump2Right] = {
-        {FallRight, 7}, {DoubleJumpLeftUp, -1}, {FeatherRight, 2}, {AirDashRight, -1}};
+
+    ActionsProbability[WallJump1Left]     = {{FallLeft, 7},
+                                             {DoubleJumpRightUp, -1},
+                                             {FeatherLeft, 2},
+                                             {AirDashLeft, -1},
+                                             {AirDashRight, 1}};
+    ActionsProbability[WallJump1Right]    = {{FallRight, 7},
+                                             {DoubleJumpLeftUp, -1},
+                                             {FeatherRight, 2},
+                                             {AirDashLeft, 1},
+                                             {AirDashRight, -1}};
+    ActionsProbability[WallJump2Left]     = {{FallLeft, 7},
+                                             {DoubleJumpRightUp, -1},
+                                             {FeatherLeft, 2},
+                                             {AirDashLeft, -1},
+                                             {AirDashRight, 1}};
+    ActionsProbability[WallJump2Right]    = {{FallRight, 7},
+                                             {DoubleJumpLeftUp, -1},
+                                             {FeatherRight, 2},
+                                             {AirDashLeft, 1},
+                                             {AirDashRight, -1}};
     ActionsProbability[WallLongJump1Left] = {
         {MovingFallRight, 5}, {DoubleJumpRightUp, -1}, {MovingFeatherRight, 3}, {AirDashRight, -1}};
     ActionsProbability[WallLongJump1Right] = {
@@ -875,6 +888,9 @@ void ActionsDetailLoad()
                 SoundsDetail("Sound/bash/oriBashEnd", 3, 1);
 
     SoundMap[YawnLeft] = SoundMap[YawnRight] = SoundsDetail("Sound/idle/seinIdleYawn", 1, 1);
+
+    SoundMap[MouseHoldLeft] = SoundMap[MouseHoldRight] =
+        SoundsDetail("Sound/mouseHold/mouseHold", 6, 0);
 
     // 镜像动作初始化
     for (int i = 0; i < int(None); i++)
