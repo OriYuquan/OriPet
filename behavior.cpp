@@ -104,7 +104,7 @@ double Behavior::generalPossiblity(Action act)
         }
         else if (act == DoubleJumpLeftUp || act == DoubleJumpRightUp)
         {
-            return (jumpChance > 0) ? 2 : 0;
+            return (jumpChance > 0) ? 2.5 : 0;
         }
 
         else if (act == FeatherLeft || act == FeatherRight)
@@ -118,7 +118,7 @@ double Behavior::generalPossiblity(Action act)
 
         else if (act == AirDashLeft || act == AirDashRight)
         {
-            return (dashChance > 0) ? 2 : 0;
+            return (dashChance > 0) ? 1.5 : 0;
         }
         else if (act == StandtoLookUpListenLeft || act == StandtoLookUpListenRight)
         {
