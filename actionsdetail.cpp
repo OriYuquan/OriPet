@@ -460,8 +460,8 @@ void ActionsDetailLoad()
                                             {RunFastRight, 1},
                                             {RunLeft, -1},
                                             {WalkLeft, 2}};
-    ActionsProbability[RunSlowlyRight]   = {{StandFacingLeft, 20},
-                                            {StandFacingRight, 2},
+    ActionsProbability[RunSlowlyRight]   = {{StandFacingLeft, 1},
+                                            {StandFacingRight, 20},
                                             {RunSlowlyLeft, -1},
                                             {RunFastLeft, 1},
                                             {RunFastRight, -1},
@@ -497,7 +497,7 @@ void ActionsDetailLoad()
     ActionsProbability[AgainstWallLeft] = {
         {StandFacingLeft, 5}, {StandFacingRight, 1}, {RunSlowlyRight, -1}, {ClimbUpLeft, 7}};
     ActionsProbability[AgainstWallRight] = {
-        {StandFacingLeft, 1}, {StandFacingLeft, 5}, {RunSlowlyLeft, -1}, {ClimbUpRight, 7}};
+        {StandFacingLeft, 1}, {StandFacingRight, 5}, {RunSlowlyLeft, -1}, {ClimbUpRight, 7}};
     ActionsProbability[ClimbUpLeft]     = {{WallStayLeft, 8},
                                            {ClimbDownLeft, 1},
                                            {WallJump1Left, 1},
