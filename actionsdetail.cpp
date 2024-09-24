@@ -68,9 +68,9 @@ void ActionsDetailLoad()
     ActionsMap[AgainstWallLeft]  = ActionsDetail("Source/AgainstWall/ori31-", 30, true, 0, 0.5);
     ActionsMap[AgainstWallRight] = ActionsDetail("Source/AgainstWall/ori31-", 30, false, 0, 0.5);
     ActionsMap[ClimbUpLeft] =
-        ActionsDetail("Source/ClimbUp/ClimbUp_", 22, true, 100, 0.8, true, false);
+        ActionsDetail("Source/ClimbUp/ClimbUp_", 22, true, 100, 0.75, true, false);
     ActionsMap[ClimbUpRight] =
-        ActionsDetail("Source/ClimbUp/ClimbUp_", 22, false, 100, 0.8, true, false);
+        ActionsDetail("Source/ClimbUp/ClimbUp_", 22, false, 100, 0.75, true, false);
     ActionsMap[WallStayLeft]  = ActionsDetail("Source/WallStay/ori18-", 34, true, 0, 0.3);
     ActionsMap[WallStayRight] = ActionsDetail("Source/WallStay/ori18-", 34, false, 0, 0.3);
     ActionsMap[ClimbDownLeft] =
