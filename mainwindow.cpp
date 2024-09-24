@@ -267,27 +267,32 @@ void MainWindow::baseInputShowSlot()
     QInputDialog dialog(this);
 
     dialog.setStyleSheet(R"(
-                         QInputDialog {
-                             background-color: rgba(43, 45, 48, 255);
-                             border-radius: 5px;
-                         }
+        QInputDialog {
+            background-color: rgba(43, 45, 48, 255);
+            border-radius: 5px;
+        }
 
-                         QInputDialog QLabel {
-                             color: white;
-                             font-size: 20px;
-                         }
+        QInputDialog QLabel {
+            color: white;
+            font-size: 20px;
+        }
 
-                         QInputDialog QLineEdit {
-                             background-color: rgba(43, 45, 48, 255);
-                             color: black;
-                             border-radius: 5px;
-                         }
+        QInputDialog QLineEdit {
+            background-color: rgba(43, 45, 48, 255);
+            color: black;
+            border-radius: 5px;
+        }
 
-                         QInputDialog QPushButton {
-                             background-color: rgba(83, 85, 88, 0.7);
-                             color: white;
-                         }
-                     )");
+        QInputDialog QPushButton {
+            background-color: rgba(83, 85, 88, 0.7);
+            color: white;
+        }
+
+        QInputDialog QPushButton:hover {
+            background-color: rgba(103, 105, 108, 0.9);
+            color: white;
+        }
+    )");
 
     dialog.setWindowTitle(tr("水平基准修改"));
     dialog.setLabelText(tr("请输入水平基准值\n重启桌宠生效"));

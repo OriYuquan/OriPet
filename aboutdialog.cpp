@@ -32,7 +32,8 @@ AboutDialog::AboutDialog(QWidget* parent) : QDialog(parent)
         }
 
         QPushButton:hover {
-            background-color: rgba(83, 85, 88, 1.0);
+            background-color: rgba(103, 105, 108, 0.9);
+            color: white;
         }
 
         QPushButton:pressed {
