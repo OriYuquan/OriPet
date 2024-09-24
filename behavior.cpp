@@ -104,22 +104,22 @@ double Behavior::generalPossiblity(Action act)
         }
         else if (act == DoubleJumpLeftUp || act == DoubleJumpRightUp)
         {
-            return (jumpChance > 0) ? 2.5 : 0;
+            return (jumpChance > 0 && y > 150) ? 2.5 : 0;
+        }
+        else if (act == AirDashLeft || act == AirDashRight)
+        {
+            return (dashChance > 0 && y > 150) ? 1.5 : 0;
         }
 
         else if (act == FeatherLeft || act == FeatherRight)
         {
-            return (abs(vx) < 10) ? (abs(vy) / 10 + 5 - (jumpChance + dashChance)) : 0;
+            return (abs(vx) < 10) ? (abs(vy) / 9 + 5 - (jumpChance + dashChance)) : 0;
         }
         else if (act == MovingFeatherLeft || act == MovingFeatherRight)
         {
-            return (abs(vx) >= 10) ? (abs(vy) / 10 + 5 - (jumpChance + dashChance)) : 0;
+            return (abs(vx) >= 10) ? (abs(vy) / 9 + 5 - (jumpChance + dashChance)) : 0;
         }
 
-        else if (act == AirDashLeft || act == AirDashRight)
-        {
-            return (dashChance > 0) ? 1.5 : 0;
-        }
         else if (act == StandtoLookUpListenLeft || act == StandtoLookUpListenRight)
         {
             if ((act == StandtoLookUpListenLeft &&
@@ -155,10 +155,6 @@ double Behavior::generalPossiblity(Action act)
 
 Action Behavior::NextActions(Action currentAction)
 {
-    // 获取当前时间的时间戳作为种子
-    quint32          seed = static_cast<quint32>(QDateTime::currentMSecsSinceEpoch() & 0xFFFFFFFF);
-    QRandomGenerator generator(seed);
-
     const QMap<Action, double>& nextActions = ActionsProbability[currentAction];
 
     // 计算权重总和
@@ -175,7 +171,7 @@ Action Behavior::NextActions(Action currentAction)
     }
 
     // 生成随机数
-    double randomValue = generator.bounded(totalWeight);
+    double randomValue = QRandomGenerator::system()->bounded(totalWeight);
     // 根据随机数选择下一个动作
     double cumulativeWeight = 0;
     for (auto it = values.cbegin(); it != values.cend(); ++it)
@@ -236,9 +232,7 @@ void Behavior::actionUpdate(int curFrame, long long time)
         controlTime = (controlTime == 0) ? 0 : controlTime - 1;
     }
 
-    quint32          seed = static_cast<quint32>(QDateTime::currentMSecsSinceEpoch() & 0xFFFFFFFF);
-    QRandomGenerator generator(seed);
-    double           randomValue = generator.bounded(1.0);
+    double randomValue = QRandomGenerator::system()->bounded(1.0);
     // 检查是否可以进行状态转移
     // 如果操控已冷却，状态机转移
     if (controlTime == 0 &&
