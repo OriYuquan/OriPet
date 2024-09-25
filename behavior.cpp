@@ -59,13 +59,13 @@ double Behavior::generalPossiblity(Action act)
         else if (act == ClimbUpLeft || act == ClimbUpRight)
         {
             if ((act == ClimbUpLeft && x == LeftEdge) || (act == ClimbUpRight && x == RightEdge))
-                return 12.0 * (double) (y - TopEdge) / (double) (BottomEdge - TopEdge);
+                return 8.0 * (double) (y - TopEdge) / (double) (BottomEdge - TopEdge);
         }
         else if (act == ClimbDownLeft || act == ClimbDownRight)
         {
             if ((act == ClimbDownLeft && x == LeftEdge) ||
                 (act == ClimbDownRight && x == RightEdge))
-                return 12.0 * (double) (BottomEdge - TopEdge - (y - TopEdge)) /
+                return 8.0 * (double) (BottomEdge - TopEdge - (y - TopEdge)) /
                        (double) (BottomEdge - TopEdge);
             else
                 return 0;
@@ -113,11 +113,15 @@ double Behavior::generalPossiblity(Action act)
 
         else if (act == FeatherLeft || act == FeatherRight)
         {
-            return (abs(vx) < 10) ? (abs(vy) / 9 + 5 - (jumpChance + dashChance)) : 0;
+            return (abs(vx) < 10 && y < (BottomEdge - 30))
+                       ? (abs(vy) / 9 + 5 - (jumpChance + dashChance))
+                       : 0;
         }
         else if (act == MovingFeatherLeft || act == MovingFeatherRight)
         {
-            return (abs(vx) >= 10) ? (abs(vy) / 9 + 5 - (jumpChance + dashChance)) : 0;
+            return (abs(vx) >= 10 && y < (BottomEdge - 30))
+                       ? (abs(vy) / 9 + 5 - (jumpChance + dashChance))
+                       : 0;
         }
 
         else if (act == StandtoLookUpListenLeft || act == StandtoLookUpListenRight)

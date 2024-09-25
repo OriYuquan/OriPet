@@ -5,8 +5,13 @@
 #include <QDebug>
 #include <QFile>
 #include <QGuiApplication>
+#include <QRandomGenerator>
 #include <QScreen>
+#include <cmath>
 
+using std::abs;
+using std::max;
+using std::min;
 using std::pair;
 
 // 初始化映射关系
@@ -230,27 +235,26 @@ void ActionsDetailLoad()
     ActionsMap[QuitStepLeft]  = ActionsDetail("Source/QuitStep/ori38-", 96, true, 0, 0.8);
     ActionsMap[QuitStepRight] = ActionsDetail("Source/QuitStep/ori38-", 96, false, 0, 0.8);
 
-    ActionsMap[LookUpListenLeft] = ActionsDetail("Source/LookUpListen/ori21-", 50, true, 700, 0.85);
-    ActionsMap[LookUpListenRight] =
-        ActionsDetail("Source/LookUpListen/ori21-", 50, false, 700, 0.85);
+    ActionsMap[LookUpListenLeft]  = ActionsDetail("Source/LookUpListen/ori21-", 50, true, 0, 0.85);
+    ActionsMap[LookUpListenRight] = ActionsDetail("Source/LookUpListen/ori21-", 50, false, 0, 0.85);
     ActionsMap[StandtoLookUpListenLeft] =
-        ActionsDetail("Source/StandtoLookUpListen/ori24-", 21, true, 0, 0.0);
+        ActionsDetail("Source/StandtoLookUpListen/ori24-", 21, true, 2000, 0.0);
     ActionsMap[StandtoLookUpListenRight] =
-        ActionsDetail("Source/StandtoLookUpListen/ori24-", 21, false, 0, 0.0);
+        ActionsDetail("Source/StandtoLookUpListen/ori24-", 21, false, 2000, 0.0);
 
     ActionsMap[LookUpLeft] = ActionsDetail("Source/LookUp/ori22-", 30, true, 200, 0.9, true, false);
     ActionsMap[LookUpRight] =
         ActionsDetail("Source/LookUp/ori22-", 30, false, 200, 0.9, true, false);
 
-    ActionsMap[YawnLeft]  = ActionsDetail("Source/Yawn/ori44-", 68, true, 1000, 0.0);
-    ActionsMap[YawnRight] = ActionsDetail("Source/Yawn/ori44-", 68, false, 1000, 0.0);
+    ActionsMap[YawnLeft]  = ActionsDetail("Source/Yawn/ori44-", 68, true, 2000, 0.0);
+    ActionsMap[YawnRight] = ActionsDetail("Source/Yawn/ori44-", 68, false, 2000, 0.0);
 
     ActionsMap[ActCuteLeft]  = ActionsDetail("Source/ActCute/Cute1Idle_", 105, true, 0, 0.5);
     ActionsMap[ActCuteRight] = ActionsDetail("Source/ActCute/Cute1Idle_", 105, false, 0, 0.5);
     ActionsMap[StandLefttoActCuteRight] =
-        ActionsDetail("Source/StandtoActCute/StandToCute1_", 85, true, 2000, 0.0);
+        ActionsDetail("Source/StandtoActCute/StandToCute1_", 85, true, 3000, 0.0);
     ActionsMap[StandRighttoActCuteLeft] =
-        ActionsDetail("Source/StandtoActCute/StandToCute1_", 85, false, 2000, 0.0);
+        ActionsDetail("Source/StandtoActCute/StandToCute1_", 85, false, 3000, 0.0);
 
     // 动作限制集合
     ActionLimit = {Jump1LeftUp,       Jump1RightUp,
@@ -482,98 +486,100 @@ void ActionsDetailLoad()
     ActionsProbability[Jump2LeftDown]  = {{LandStandLeft, 1}};
     ActionsProbability[Jump2RightDown] = {{LandStandRight, 1}};
 
-    ActionsProbability[LandStandLeft]    = {{StandFacingLeft, 3},
-                                            {StandFacingRight, 1},
-                                            {RunSlowlyLeft, -1},
-                                            {RunSlowlyRight, -1},
-                                            {Jump1LeftUp, 1},
-                                            {Jump2LeftUp, 1}};
-    ActionsProbability[LandStandRight]   = {{StandFacingRight, 3},
-                                            {StandFacingLeft, 1},
-                                            {RunSlowlyLeft, -1},
-                                            {RunSlowlyRight, -1},
-                                            {Jump1RightUp, 1},
-                                            {Jump2RightUp, 1}};
+    ActionsProbability[LandStandLeft]  = {{StandFacingLeft, 3},
+                                          {StandFacingRight, 1},
+                                          {RunSlowlyLeft, -1},
+                                          {RunSlowlyRight, -1},
+                                          {Jump1LeftUp, 1},
+                                          {Jump2LeftUp, 1}};
+    ActionsProbability[LandStandRight] = {{StandFacingRight, 3},
+                                          {StandFacingLeft, 1},
+                                          {RunSlowlyLeft, -1},
+                                          {RunSlowlyRight, -1},
+                                          {Jump1RightUp, 1},
+                                          {Jump2RightUp, 1}};
+
     ActionsProbability[AgainstWallLeft]  = {{StandFacingLeft, 5},
                                             {StandFacingRight, 1},
                                             {WalkRight, 3},
                                             {RunSlowlyRight, 4},
                                             {RunFastRight, 3},
-                                            {ClimbUpLeft, 7}};
+                                            {ClimbUpLeft, 18}};
     ActionsProbability[AgainstWallRight] = {{StandFacingLeft, 1},
                                             {StandFacingRight, 5},
                                             {WalkLeft, 3},
                                             {RunSlowlyLeft, 4},
                                             {RunFastLeft, 3},
-                                            {ClimbUpRight, 7}};
-    ActionsProbability[ClimbUpLeft]      = {{WallStayLeft, 8},
-                                            {ClimbDownLeft, 1},
-                                            {WallJump1Left, 1},
-                                            {WallJump2Left, 1},
-                                            {WallLongJump1Left, 2},
-                                            {WallLongJump2Left, 2},
-                                            {WallJumpClimbLeft, 1},
-                                            {AirDashRight, -1}};
-    ActionsProbability[ClimbUpRight]     = {{WallStayRight, 8},
-                                            {ClimbDownRight, 1},
-                                            {WallJump1Right, 1},
-                                            {WallJump2Right, 1},
-                                            {WallLongJump1Right, 2},
-                                            {WallLongJump2Right, 2},
-                                            {WallJumpClimbRight, 1},
-                                            {AirDashLeft, -1}};
-    ActionsProbability[WallStayLeft]     = {{ClimbUpLeft, -1},
-                                            {ClimbDownLeft, -1},
-                                            {WallJump1Left, 1},
-                                            {WallJump2Left, 1},
-                                            {WallLongJump1Left, 2},
-                                            {WallLongJump2Left, 2},
-                                            {WallJumpClimbLeft, 2},
-                                            {TopClimbRight, -1},
-                                            {AirDashRight, -1}};
-    ActionsProbability[WallStayRight]    = {{ClimbUpRight, -1},
-                                            {ClimbDownRight, -1},
-                                            {WallJump1Right, 1},
-                                            {WallJump2Right, 1},
-                                            {WallLongJump1Right, 2},
-                                            {WallLongJump2Right, 2},
-                                            {WallJumpClimbRight, 2},
-                                            {TopClimbLeft, -1},
-                                            {AirDashLeft, -1}};
-    ActionsProbability[ClimbDownLeft]    = {{WallStayLeft, 8},
-                                            {ClimbUpLeft, 1},
-                                            {WallJump1Left, 1},
-                                            {WallJump2Left, 1},
-                                            {WallLongJump1Left, 2},
-                                            {WallLongJump2Left, 2},
-                                            {WallJumpClimbLeft, 1},
-                                            {AirDashRight, -1}};
-    ActionsProbability[ClimbDownRight]   = {{WallStayRight, 8},
-                                            {ClimbUpRight, 1},
-                                            {WallJump1Right, 1},
-                                            {WallJump2Right, 1},
-                                            {WallLongJump1Right, 2},
-                                            {WallLongJump2Right, 2},
-                                            {WallJumpClimbRight, 1},
-                                            {AirDashLeft, -1}};
-    ActionsProbability[RunFastLeft]      = {{RuntoStandLeft, 10},
-                                            {RunFastRight, 1},
-                                            {RunSlowlyLeft, -1},
-                                            {RunJump1LeftUp, 4},
-                                            {RunJump2LeftUp, 4},
-                                            {DashBeginLeft, 1},
-                                            {RunLeft, -1},
-                                            {WalkLeft, 1}};
-    ActionsProbability[RunFastRight]     = {{RuntoStandRight, 10},
-                                            {RunFastLeft, 1},
-                                            {RunSlowlyRight, -1},
-                                            {RunJump1RightUp, 4},
-                                            {RunJump2RightUp, 4},
-                                            {DashBeginRight, 1},
-                                            {RunRight, -1},
-                                            {WalkRight, 1}};
-    ActionsProbability[RuntoStandLeft]   = {{StandFacingLeft, 1}};
-    ActionsProbability[RuntoStandRight]  = {{StandFacingRight, 1}};
+                                            {ClimbUpRight, 18}};
+
+    ActionsProbability[ClimbUpLeft]     = {{WallStayLeft, 8},
+                                           {ClimbDownLeft, 1},
+                                           {WallJump1Left, 1},
+                                           {WallJump2Left, 1},
+                                           {WallLongJump1Left, 2},
+                                           {WallLongJump2Left, 2},
+                                           {WallJumpClimbLeft, 1},
+                                           {AirDashRight, -1}};
+    ActionsProbability[ClimbUpRight]    = {{WallStayRight, 8},
+                                           {ClimbDownRight, 1},
+                                           {WallJump1Right, 1},
+                                           {WallJump2Right, 1},
+                                           {WallLongJump1Right, 2},
+                                           {WallLongJump2Right, 2},
+                                           {WallJumpClimbRight, 1},
+                                           {AirDashLeft, -1}};
+    ActionsProbability[WallStayLeft]    = {{ClimbUpLeft, -1},
+                                           {ClimbDownLeft, -1},
+                                           {WallJump1Left, 1},
+                                           {WallJump2Left, 1},
+                                           {WallLongJump1Left, 2},
+                                           {WallLongJump2Left, 2},
+                                           {WallJumpClimbLeft, 2},
+                                           {TopClimbRight, -1},
+                                           {AirDashRight, -1}};
+    ActionsProbability[WallStayRight]   = {{ClimbUpRight, -1},
+                                           {ClimbDownRight, -1},
+                                           {WallJump1Right, 1},
+                                           {WallJump2Right, 1},
+                                           {WallLongJump1Right, 2},
+                                           {WallLongJump2Right, 2},
+                                           {WallJumpClimbRight, 2},
+                                           {TopClimbLeft, -1},
+                                           {AirDashLeft, -1}};
+    ActionsProbability[ClimbDownLeft]   = {{WallStayLeft, 8},
+                                           {ClimbUpLeft, 1},
+                                           {WallJump1Left, 1},
+                                           {WallJump2Left, 1},
+                                           {WallLongJump1Left, 2},
+                                           {WallLongJump2Left, 2},
+                                           {WallJumpClimbLeft, 1},
+                                           {AirDashRight, -1}};
+    ActionsProbability[ClimbDownRight]  = {{WallStayRight, 8},
+                                           {ClimbUpRight, 1},
+                                           {WallJump1Right, 1},
+                                           {WallJump2Right, 1},
+                                           {WallLongJump1Right, 2},
+                                           {WallLongJump2Right, 2},
+                                           {WallJumpClimbRight, 1},
+                                           {AirDashLeft, -1}};
+    ActionsProbability[RunFastLeft]     = {{RuntoStandLeft, 10},
+                                           {RunFastRight, 1},
+                                           {RunSlowlyLeft, -1},
+                                           {RunJump1LeftUp, 4},
+                                           {RunJump2LeftUp, 4},
+                                           {DashBeginLeft, 1},
+                                           {RunLeft, -1},
+                                           {WalkLeft, 1}};
+    ActionsProbability[RunFastRight]    = {{RuntoStandRight, 10},
+                                           {RunFastLeft, 1},
+                                           {RunSlowlyRight, -1},
+                                           {RunJump1RightUp, 4},
+                                           {RunJump2RightUp, 4},
+                                           {DashBeginRight, 1},
+                                           {RunRight, -1},
+                                           {WalkRight, 1}};
+    ActionsProbability[RuntoStandLeft]  = {{StandFacingLeft, 1}};
+    ActionsProbability[RuntoStandRight] = {{StandFacingRight, 1}};
 
     ActionsProbability[RunJump1LeftUp] = {
         {RunJump1LeftDown, 5}, {DoubleJumpLeftUp, -1}, {AirDashLeft, -1}};
@@ -638,13 +644,13 @@ void ActionsDetailLoad()
                                              {AirDashLeft, 2},
                                              {AirDashRight, 1}};
     ActionsProbability[WallLongJump1Left] = {
-        {MovingFallRight, 5}, {DoubleJumpRightUp, -1}, {MovingFeatherRight, 3}, {AirDashRight, -1}};
+        {MovingFallRight, 4}, {DoubleJumpRightUp, -1}, {MovingFeatherRight, 2}, {AirDashRight, -1}};
     ActionsProbability[WallLongJump1Right] = {
-        {MovingFallLeft, 5}, {DoubleJumpLeftUp, -1}, {MovingFeatherLeft, 3}, {AirDashLeft, -1}};
+        {MovingFallLeft, 4}, {DoubleJumpLeftUp, -1}, {MovingFeatherLeft, 2}, {AirDashLeft, -1}};
     ActionsProbability[WallLongJump2Left] = {
-        {MovingFallRight, 5}, {DoubleJumpRightUp, -1}, {MovingFeatherRight, 3}, {AirDashRight, -1}};
+        {MovingFallRight, 4}, {DoubleJumpRightUp, -1}, {MovingFeatherRight, 2}, {AirDashRight, -1}};
     ActionsProbability[WallLongJump2Right] = {
-        {MovingFallLeft, 5}, {DoubleJumpLeftUp, -1}, {MovingFeatherLeft, 3}, {AirDashLeft, -1}};
+        {MovingFallLeft, 4}, {DoubleJumpLeftUp, -1}, {MovingFeatherLeft, 2}, {AirDashLeft, -1}};
     ActionsProbability[TopStayLeft]  = {{TopClimbLeft, -1},
                                         {TopClimbRight, 1},
                                         {TopStayRight, 2},
@@ -984,7 +990,14 @@ pair<int, int> ActionsMovement(Action    action,
     }
     if (action == DoubleJumpLeftUp || action == DoubleJumpRightUp)
     {
-        dx = vx;
+        if (curFrame == 1)
+        {
+            int randomVx = abs(vx) + QRandomGenerator::system()->bounded(15);
+            randomVx     = min(randomVx, 18);
+            dx           = (ActionsMap[action].transform ? -1 : 1) * randomVx;
+        }
+        else
+            dx = vx;
         dy = -(ActionsMap[DoubleJumpLeftUp].totalFrameNumber +
                ActionsMap[DoubleJumpLeftDown].totalFrameNumber + 1) +
              curFrame * 2;
