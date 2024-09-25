@@ -104,11 +104,11 @@ double Behavior::generalPossiblity(Action act)
         }
         else if (act == DoubleJumpLeftUp || act == DoubleJumpRightUp)
         {
-            return (jumpChance > 0 && y > 150) ? 2.5 : 0;
+            return (jumpChance > 0 && y > 150) ? 3 : 0;
         }
         else if (act == AirDashLeft || act == AirDashRight)
         {
-            return (dashChance > 0 && y > 150) ? 1.5 : 0;
+            return (dashChance > 0 && y > 150) ? 2 : 0;
         }
 
         else if (act == FeatherLeft || act == FeatherRight)

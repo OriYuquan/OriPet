@@ -183,8 +183,8 @@ void ActionsDetailLoad()
     ActionsMap[GetDownWalkRight] =
         ActionsDetail("Source/GetDownWalk/ori3-", 36, false, 0, 0.8, true, false);
 
-    ActionsMap[RunLeft]  = ActionsDetail("Source/Run/ori26-", 21, true, 1000, 0.5);
-    ActionsMap[RunRight] = ActionsDetail("Source/Run/ori26-", 21, false, 1000, 0.5);
+    ActionsMap[RunLeft]  = ActionsDetail("Source/Run/ori26-", 21, true, 5000, 0.5);
+    ActionsMap[RunRight] = ActionsDetail("Source/Run/ori26-", 21, false, 5000, 0.5);
 
     ActionsMap[WalkLeft]  = ActionsDetail("Source/Walk/walk_", 30, true, 100, 0.8);
     ActionsMap[WalkRight] = ActionsDetail("Source/Walk/walk_", 30, false, 100, 0.8);

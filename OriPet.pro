@@ -46,3 +46,4 @@ RESOURCES +=
 
 RC_FILE += logo.rc
 
+
