@@ -50,6 +50,7 @@ AboutDialog::AboutDialog(QWidget* parent) : QDialog(parent)
     backgroundLabel->lower();               // 置于底层
 
     QMovie* movie = new QMovie("background.gif");
+    movie->setParent(this);
     backgroundLabel->setMovie(movie);
     movie->setScaledSize(size());
     movie->start();
@@ -64,7 +65,7 @@ AboutDialog::AboutDialog(QWidget* parent) : QDialog(parent)
     QVBoxLayout* layout = new QVBoxLayout(this);
 
     // 个人信息
-    QLabel* infoLabel = new QLabel;
+    QLabel* infoLabel = new QLabel(this);
     infoLabel->setTextFormat(Qt::RichText);  // 启用富文本支持
     infoLabel->setText(
         "奥里桌宠<br><br>"
@@ -77,7 +78,7 @@ AboutDialog::AboutDialog(QWidget* parent) : QDialog(parent)
     layout->addWidget(infoLabel);
 
     // 添加按钮
-    QPushButton* closeButton = new QPushButton("关闭");
+    QPushButton* closeButton = new QPushButton("关闭", this);
     connect(closeButton, &QPushButton::clicked, this, &QDialog::accept);
     layout->addWidget(closeButton);
 

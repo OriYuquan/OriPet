@@ -254,8 +254,7 @@ void MainWindow::timerEvent(QTimerEvent* event)
 // 关于对话框
 void MainWindow::aboutShowSlot()
 {
-    AboutDialog aboutDialog(this);
-    aboutDialog.setWindowFlags(Qt::MSWindowsFixedSizeDialogHint);
+    AboutDialog aboutDialog(this);  // 在栈上分配，自动管理内存
     aboutDialog.setWindowFlags(Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint |
                                Qt::FramelessWindowHint);
     aboutDialog.exec();
@@ -296,7 +295,6 @@ void MainWindow::baseInputShowSlot()
 
     dialog.setWindowTitle(tr("水平基准修改"));
     dialog.setLabelText(tr("请输入水平基准值\n重启桌宠生效"));
-    dialog.setWindowFlags(Qt::MSWindowsFixedSizeDialogHint);
     dialog.setWindowFlags(Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint | Qt::FramelessWindowHint);
 
     // 从设置文件里读取基准数据

@@ -73,15 +73,15 @@ void ActionsDetailLoad()
     ActionsMap[AgainstWallLeft]  = ActionsDetail("Source/AgainstWall/ori31-", 30, true, 0, 0.5);
     ActionsMap[AgainstWallRight] = ActionsDetail("Source/AgainstWall/ori31-", 30, false, 0, 0.5);
     ActionsMap[ClimbUpLeft] =
-        ActionsDetail("Source/ClimbUp/ClimbUp_", 22, true, 100, 0.75, true, false);
+        ActionsDetail("Source/ClimbUp/ClimbUp_", 22, true, 100, 0.7, true, false);
     ActionsMap[ClimbUpRight] =
-        ActionsDetail("Source/ClimbUp/ClimbUp_", 22, false, 100, 0.75, true, false);
+        ActionsDetail("Source/ClimbUp/ClimbUp_", 22, false, 100, 0.7, true, false);
     ActionsMap[WallStayLeft]  = ActionsDetail("Source/WallStay/ori18-", 34, true, 0, 0.3);
     ActionsMap[WallStayRight] = ActionsDetail("Source/WallStay/ori18-", 34, false, 0, 0.3);
     ActionsMap[ClimbDownLeft] =
-        ActionsDetail("Source/ClimbDown/ori43-", 13, true, 100, 0.7, true, false);
+        ActionsDetail("Source/ClimbDown/ori43-", 13, true, 100, 0.65, true, false);
     ActionsMap[ClimbDownRight] =
-        ActionsDetail("Source/ClimbDown/ori43-", 13, false, 100, 0.7, true, false);
+        ActionsDetail("Source/ClimbDown/ori43-", 13, false, 100, 0.65, true, false);
     ActionsMap[RunFastLeft] = ActionsDetail("Source/RunFast/ori32-", 56, true, 0, 0.2, true, false);
     ActionsMap[RunFastRight] =
         ActionsDetail("Source/RunFast/ori32-", 56, false, 0, 0.2, true, false);
