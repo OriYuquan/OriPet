@@ -261,7 +261,11 @@ void Behavior::actionUpdate(int curFrame, long long time)
         }
         // 未播放完转移
         else if (actionBehavior == DoubleJumpLeftUp || actionBehavior == DoubleJumpRightUp ||
-                 actionBehavior == DoubleJumpLeftDown || actionBehavior == DoubleJumpRightDown)
+                 actionBehavior == DoubleJumpLeftDown || actionBehavior == DoubleJumpRightDown ||
+                 actionBehavior == Jump1LeftUp || actionBehavior == Jump1RightUp ||
+                 actionBehavior == Jump1LeftDown || actionBehavior == Jump1RightDown ||
+                 actionBehavior == Jump2LeftUp || actionBehavior == Jump2RightUp ||
+                 actionBehavior == Jump2LeftDown || actionBehavior == Jump2RightDown)
         {
             if (vx > 0)
                 vx--;

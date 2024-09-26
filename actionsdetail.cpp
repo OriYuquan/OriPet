@@ -88,15 +88,15 @@ void ActionsDetailLoad()
     ActionsMap[RuntoStandLeft]  = ActionsDetail("Source/RuntoStand/runToIdle_", 37, true, 0, 0.0);
     ActionsMap[RuntoStandRight] = ActionsDetail("Source/RuntoStand/runToIdle_", 37, false, 0, 0.0);
 
-    ActionsMap[RunJump1LeftUp]    = ActionsDetail("Source/RunJump1Up/jump1_", 16, true, 0, 0.0);
-    ActionsMap[RunJump1RightUp]   = ActionsDetail("Source/RunJump1Up/jump1_", 16, false, 0, 0.0);
-    ActionsMap[RunJump1LeftDown]  = ActionsDetail("Source/RunJump1Down/jump1_", 15, true, 0, 0.0);
-    ActionsMap[RunJump1RightDown] = ActionsDetail("Source/RunJump1Down/jump1_", 15, false, 0, 0.0);
+    ActionsMap[RunJump1LeftUp]    = ActionsDetail("Source/RunJump1Up/JumpA_", 16, true, 0, 0.0);
+    ActionsMap[RunJump1RightUp]   = ActionsDetail("Source/RunJump1Up/JumpA_", 16, false, 0, 0.0);
+    ActionsMap[RunJump1LeftDown]  = ActionsDetail("Source/RunJump1Down/JumpA_", 15, true, 0, 0.0);
+    ActionsMap[RunJump1RightDown] = ActionsDetail("Source/RunJump1Down/JumpA_", 15, false, 0, 0.0);
 
-    ActionsMap[RunJump2LeftUp]    = ActionsDetail("Source/RunJump2Up/ori28-", 16, true, 0, 0.0);
-    ActionsMap[RunJump2RightUp]   = ActionsDetail("Source/RunJump2Up/ori28-", 16, false, 0, 0.0);
-    ActionsMap[RunJump2LeftDown]  = ActionsDetail("Source/RunJump2Down/ori28-", 15, true, 0, 0.0);
-    ActionsMap[RunJump2RightDown] = ActionsDetail("Source/RunJump2Down/ori28-", 15, false, 0, 0.0);
+    ActionsMap[RunJump2LeftUp]    = ActionsDetail("Source/RunJump2Up/JumpB_", 16, true, 0, 0.0);
+    ActionsMap[RunJump2RightUp]   = ActionsDetail("Source/RunJump2Up/JumpB_", 16, false, 0, 0.0);
+    ActionsMap[RunJump2LeftDown]  = ActionsDetail("Source/RunJump2Down/JumpB_", 15, true, 0, 0.0);
+    ActionsMap[RunJump2RightDown] = ActionsDetail("Source/RunJump2Down/JumpB_", 15, false, 0, 0.0);
 
     ActionsMap[DoubleJumpLeftUp] =
         ActionsDetail("Source/DoubleJumpUp/doubleJump_", 15, true, 0, 0.0);
