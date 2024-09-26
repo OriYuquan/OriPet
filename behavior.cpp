@@ -700,8 +700,21 @@ void Behavior::inputControl(Action& pre,
         {
             if (leftKey)
             {
-                vx = -18;
-                if (actionBehavior == DoubleJumpRightUp)
+                if (actionBehavior == Jump1RightUp || actionBehavior == Jump1RightDown ||
+                    actionBehavior == Jump2RightUp || actionBehavior == Jump2RightDown ||
+                    actionBehavior == Jump1LeftUp || actionBehavior == Jump1LeftDown ||
+                    actionBehavior == Jump2LeftUp || actionBehavior == Jump2LeftDown)
+                    vx = -9;
+                else
+                    vx = -18;
+                if (actionBehavior == Jump1RightUp || actionBehavior == Jump1RightDown ||
+                    actionBehavior == Jump2RightUp || actionBehavior == Jump2RightDown)
+                {
+                    // vx             = -10;
+                    actionBehavior = ActionsMirror[actionBehavior];
+                    mirror         = true;
+                }
+                else if (actionBehavior == DoubleJumpRightUp)
                 {
                     actionBehavior = DoubleJumpLeftUp;
                     mirror         = true;
@@ -734,8 +747,20 @@ void Behavior::inputControl(Action& pre,
             }
             if (rightKey)
             {
-                vx = 18;
-                if (actionBehavior == DoubleJumpLeftUp)
+                if (actionBehavior == Jump1RightUp || actionBehavior == Jump1RightDown ||
+                    actionBehavior == Jump2RightUp || actionBehavior == Jump2RightDown ||
+                    actionBehavior == Jump1LeftUp || actionBehavior == Jump1LeftDown ||
+                    actionBehavior == Jump2LeftUp || actionBehavior == Jump2LeftDown)
+                    vx = 9;
+                else
+                    vx = 18;
+                if (actionBehavior == Jump1LeftUp || actionBehavior == Jump1LeftDown ||
+                    actionBehavior == Jump2LeftUp || actionBehavior == Jump2LeftDown)
+                {
+                    actionBehavior = ActionsMirror[actionBehavior];
+                    mirror         = true;
+                }
+                else if (actionBehavior == DoubleJumpLeftUp)
                 {
                     actionBehavior = DoubleJumpRightUp;
                     mirror         = true;

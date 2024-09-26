@@ -948,7 +948,19 @@ pair<int, int> ActionsMovement(Action    action,
     if (action == Jump1LeftUp || action == Jump1RightUp || action == Jump2LeftUp ||
         action == Jump2RightUp)
     {
-        dx = 0;
+        if (curFrame == 1)
+        {
+            if (!control)
+            {
+                int randomVx = abs(vx) + QRandomGenerator::system()->bounded(9);
+                randomVx     = min(randomVx, 9);
+                dx           = (ActionsMap[action].transform ? -1 : 1) * randomVx;
+            }
+            else
+                dx = 0;
+        }
+        else
+            dx = vx;
         dy = -(ActionsMap[Jump1LeftUp].totalFrameNumber +
                ActionsMap[Jump1LeftDown].totalFrameNumber + 1) +
              curFrame * 2;
@@ -956,7 +968,7 @@ pair<int, int> ActionsMovement(Action    action,
     if (action == Jump1LeftDown || action == Jump1RightDown || action == Jump2LeftDown ||
         action == Jump2RightDown)
     {
-        dx = 0;
+        dx = vx;
         dy = -(ActionsMap[Jump1LeftUp].totalFrameNumber +
                ActionsMap[Jump1LeftDown].totalFrameNumber + 1) +
              (curFrame + ActionsMap[Jump1LeftUp].totalFrameNumber) * 2;
