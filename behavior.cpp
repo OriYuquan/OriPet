@@ -575,6 +575,12 @@ void Behavior::inputControl(Action& pre,
                 actionBehavior = GetDownWalkLeft;
             if (rightKey)
                 actionBehavior = GetDownWalkRight;
+            if (jumpKey)
+            {
+                actionBehavior =
+                    ActionsMap[actionBehavior].transform ? GetDownJumpLeftUp : GetDownJumpRightUp;
+                jumpKey = false;
+            }
         }
         if (jumpKey)
         {

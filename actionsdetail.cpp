@@ -261,6 +261,15 @@ void ActionsDetailLoad()
     ActionsMap[LandRollRight] =
         ActionsDetail("Source/LandRoll/FallRoll_", 14, false, 0, 0.0, true, false);
 
+    ActionsMap[GetDownJumpLeftUp] =
+        ActionsDetail("Source/GetDownJumpUp/CrouchJump_", 16, true, 0, 0.0);
+    ActionsMap[GetDownJumpRightUp] =
+        ActionsDetail("Source/GetDownJumpUp/CrouchJump_", 16, false, 0, 0.0);
+    ActionsMap[GetDownJumpLeftDown] =
+        ActionsDetail("Source/GetDownJumpDown/CrouchJump_", 15, true, 0, 0.0);
+    ActionsMap[GetDownJumpRightDown] =
+        ActionsDetail("Source/GetDownJumpDown/CrouchJump_", 15, false, 0, 0.0);
+
     // 动作限制集合
     ActionLimit = {Jump1LeftUp,       Jump1RightUp,
 
@@ -431,6 +440,11 @@ void ActionsDetailLoad()
 
     ActionsColdTrans[LandRollLeft]  = StandFacingLeft;
     ActionsColdTrans[LandRollRight] = StandFacingRight;
+
+    ActionsColdTrans[GetDownJumpLeftUp]    = GetDownJumpLeftDown;
+    ActionsColdTrans[GetDownJumpRightUp]   = GetDownJumpRightDown;
+    ActionsColdTrans[GetDownJumpLeftDown]  = LandStandLeft;
+    ActionsColdTrans[GetDownJumpRightDown] = LandStandRight;
 
     // 状态机的转移函数
     ActionsProbability[StandFacingLeft]  = {{StandFacingRight, 1},
@@ -733,16 +747,14 @@ void ActionsDetailLoad()
     ActionsProbability[GetDownLeft]        = {{StandFacingLeft, 12},
                                               {StandFacingRight, 2},
                                               {RunSlowlyLeft, 2},
-                                              {Jump1LeftUp, 1},
-                                              {Jump2LeftUp, 1},
+                                              {GetDownJumpLeftUp, 2},
                                               {RunFastLeft, 1},
                                               {GetDownWalkLeft, -1},
                                               {GetDownWalkRight, 1}};
     ActionsProbability[GetDownRight]       = {{StandFacingLeft, 2},
                                               {StandFacingRight, 12},
                                               {RunSlowlyRight, 2},
-                                              {Jump1RightUp, 1},
-                                              {Jump2RightUp, 1},
+                                              {GetDownJumpRightUp, 2},
                                               {RunFastRight, 1},
                                               {GetDownWalkLeft, 1},
                                               {GetDownWalkRight, -1}};
@@ -751,13 +763,15 @@ void ActionsDetailLoad()
                                               {StandFacingLeft, 6},
                                               {StandFacingRight, 1},
                                               {RunSlowlyLeft, -1},
-                                              {RunFastLeft, -1}};
+                                              {RunFastLeft, -1},
+                                              {GetDownJumpLeftUp, 2}};
     ActionsProbability[GetDownWalkRight]   = {{GetDownLeft, 1},
                                               {GetDownRight, 5},
                                               {StandFacingLeft, 1},
                                               {StandFacingRight, 6},
                                               {RunSlowlyRight, -1},
-                                              {RunFastRight, -1}};
+                                              {RunFastRight, -1},
+                                              {GetDownJumpRightUp, 2}};
 
     ActionsProbability[RunLeft]  = {{StandFacingLeft, 20},
                                     {StandFacingRight, 1},
@@ -871,6 +885,13 @@ void ActionsDetailLoad()
     ActionsProbability[LandRollLeft]  = {{RunFastLeft, 1}};
     ActionsProbability[LandRollRight] = {{RunFastRight, 1}};
 
+    ActionsProbability[GetDownJumpLeftUp] = {
+        {GetDownJumpLeftDown, 6}, {DoubleJumpLeftUp, -1}, {FeatherLeft, 1}, {AirDashLeft, -1}};
+    ActionsProbability[GetDownJumpRightUp] = {
+        {GetDownJumpRightDown, 6}, {DoubleJumpRightUp, -1}, {FeatherRight, 1}, {AirDashRight, -1}};
+    ActionsProbability[GetDownJumpLeftDown]  = {{LandStandLeft, 1}};
+    ActionsProbability[GetDownJumpRightDown] = {{LandStandRight, 1}};
+
     // 音效加载
     SoundMap[RunSlowlyLeft] = SoundMap[RunSlowlyRight] = SoundMap[GetDownWalkLeft] =
         SoundMap[GetDownWalkRight] = SoundMap[RunLeft] = SoundMap[RunRight] = SoundMap[WalkLeft] =
@@ -881,8 +902,8 @@ void ActionsDetailLoad()
 
     SoundMap[Jump1LeftUp] = SoundMap[Jump1RightUp] = SoundMap[Jump2LeftUp] =
         SoundMap[Jump2RightUp] = SoundMap[RunJump1LeftUp] = SoundMap[RunJump1RightUp] =
-            SoundMap[RunJump2LeftUp]                      = SoundMap[RunJump2RightUp] =
-                SoundsDetail("Sound/jump/seinJumpsGrass", 5, 1);
+            SoundMap[RunJump2LeftUp] = SoundMap[RunJump2RightUp] = SoundMap[GetDownJumpLeftUp] =
+                SoundMap[GetDownJumpRightUp] = SoundsDetail("Sound/jump/seinJumpsGrass", 5, 1);
 
     SoundMap[ClimbUpLeft] = SoundMap[ClimbUpRight] = SoundMap[ClimbDownLeft] =
         SoundMap[ClimbDownRight] = SoundMap[TopClimbLeft] = SoundMap[TopClimbRight] =
@@ -1225,6 +1246,22 @@ pair<int, int> ActionsMovement(Action    action,
     {
         dx = (ActionsMap[action].transform ? -1 : 1) * (curFrame % 2 ? 1 : 2);
         dy = 0;
+    }
+    if (action == GetDownJumpLeftUp || action == GetDownJumpRightUp)
+    {
+        dx = (ActionsMap[action].transform ? 1 : -1) * 2;
+        dy = (-(ActionsMap[GetDownJumpLeftUp].totalFrameNumber +
+                ActionsMap[GetDownJumpLeftDown].totalFrameNumber + 1) +
+              curFrame * 2) *
+             1.2;
+    }
+    if (action == GetDownJumpLeftDown || action == GetDownJumpRightDown)
+    {
+        dx = (ActionsMap[action].transform ? 1 : -1) * 2;
+        dy = (-(ActionsMap[GetDownJumpLeftUp].totalFrameNumber +
+                ActionsMap[GetDownJumpLeftDown].totalFrameNumber + 1) +
+              (curFrame + ActionsMap[GetDownJumpLeftUp].totalFrameNumber) * 2) *
+             1.2;
     }
 
     return {dx, dy};
