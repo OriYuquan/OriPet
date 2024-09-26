@@ -243,7 +243,8 @@ int ActionsDX(Action    action,
               int       curFrame,
               long long time,
               int       mousex,
-              int       mousey);
+              int       mousey,
+              bool      control);
 int ActionsDY(Action    action,
               int       x,
               int       y,
@@ -252,6 +253,7 @@ int ActionsDY(Action    action,
               int       curFrame,
               long long time,
               int       mousex,
-              int       mousey);
+              int       mousey,
+              bool      control);
 
 #endif  // ACTIONSDETAIL_H

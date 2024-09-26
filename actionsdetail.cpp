@@ -711,41 +711,45 @@ void ActionsDetailLoad()
     ActionsProbability[FeatherAfterMouseRight] = {{FallRight, 7}, {DoubleJumpRightUp, -1}};
 
     ActionsProbability[AirDashLeft] = {
-        {AirDashtoFallLeft, 8}, {DoubleJumpLeftUp, -1}, {MovingFeatherLeft, 2}};
-    ActionsProbability[AirDashRight] = {
-        {AirDashtoFallRight, 8}, {DoubleJumpRightUp, -1}, {MovingFeatherRight, 2}};
+        {AirDashtoFallLeft, 8}, {AirDashLeft, -1}, {DoubleJumpLeftUp, -1}, {MovingFeatherLeft, 2}};
+    ActionsProbability[AirDashRight]      = {{AirDashtoFallRight, 8},
+                                             {AirDashRight, -1},
+                                             {DoubleJumpRightUp, -1},
+                                             {MovingFeatherRight, 2}};
     ActionsProbability[AirDashtoFallLeft] = {
-        {MovingFallLeft, 10}, {DoubleJumpLeftUp, -1}, {MovingFeatherLeft, 2}};
-    ActionsProbability[AirDashtoFallRight] = {
-        {MovingFallRight, 10}, {DoubleJumpRightUp, -1}, {MovingFeatherRight, 2}};
-    ActionsProbability[GetDownLeft]      = {{StandFacingLeft, 12},
-                                            {StandFacingRight, 2},
-                                            {RunSlowlyLeft, 2},
-                                            {Jump1LeftUp, 1},
-                                            {Jump2LeftUp, 1},
-                                            {RunFastLeft, 1},
-                                            {GetDownWalkLeft, -1},
-                                            {GetDownWalkRight, 1}};
-    ActionsProbability[GetDownRight]     = {{StandFacingLeft, 2},
-                                            {StandFacingRight, 12},
-                                            {RunSlowlyRight, 2},
-                                            {Jump1RightUp, 1},
-                                            {Jump2RightUp, 1},
-                                            {RunFastRight, 1},
-                                            {GetDownWalkLeft, 1},
-                                            {GetDownWalkRight, -1}};
-    ActionsProbability[GetDownWalkLeft]  = {{GetDownLeft, 5},
-                                            {GetDownRight, 1},
-                                            {StandFacingLeft, 6},
-                                            {StandFacingRight, 1},
-                                            {RunSlowlyLeft, -1},
-                                            {RunFastLeft, -1}};
-    ActionsProbability[GetDownWalkRight] = {{GetDownLeft, 1},
-                                            {GetDownRight, 5},
-                                            {StandFacingLeft, 1},
-                                            {StandFacingRight, 6},
-                                            {RunSlowlyRight, -1},
-                                            {RunFastRight, -1}};
+        {MovingFallLeft, 10}, {AirDashLeft, -1}, {DoubleJumpLeftUp, -1}, {MovingFeatherLeft, 2}};
+    ActionsProbability[AirDashtoFallRight] = {{MovingFallRight, 10},
+                                              {AirDashRight, -1},
+                                              {DoubleJumpRightUp, -1},
+                                              {MovingFeatherRight, 2}};
+    ActionsProbability[GetDownLeft]        = {{StandFacingLeft, 12},
+                                              {StandFacingRight, 2},
+                                              {RunSlowlyLeft, 2},
+                                              {Jump1LeftUp, 1},
+                                              {Jump2LeftUp, 1},
+                                              {RunFastLeft, 1},
+                                              {GetDownWalkLeft, -1},
+                                              {GetDownWalkRight, 1}};
+    ActionsProbability[GetDownRight]       = {{StandFacingLeft, 2},
+                                              {StandFacingRight, 12},
+                                              {RunSlowlyRight, 2},
+                                              {Jump1RightUp, 1},
+                                              {Jump2RightUp, 1},
+                                              {RunFastRight, 1},
+                                              {GetDownWalkLeft, 1},
+                                              {GetDownWalkRight, -1}};
+    ActionsProbability[GetDownWalkLeft]    = {{GetDownLeft, 5},
+                                              {GetDownRight, 1},
+                                              {StandFacingLeft, 6},
+                                              {StandFacingRight, 1},
+                                              {RunSlowlyLeft, -1},
+                                              {RunFastLeft, -1}};
+    ActionsProbability[GetDownWalkRight]   = {{GetDownLeft, 1},
+                                              {GetDownRight, 5},
+                                              {StandFacingLeft, 1},
+                                              {StandFacingRight, 6},
+                                              {RunSlowlyRight, -1},
+                                              {RunFastRight, -1}};
 
     ActionsProbability[RunLeft]  = {{StandFacingLeft, 20},
                                     {StandFacingRight, 1},
@@ -932,7 +936,8 @@ pair<int, int> ActionsMovement(Action    action,
                                int       curFrame,
                                long long time,
                                int       mousex,
-                               int       mousey)
+                               int       mousey,
+                               bool      control)
 {
     int dx = 0, dy = 0;
     if (action == RunSlowlyLeft || action == RunSlowlyRight)
@@ -990,7 +995,7 @@ pair<int, int> ActionsMovement(Action    action,
     }
     if (action == DoubleJumpLeftUp || action == DoubleJumpRightUp)
     {
-        if (curFrame == 1)
+        if (curFrame == 1 && !control)
         {
             int randomVx = abs(vx) + QRandomGenerator::system()->bounded(15);
             randomVx     = min(randomVx, 18);
@@ -1216,9 +1221,10 @@ int ActionsDX(Action    action,
               int       curFrame,
               long long time,
               int       mousex,
-              int       mousey)
+              int       mousey,
+              bool      control)
 {
-    return ActionsMovement(action, x, y, vx, vy, curFrame, time, mousex, mousey).first;
+    return ActionsMovement(action, x, y, vx, vy, curFrame, time, mousex, mousey, control).first;
 }
 int ActionsDY(Action    action,
               int       x,
@@ -1228,7 +1234,8 @@ int ActionsDY(Action    action,
               int       curFrame,
               long long time,
               int       mousex,
-              int       mousey)
+              int       mousey,
+              bool      control)
 {
-    return ActionsMovement(action, x, y, vx, vy, curFrame, time, mousex, mousey).second;
+    return ActionsMovement(action, x, y, vx, vy, curFrame, time, mousex, mousey, control).second;
 }

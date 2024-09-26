@@ -202,25 +202,7 @@ void Behavior::actionUpdate(int curFrame, long long time)
     bool mirror  = false;
     bool restart = false;
 
-    vx = ActionsDX(actionBehavior, x, y, vx, vy, curFrame, time, mousex, mousey);
-    vy = ActionsDY(actionBehavior, x, y, vx, vy, curFrame, time, mousex, mousey);
-    x += vx;
-    y += vy;
-
-    // 边界位置判断
-    x = max(x, LeftEdge);
-    x = min(x, RightEdge);
-    y = max(y, TopEdge);
-    y = min(y, BottomEdge);
-
     Action pre = actionBehavior;
-
-    // 跳跃次数更新
-    if (x == LeftEdge || x == RightEdge || y == BottomEdge || y == TopEdge || isBashCharging(pre))
-    {
-        jumpChance = 2;
-        dashChance = 1;
-    }
 
     // 检查是否存在控制
     bool control = (leftKey || rightKey || upKey || downKey || jumpKey || featherKey || dashKey ||
@@ -235,6 +217,17 @@ void Behavior::actionUpdate(int curFrame, long long time)
         freeTime    = (freeTime > 1000000) ? freeTime : freeTime + 1;
         controlTime = (controlTime == 0) ? 0 : controlTime - 1;
     }
+
+    vx = ActionsDX(actionBehavior, x, y, vx, vy, curFrame, time, mousex, mousey, controlTime != 0);
+    vy = ActionsDY(actionBehavior, x, y, vx, vy, curFrame, time, mousex, mousey, controlTime != 0);
+    x += vx;
+    y += vy;
+
+    // 边界位置判断
+    x = max(x, LeftEdge);
+    x = min(x, RightEdge);
+    y = max(y, TopEdge);
+    y = min(y, BottomEdge);
 
     double randomValue = QRandomGenerator::system()->bounded(1.0);
     // 检查是否可以进行状态转移
@@ -299,12 +292,14 @@ void Behavior::actionUpdate(int curFrame, long long time)
         inputControl(pre, mirror, restart, randomValue, curFrame);
     }
 
-    int vxCheck = pre == actionBehavior
-                      ? vx
-                      : ActionsDX(actionBehavior, x, y, vx, vy, 1, time, mousex, mousey);
-    int vyCheck = pre == actionBehavior
-                      ? vy
-                      : ActionsDY(actionBehavior, x, y, vx, vy, 1, time, mousex, mousey);
+    int vxCheck =
+        pre == actionBehavior
+            ? vx
+            : ActionsDX(actionBehavior, x, y, vx, vy, 1, time, mousex, mousey, controlTime != 0);
+    int vyCheck =
+        pre == actionBehavior
+            ? vy
+            : ActionsDY(actionBehavior, x, y, vx, vy, 1, time, mousex, mousey, controlTime != 0);
 
     // 边界判断
     if (x == LeftEdge && vxCheck < 0)
@@ -385,6 +380,14 @@ void Behavior::actionUpdate(int curFrame, long long time)
         // 冷却时间调试输出
         // qDebug() << i << ActionsLeastTimes[Action(i)];
     }
+
+    // 跳跃次数更新
+    if (x == LeftEdge || x == RightEdge || y == BottomEdge || y == TopEdge || isBashCharging(pre))
+    {
+        jumpChance = 2;
+        dashChance = 1;
+    }
+
     debugMessage = "x:" + QString::number(x) + "\ny:" + QString::number(y) +
                    "\nvx:" + QString::number(vxCheck) + "\nvy:" + QString::number(vyCheck) +
                    "\ncurFrame:" + QString::number(curFrame) +
