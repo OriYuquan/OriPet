@@ -58,6 +58,11 @@ enum Action
     RunJump2LeftDown,
     RunJump2RightDown,
 
+    RunJump3LeftUp,
+    RunJump3RightUp,
+    RunJump3LeftDown,
+    RunJump3RightDown,
+
     DoubleJumpLeftUp,
     DoubleJumpRightUp,
     DoubleJumpLeftDown,

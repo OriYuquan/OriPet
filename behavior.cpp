@@ -591,9 +591,15 @@ void Behavior::inputControl(Action& pre,
             if (pre == RunFastLeft || pre == RunFastRight || pre == LandRollLeft ||
                 pre == LandRollRight)
             {
-                actionBehavior = ActionsMap[actionBehavior].transform
-                                     ? (randomValue > 0.5 ? RunJump1LeftUp : RunJump2LeftUp)
-                                     : (randomValue > 0.5 ? RunJump1RightUp : RunJump2RightUp);
+                if (randomValue < 0.33)
+                    actionBehavior =
+                        ActionsMap[actionBehavior].transform ? RunJump1LeftUp : RunJump1RightUp;
+                else if (randomValue < 0.66)
+                    actionBehavior =
+                        ActionsMap[actionBehavior].transform ? RunJump2LeftUp : RunJump2RightUp;
+                else
+                    actionBehavior =
+                        ActionsMap[actionBehavior].transform ? RunJump3LeftUp : RunJump3RightUp;
             }
             else
             {
@@ -764,7 +770,8 @@ void Behavior::inputControl(Action& pre,
                     mirror         = true;
                 }
                 else if (actionBehavior == RunJump1RightUp || actionBehavior == RunJump1RightDown ||
-                         actionBehavior == RunJump2RightUp || actionBehavior == RunJump2RightDown)
+                         actionBehavior == RunJump2RightUp || actionBehavior == RunJump2RightDown ||
+                         actionBehavior == RunJump3RightUp || actionBehavior == RunJump3RightDown)
                 {
                     actionBehavior = ActionsMirror[actionBehavior];
                     mirror         = true;
@@ -817,7 +824,8 @@ void Behavior::inputControl(Action& pre,
                     mirror         = true;
                 }
                 else if (actionBehavior == RunJump1LeftUp || actionBehavior == RunJump1LeftDown ||
-                         actionBehavior == RunJump2LeftUp || actionBehavior == RunJump2LeftDown)
+                         actionBehavior == RunJump2LeftUp || actionBehavior == RunJump2LeftDown ||
+                         actionBehavior == RunJump3LeftUp || actionBehavior == RunJump3LeftDown)
                 {
                     actionBehavior = ActionsMirror[actionBehavior];
                     mirror         = true;
