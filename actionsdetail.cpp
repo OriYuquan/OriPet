@@ -256,6 +256,11 @@ void ActionsDetailLoad()
     ActionsMap[StandRighttoActCuteLeft] =
         ActionsDetail("Source/StandtoActCute/StandToCute1_", 85, false, 3000, 0.0);
 
+    ActionsMap[LandRollLeft] =
+        ActionsDetail("Source/LandRoll/FallRoll_", 14, true, 0, 0.0, true, false);
+    ActionsMap[LandRollRight] =
+        ActionsDetail("Source/LandRoll/FallRoll_", 14, false, 0, 0.0, true, false);
+
     // 动作限制集合
     ActionLimit = {Jump1LeftUp,       Jump1RightUp,
 
@@ -423,6 +428,9 @@ void ActionsDetailLoad()
     ActionsColdTrans[ActCuteRight]            = ActCuteRight;
     ActionsColdTrans[StandLefttoActCuteRight] = ActCuteRight;
     ActionsColdTrans[StandRighttoActCuteLeft] = ActCuteLeft;
+
+    ActionsColdTrans[LandRollLeft]  = StandFacingLeft;
+    ActionsColdTrans[LandRollRight] = StandFacingRight;
 
     // 状态机的转移函数
     ActionsProbability[StandFacingLeft]  = {{StandFacingRight, 1},
@@ -860,6 +868,9 @@ void ActionsDetailLoad()
     ActionsProbability[ActCuteLeft]             = ActionsProbability[LookUpListenLeft];
     ActionsProbability[ActCuteRight]            = ActionsProbability[LookUpListenRight];
 
+    ActionsProbability[LandRollLeft]  = {{RunFastLeft, 1}};
+    ActionsProbability[LandRollRight] = {{RunFastRight, 1}};
+
     // 音效加载
     SoundMap[RunSlowlyLeft] = SoundMap[RunSlowlyRight] = SoundMap[GetDownWalkLeft] =
         SoundMap[GetDownWalkRight] = SoundMap[RunLeft] = SoundMap[RunRight] = SoundMap[WalkLeft] =
@@ -909,6 +920,9 @@ void ActionsDetailLoad()
 
     SoundMap[MouseHoldLeft] = SoundMap[MouseHoldRight] =
         SoundsDetail("Sound/mouseHold/mouseHold", 6, 0);
+
+    SoundMap[LandRollLeft] = SoundMap[LandRollRight] =
+        SoundsDetail("Sound/landRoll/oriLandRoll_00", 6, 1);
 
     // 镜像动作初始化
     for (int i = 0; i < int(None); i++)
@@ -975,7 +989,7 @@ pair<int, int> ActionsMovement(Action    action,
         dy = 14;
     }
     if (action == RunFastLeft || action == RunFastRight || action == LandRunFastLeft ||
-        action == LandRunFastLeft)
+        action == LandRunFastLeft || action == LandRollLeft || action == LandRollRight)
     {
         dx = (ActionsMap[action].transform ? -1 : 1) * 18;
         dy = 0;

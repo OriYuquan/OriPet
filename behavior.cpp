@@ -367,6 +367,9 @@ void Behavior::actionUpdate(int curFrame, long long time)
         else
         {
             actionBehavior = ActionsMap[actionBehavior].transform ? LandStandLeft : LandStandRight;
+            if (vyCheck > 60 && abs(vx) > 15 && controlTime == 0 && randomValue > 0.5)
+                actionBehavior =
+                    ActionsMap[actionBehavior].transform ? LandRollLeft : LandRollRight;
         }
     }
 
@@ -397,7 +400,7 @@ void Behavior::actionUpdate(int curFrame, long long time)
                    "\nmouseKey:" + QString::number(int(mouseLeftKey)) +
                    "\ncontrolTime:" + QString::number(controlTime) +
                    "\nmouseX:" + QString::number(mousex) + "\nmouseY:" + QString::number(mousey);
-    // qDebug() << debugMessage;
+    qDebug() << debugMessage;
 
     if (actionBehavior == pre)
     {
@@ -552,9 +555,19 @@ void Behavior::inputControl(Action& pre,
             actionBehavior = ActionsMap[actionBehavior].transform ? LookUpLeft : LookUpRight;
         }
         if (leftKey)
+        {
             actionBehavior = RunFastLeft;
+            if ((pre == MovingFallLeft && vy > 60 && abs(vx) > 15) ||
+                (pre == LandRollLeft && curFrame != ActionsMap[LandRollLeft].totalFrameNumber))
+                actionBehavior = LandRollLeft;
+        }
         if (rightKey)
+        {
             actionBehavior = RunFastRight;
+            if ((pre == MovingFallRight && vy > 60 && abs(vx) > 15) ||
+                (pre == LandRollRight && curFrame != ActionsMap[LandRollLeft].totalFrameNumber))
+                actionBehavior = LandRollRight;
+        }
         if (downKey)
         {
             actionBehavior = ActionsMap[actionBehavior].transform ? GetDownLeft : GetDownRight;
@@ -565,7 +578,8 @@ void Behavior::inputControl(Action& pre,
         }
         if (jumpKey)
         {
-            if (pre == RunFastLeft || pre == RunFastRight)
+            if (pre == RunFastLeft || pre == RunFastRight || pre == LandRollLeft ||
+                pre == LandRollRight)
             {
                 actionBehavior = ActionsMap[actionBehavior].transform
                                      ? (randomValue > 0.5 ? RunJump1LeftUp : RunJump2LeftUp)

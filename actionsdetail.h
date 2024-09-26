@@ -30,14 +30,19 @@ enum Action
 
     LandStandLeft,
     LandStandRight,
+    LandRollLeft,
+    LandRollRight,
+
     AgainstWallLeft,
     AgainstWallRight,
+
     ClimbUpLeft,
     ClimbUpRight,
     WallStayLeft,
     WallStayRight,
     ClimbDownLeft,
     ClimbDownRight,
+
     RunFastLeft,
     RunFastRight,
     RuntoStandLeft,
