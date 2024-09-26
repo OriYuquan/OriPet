@@ -949,16 +949,7 @@ pair<int, int> ActionsMovement(Action    action,
         action == Jump2RightUp)
     {
         if (curFrame == 1)
-        {
-            if (!control)
-            {
-                int randomVx = abs(vx) + QRandomGenerator::system()->bounded(9);
-                randomVx     = min(randomVx, 9);
-                dx           = (ActionsMap[action].transform ? -1 : 1) * randomVx;
-            }
-            else
-                dx = 0;
-        }
+            dx = 0;
         else
             dx = vx;
         dy = -(ActionsMap[Jump1LeftUp].totalFrameNumber +
