@@ -747,14 +747,14 @@ void ActionsDetailLoad()
     ActionsProbability[GetDownLeft]        = {{StandFacingLeft, 12},
                                               {StandFacingRight, 2},
                                               {RunSlowlyLeft, 2},
-                                              {GetDownJumpLeftUp, 2},
+                                              {GetDownJumpLeftUp, 4},
                                               {RunFastLeft, 1},
                                               {GetDownWalkLeft, -1},
                                               {GetDownWalkRight, 1}};
     ActionsProbability[GetDownRight]       = {{StandFacingLeft, 2},
                                               {StandFacingRight, 12},
                                               {RunSlowlyRight, 2},
-                                              {GetDownJumpRightUp, 2},
+                                              {GetDownJumpRightUp, 4},
                                               {RunFastRight, 1},
                                               {GetDownWalkLeft, 1},
                                               {GetDownWalkRight, -1}};
@@ -764,14 +764,14 @@ void ActionsDetailLoad()
                                               {StandFacingRight, 1},
                                               {RunSlowlyLeft, -1},
                                               {RunFastLeft, -1},
-                                              {GetDownJumpLeftUp, 2}};
+                                              {GetDownJumpLeftUp, 4}};
     ActionsProbability[GetDownWalkRight]   = {{GetDownLeft, 1},
                                               {GetDownRight, 5},
                                               {StandFacingLeft, 1},
                                               {StandFacingRight, 6},
                                               {RunSlowlyRight, -1},
                                               {RunFastRight, -1},
-                                              {GetDownJumpRightUp, 2}};
+                                              {GetDownJumpRightUp, 4}};
 
     ActionsProbability[RunLeft]  = {{StandFacingLeft, 20},
                                     {StandFacingRight, 1},
@@ -1249,7 +1249,10 @@ pair<int, int> ActionsMovement(Action    action,
     }
     if (action == GetDownJumpLeftUp || action == GetDownJumpRightUp)
     {
-        dx = (ActionsMap[action].transform ? 1 : -1) * 2;
+        if (curFrame == 1)
+            dx = (ActionsMap[action].transform ? 1 : -1) * 2;
+        else
+            dx = vx;
         dy = (-(ActionsMap[GetDownJumpLeftUp].totalFrameNumber +
                 ActionsMap[GetDownJumpLeftDown].totalFrameNumber + 1) +
               curFrame * 2) *
@@ -1257,7 +1260,7 @@ pair<int, int> ActionsMovement(Action    action,
     }
     if (action == GetDownJumpLeftDown || action == GetDownJumpRightDown)
     {
-        dx = (ActionsMap[action].transform ? 1 : -1) * 2;
+        dx = vx;
         dy = (-(ActionsMap[GetDownJumpLeftUp].totalFrameNumber +
                 ActionsMap[GetDownJumpLeftDown].totalFrameNumber + 1) +
               (curFrame + ActionsMap[GetDownJumpLeftUp].totalFrameNumber) * 2) *

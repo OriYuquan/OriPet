@@ -723,14 +723,20 @@ void Behavior::inputControl(Action& pre,
                 if (actionBehavior == Jump1RightUp || actionBehavior == Jump1RightDown ||
                     actionBehavior == Jump2RightUp || actionBehavior == Jump2RightDown ||
                     actionBehavior == Jump1LeftUp || actionBehavior == Jump1LeftDown ||
-                    actionBehavior == Jump2LeftUp || actionBehavior == Jump2LeftDown)
+                    actionBehavior == Jump2LeftUp || actionBehavior == Jump2LeftDown ||
+                    actionBehavior == GetDownJumpLeftUp || actionBehavior == GetDownJumpLeftDown ||
+                    actionBehavior == GetDownJumpRightUp || actionBehavior == GetDownJumpRightDown)
                     vx = -9;
                 else
                     vx = -18;
-                if (actionBehavior == Jump1RightUp || actionBehavior == Jump1RightDown ||
-                    actionBehavior == Jump2RightUp || actionBehavior == Jump2RightDown)
+                if (actionBehavior == GetDownJumpRightUp || actionBehavior == GetDownJumpRightDown)
                 {
-                    // vx             = -10;
+                    actionBehavior = ActionsMirror[actionBehavior];
+                    mirror         = true;
+                }
+                else if (actionBehavior == Jump1RightUp || actionBehavior == Jump1RightDown ||
+                         actionBehavior == Jump2RightUp || actionBehavior == Jump2RightDown)
+                {
                     actionBehavior = ActionsMirror[actionBehavior];
                     mirror         = true;
                 }
@@ -770,12 +776,19 @@ void Behavior::inputControl(Action& pre,
                 if (actionBehavior == Jump1RightUp || actionBehavior == Jump1RightDown ||
                     actionBehavior == Jump2RightUp || actionBehavior == Jump2RightDown ||
                     actionBehavior == Jump1LeftUp || actionBehavior == Jump1LeftDown ||
-                    actionBehavior == Jump2LeftUp || actionBehavior == Jump2LeftDown)
+                    actionBehavior == Jump2LeftUp || actionBehavior == Jump2LeftDown ||
+                    actionBehavior == GetDownJumpLeftUp || actionBehavior == GetDownJumpLeftDown ||
+                    actionBehavior == GetDownJumpRightUp || actionBehavior == GetDownJumpRightDown)
                     vx = 9;
                 else
                     vx = 18;
-                if (actionBehavior == Jump1LeftUp || actionBehavior == Jump1LeftDown ||
-                    actionBehavior == Jump2LeftUp || actionBehavior == Jump2LeftDown)
+                if (actionBehavior == GetDownJumpLeftUp || actionBehavior == GetDownJumpLeftDown)
+                {
+                    actionBehavior = ActionsMirror[actionBehavior];
+                    mirror         = true;
+                }
+                else if (actionBehavior == Jump1LeftUp || actionBehavior == Jump1LeftDown ||
+                         actionBehavior == Jump2LeftUp || actionBehavior == Jump2LeftDown)
                 {
                     actionBehavior = ActionsMirror[actionBehavior];
                     mirror         = true;
