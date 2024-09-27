@@ -28,6 +28,11 @@ enum Action
     Jump2LeftDown,
     Jump2RightDown,
 
+    Jump3LeftUp,
+    Jump3RightUp,
+    Jump3LeftDown,
+    Jump3RightDown,
+
     LandStandLeft,
     LandStandRight,
     LandRollLeft,
