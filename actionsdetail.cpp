@@ -128,8 +128,8 @@ void ActionsDetailLoad()
 
     ActionsMap[FallLeft]        = ActionsDetail("Source/Fall/FallIdle_", 13, true, 0, -0.93);
     ActionsMap[FallRight]       = ActionsDetail("Source/Fall/FallIdle_", 13, false, 0, -0.93);
-    ActionsMap[MovingFallLeft]  = ActionsDetail("Source/MovingFall/Fall_", 35, true, 0, -0.93);
-    ActionsMap[MovingFallRight] = ActionsDetail("Source/MovingFall/Fall_", 35, false, 0, -0.93);
+    ActionsMap[MovingFallLeft]  = ActionsDetail("Source/MovingFall/Fall_", 35, true, 0, -0.94);
+    ActionsMap[MovingFallRight] = ActionsDetail("Source/MovingFall/Fall_", 35, false, 0, -0.94);
 
     ActionsMap[LandRunFastLeft]   = ActionsDetail("Source/LandRunFast/ori45-", 7, true, 0, 0.0);
     ActionsMap[LandRunFastRight]  = ActionsDetail("Source/LandRunFast/ori45-", 7, false, 0, 0.0);

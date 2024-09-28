@@ -375,7 +375,7 @@ void Behavior::actionUpdate(int curFrame, long long time)
         else
         {
             actionBehavior = ActionsMap[actionBehavior].transform ? LandStandLeft : LandStandRight;
-            if (vyCheck > 60 && abs(vx) > 15 && controlTime == 0 && randomValue > 0.5)
+            if (vyCheck > 50 && abs(vx) >= 10 && controlTime == 0 && randomValue > 0.3)
                 actionBehavior =
                     ActionsMap[actionBehavior].transform ? LandRollLeft : LandRollRight;
         }
