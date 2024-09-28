@@ -858,6 +858,12 @@ void Behavior::inputControl(Action& pre,
     }
 }
 
+void Behavior::setControlFalse()
+{
+    leftKey = rightKey = upKey = downKey = jumpKey = featherKey = dashKey = mouseLeftKey = bashKey =
+        mouseLeftKey                                                                     = false;
+}
+
 void Behavior::loadAction(Action act)
 {
     if (actionBehavior == act)

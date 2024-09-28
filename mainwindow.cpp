@@ -24,6 +24,7 @@ MainWindow::MainWindow(QWidget* parent) : QWidget(parent)
     ActionsDetailLoad();
 
     // 设置窗口属性
+    setFocusPolicy(Qt::StrongFocus);
     setWindowFlags(Qt::SubWindow | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint |
                    Qt::NoDropShadowWindowHint);
     setAttribute(Qt::WA_NoSystemBackground, true);
@@ -333,6 +334,11 @@ void MainWindow::baseInputShowSlot()
         // 关闭文件
         file.close();
     }
+}
+
+void MainWindow::focusOutEvent(QFocusEvent* event)
+{
+    behavior->setControlFalse();
 }
 
 void MainWindow::keyPressEvent(QKeyEvent* event)

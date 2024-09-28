@@ -67,6 +67,7 @@ class Behavior : public QWidget
     void SoundPlayerPathPlay(QString, int);
 
    public:
+    void setControlFalse();
     void keyPressEvent(QKeyEvent* event);
     void keyReleaseEvent(QKeyEvent* event);
     void mousePressEvent(QMouseEvent* event);

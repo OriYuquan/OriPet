@@ -60,6 +60,7 @@ class MainWindow : public QWidget
     void mousePressEvent(QMouseEvent* event);
     void mouseReleaseEvent(QMouseEvent* event);
     // void mouseDoubleClickEvent(QMouseEvent* event);
+    void focusOutEvent(QFocusEvent* event);
 
    public slots:
     void aboutShowSlot();
