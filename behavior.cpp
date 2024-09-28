@@ -205,6 +205,8 @@ void Behavior::actionUpdate(int curFrame, long long time)
     Action pre = actionBehavior;
 
     // 检查是否存在控制
+    if (mouseLeftKey)
+        leftKey = rightKey = upKey = downKey = jumpKey = featherKey = dashKey = bashKey = false;
     bool control = (leftKey || rightKey || upKey || downKey || jumpKey || featherKey || dashKey ||
                     mouseLeftKey || bashKey);
     if (control)
@@ -406,7 +408,9 @@ void Behavior::actionUpdate(int curFrame, long long time)
                    "\nmouseKey:" + QString::number(int(mouseLeftKey)) +
                    "\ncontrolTime:" + QString::number(controlTime) +
                    "\nmouseX:" + QString::number(mousex) + "\nmouseY:" + QString::number(mousey);
-    qDebug() << debugMessage;
+    //    qDebug() << debugMessage;
+    qDebug() << leftKey << " " << rightKey << " " << upKey << " " << downKey << " " << jumpKey
+             << " " << featherKey << " " << dashKey << " " << mouseLeftKey << " " << bashKey;
 
     if (actionBehavior == pre)
     {
