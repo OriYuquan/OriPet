@@ -1011,7 +1011,7 @@ void ActionsDetailLoad()
         SoundsDetail("Sound/mouseHold/mouseHold", 6, 0);
 
     SoundMap[LandRollLeft] = SoundMap[LandRollRight] =
-        SoundsDetail("Sound/landRoll/oriLandRoll_00", 6, 1);
+        SoundsDetail("Sound/landRoll/seinLandRoll", 5, 1);
 
     // 镜像动作初始化
     for (int i = 0; i < int(None); i++)

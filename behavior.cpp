@@ -114,13 +114,13 @@ double Behavior::generalPossiblity(Action act)
         else if (act == FeatherLeft || act == FeatherRight)
         {
             return (abs(vx) < 10 && y < (BottomEdge - 50))
-                       ? (abs(vy) / 9 + 5 - (jumpChance + dashChance))
+                       ? (abs(vy) / 10 + 5 - (jumpChance + dashChance))
                        : 0;
         }
         else if (act == MovingFeatherLeft || act == MovingFeatherRight)
         {
             return (abs(vx) >= 10 && y < (BottomEdge - 50))
-                       ? (abs(vy) / 9 + 5 - (jumpChance + dashChance))
+                       ? (abs(vy) / 10 + 5 - (jumpChance + dashChance))
                        : 0;
         }
 
