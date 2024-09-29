@@ -475,8 +475,8 @@ void ActionsDetailLoad()
     ActionsColdTrans[GetDownJumpLeftDown]  = LandStandLeft;
     ActionsColdTrans[GetDownJumpRightDown] = LandStandRight;
 
-    ActionsColdTrans[DebutFromLeft]  = StandFacingRight;
-    ActionsColdTrans[DebutFromRight] = StandFacingLeft;
+    ActionsColdTrans[DebutFromLeft]  = RunSlowlyRight;
+    ActionsColdTrans[DebutFromRight] = RunSlowlyLeft;
 
     // 状态机的转移函数
     ActionsProbability[StandFacingLeft]  = {{StandFacingRight, 1},
@@ -1022,7 +1022,7 @@ void ActionsDetailLoad()
     SoundMap[LandRollLeft] = SoundMap[LandRollRight] =
         SoundsDetail("Sound/landRoll/seinLandRoll", 5, 1);
 
-    SoundMap[DebutFromLeft] = SoundMap[DebutFromRight] = SoundsDetail("Sound/Debut/debut", 1, 1);
+    SoundMap[DebutFromLeft] = SoundMap[DebutFromRight] = SoundsDetail("Sound/debut/debut", 1, 1);
 
     // 镜像动作初始化
     for (int i = 0; i < int(None); i++)
