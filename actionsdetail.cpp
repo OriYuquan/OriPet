@@ -964,8 +964,8 @@ void ActionsDetailLoad()
     ActionsProbability[GetDownJumpLeftDown]  = {{LandStandLeft, 1}};
     ActionsProbability[GetDownJumpRightDown] = {{LandStandRight, 1}};
 
-    ActionsProbability[DebutFromLeft]  = {{StandFacingRight, 1}};
-    ActionsProbability[DebutFromRight] = {{StandFacingLeft, 1}};
+    ActionsProbability[DebutFromLeft]  = {{RunSlowlyRight, 1}};
+    ActionsProbability[DebutFromRight] = {{RunSlowlyLeft, 1}};
 
     // 音效加载
     SoundMap[RunSlowlyLeft] = SoundMap[RunSlowlyRight] = SoundMap[GetDownWalkLeft] =
@@ -1021,6 +1021,8 @@ void ActionsDetailLoad()
 
     SoundMap[LandRollLeft] = SoundMap[LandRollRight] =
         SoundsDetail("Sound/landRoll/seinLandRoll", 5, 1);
+
+    SoundMap[DebutFromLeft] = SoundMap[DebutFromRight] = SoundsDetail("Sound/Debut/debut", 1, 1);
 
     // 镜像动作初始化
     for (int i = 0; i < int(None); i++)
