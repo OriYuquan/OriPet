@@ -10,6 +10,7 @@
 #include <QLayout>
 #include <QPoint>
 #include <QPushButton>
+#include <QRandomGenerator>
 #include <QSlider>
 
 #include "aboutdialog.h"
@@ -68,10 +69,23 @@ MainWindow::MainWindow(QWidget* parent) : QWidget(parent)
     tray->setContextMenu(trayMenu);
     tray->show();  // 显示托盘图标
 
-    player->loadAction(StandFacingRight);
-    soundPlayer->loadAction(StandFacingRight);
-    behavior->loadAction(StandFacingRight);
-    behavior->loadPos(SCREENWIDTHFIX + 100, SCREENHEIGHTFIX + SCREENHEIGHT - ORIHEIGHT);
+    // 左侧登场还是右侧登场
+    double randomValue = QRandomGenerator::system()->bounded(1.0);
+    if (randomValue > 0.5)
+    {
+        player->loadAction(DebutFromLeft);
+        soundPlayer->loadAction(DebutFromLeft);
+        behavior->loadAction(DebutFromLeft);
+        behavior->loadPos(SCREENWIDTHFIX + 210, SCREENHEIGHTFIX + SCREENHEIGHT - ORIHEIGHT);
+    }
+    else
+    {
+        player->loadAction(DebutFromRight);
+        soundPlayer->loadAction(DebutFromRight);
+        behavior->loadAction(DebutFromRight);
+        behavior->loadPos(SCREENWIDTHFIX - 336 + SCREENWIDTH,
+                          SCREENHEIGHTFIX + SCREENHEIGHT - ORIHEIGHT);
+    }
 
     player->move(behavior->getX(), behavior->getY());
 

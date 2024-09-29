@@ -182,6 +182,9 @@ enum Action
     StandLefttoActCuteRight,
     StandRighttoActCuteLeft,
 
+    DebutFromLeft,
+    DebutFromRight,
+
     None
 };
 

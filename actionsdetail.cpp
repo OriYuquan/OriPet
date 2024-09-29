@@ -280,6 +280,9 @@ void ActionsDetailLoad()
     ActionsMap[GetDownJumpRightDown] =
         ActionsDetail("Source/GetDownJumpDown/CrouchJump_", 15, false, 0, 0.0);
 
+    ActionsMap[DebutFromLeft]  = ActionsDetail("Source/Debut/OriShow_", 122, false, 0, 0.0, false);
+    ActionsMap[DebutFromRight] = ActionsDetail("Source/Debut/OriShow_", 122, true, 0, 0.0, false);
+
     // 动作限制集合
     ActionLimit = {Jump1LeftUp,       Jump1RightUp,
 
@@ -471,6 +474,9 @@ void ActionsDetailLoad()
     ActionsColdTrans[GetDownJumpRightUp]   = GetDownJumpRightDown;
     ActionsColdTrans[GetDownJumpLeftDown]  = LandStandLeft;
     ActionsColdTrans[GetDownJumpRightDown] = LandStandRight;
+
+    ActionsColdTrans[DebutFromLeft]  = StandFacingRight;
+    ActionsColdTrans[DebutFromRight] = StandFacingLeft;
 
     // 状态机的转移函数
     ActionsProbability[StandFacingLeft]  = {{StandFacingRight, 1},
@@ -957,6 +963,9 @@ void ActionsDetailLoad()
         {GetDownJumpRightDown, 6}, {DoubleJumpRightUp, -1}, {FeatherRight, 1}, {AirDashRight, -1}};
     ActionsProbability[GetDownJumpLeftDown]  = {{LandStandLeft, 1}};
     ActionsProbability[GetDownJumpRightDown] = {{LandStandRight, 1}};
+
+    ActionsProbability[DebutFromLeft]  = {{StandFacingRight, 1}};
+    ActionsProbability[DebutFromRight] = {{StandFacingLeft, 1}};
 
     // 音效加载
     SoundMap[RunSlowlyLeft] = SoundMap[RunSlowlyRight] = SoundMap[GetDownWalkLeft] =

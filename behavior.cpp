@@ -409,8 +409,8 @@ void Behavior::actionUpdate(int curFrame, long long time)
                    "\ncontrolTime:" + QString::number(controlTime) +
                    "\nmouseX:" + QString::number(mousex) + "\nmouseY:" + QString::number(mousey);
     //    qDebug() << debugMessage;
-    qDebug() << leftKey << " " << rightKey << " " << upKey << " " << downKey << " " << jumpKey
-             << " " << featherKey << " " << dashKey << " " << mouseLeftKey << " " << bashKey;
+    //    qDebug() << leftKey << " " << rightKey << " " << upKey << " " << downKey << " " << jumpKey
+    //             << " " << featherKey << " " << dashKey << " " << mouseLeftKey << " " << bashKey;
 
     if (actionBehavior == pre)
     {
