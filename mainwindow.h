@@ -36,21 +36,17 @@ class MainWindow : public QWidget
     QWidgetAction* volumeAction;   // 音量控制
     QAction*       limitAction;    // 是否动作限制
     QAction*       baseSetAction;  // 基准设置
-    QAction*       debugAction;    // 调试信息显示
 
     Player*      player;
     Behavior*    behavior;
     SoundPlayer* soundPlayer;
     SoundPlayer* liveSoundPlayer;
 
-    QLabel* debugLabel;
-
     void createActions();     // 创建动作
     void createActionMenu();  // 创建动作菜单
     void actionMenuUpdate();  // 动作菜单可选性更新
     void createTrayMenu();    // 创建托盘菜单
     void createClickMenu();   // 创建右键菜单
-    void debugMessageShow();  // 调试信息显示
 
    protected:
     void timerEvent(QTimerEvent* event);
