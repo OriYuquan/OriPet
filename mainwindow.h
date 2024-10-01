@@ -33,6 +33,7 @@ class MainWindow : public QWidget
     QAction*       quitAction;     // 退出动作
     QAction*       aboutAction;    // 关于
     QAction*       controlAction;  // 是否可以控制
+    QAction*       mutedAction;    // 静音控制
     QWidgetAction* volumeAction;   // 音量控制
     QAction*       limitAction;    // 是否动作限制
     QAction*       baseSetAction;  // 基准设置

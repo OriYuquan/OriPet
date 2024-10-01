@@ -185,7 +185,16 @@ void MainWindow::createActions()
     connect(volumeSlider, SIGNAL(valueChanged(int)), liveSoundPlayer, SLOT(setVolume(int)));
     // 将 volumeWidget 设置为默认小部件
     volumeAction->setDefaultWidget(volumeWidget);
-    volumeAction->setEnabled(false);
+
+    // 静音控制
+    mutedAction = new QAction(tr("是否启用音效"), this);
+    mutedAction->setCheckable(true);  // 设置为可勾选
+    mutedAction->setChecked(true);    // 设置初始状态为勾选
+    connect(mutedAction, &QAction::toggled, [this](bool muted) {
+        this->soundPlayer->setMuted(!muted);
+        this->liveSoundPlayer->setMuted(!muted);
+        this->volumeAction->setEnabled(muted);
+    });
 
     // 动作限制
     limitAction = new QAction(tr("是否启用动作限制"), this);
@@ -203,6 +212,7 @@ void MainWindow::createTrayMenu()
     // 创建托盘菜单并添加退出动作
     trayMenu = new QMenu(this);
     trayMenu->addAction(volumeAction);
+    trayMenu->addAction(mutedAction);
     trayMenu->addAction(controlAction);
     trayMenu->addAction(limitAction);
     trayMenu->addAction(baseSetAction);
@@ -216,6 +226,7 @@ void MainWindow::createClickMenu()
     clickMenu = new QMenu(this);
     createActionMenu();
     clickMenu->addMenu(actionMenu);
+    clickMenu->addAction(mutedAction);
     clickMenu->addAction(controlAction);
     clickMenu->addAction(limitAction);
     clickMenu->addAction(quitAction);

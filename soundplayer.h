@@ -26,6 +26,7 @@ class SoundPlayer : public QObject
     void setVolume(int v);
     void loadAction(Action action);
     void loadPathAndPlay(QString path, int num);
+    void setMuted(bool muted);
 };
 
 #endif  // SOUNDPLAYER_H
