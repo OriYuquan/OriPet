@@ -73,3 +73,8 @@ void SoundPlayer::setMuted(bool muted)
 {
     mediaPlayer->setMuted(muted);
 }
+
+int SoundPlayer::getVolume()
+{
+    return mediaPlayer->volume();
+}

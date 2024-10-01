@@ -12,6 +12,7 @@ class SoundPlayer : public QObject
    public:
     explicit SoundPlayer(QObject* parent = nullptr);
     void soundPlay(int curFrame);
+    int  getVolume();  // 获取当前音量
 
    private:
     int           volume;

@@ -98,7 +98,7 @@ void MainWindow::createActions()
 {
     // 创建退出动作并连接到关闭槽
     quitAction = new QAction(tr("退出"), this);
-    connect(quitAction, SIGNAL(triggered(bool)), qApp, SLOT(quit()));
+    connect(quitAction, SIGNAL(triggered(bool)), this, SLOT(quitSlot()));
 
     // 关于动作
     aboutAction = new QAction(tr("关于"), this);
@@ -123,19 +123,32 @@ void MainWindow::createActions()
     });
 
     // 音量控制
+    // 从设置文件里读取音量数据
+    QFile file("volume.data");
+    // 默认值
+    int value = 20;
+    if (file.open(QIODevice::ReadOnly))
+    {
+        QDataStream in(&file);
+        in >> value;  // 从文件中读取一个整数
+    }
+    // 关闭文件
+    file.close();
     volumeAction = new QWidgetAction(this);
     // 创建一个小部件容器，用于放置滑块和标签
     QWidget*     volumeWidget = new QWidget(this);
     QVBoxLayout* mainLayout   = new QVBoxLayout(volumeWidget);
     // 创建一个标签用于显示当前音量
-    QLabel* volumeLabel = new QLabel(tr("音量：") + QString::number(20));
+    QLabel* volumeLabel = new QLabel(tr("音量：") + QString::number(value));
     volumeLabel->setAlignment(Qt::AlignCenter);  // 让标签居中
     // 创建一个水平布局用于放置滑块及其两端的标签
     QHBoxLayout* sliderLayout = new QHBoxLayout();
     // 创建滑块并设置范围
     QSlider* volumeSlider = new QSlider(Qt::Horizontal);
     volumeSlider->setRange(0, 100);  // 设置音量范围
-    volumeSlider->setValue(20);      // 默认值
+    soundPlayer->setVolume(value);
+    liveSoundPlayer->setVolume(value);
+    volumeSlider->setValue(value);
     // 设置样式，包括正常状态和禁用状态的样式
     volumeWidget->setStyleSheet("QLabel {"
                                 "    color: white;"  // 正常状态下的文字颜色
@@ -360,6 +373,21 @@ void MainWindow::baseInputShowSlot()
         // 关闭文件
         file.close();
     }
+}
+
+void MainWindow::quitSlot()
+{
+    int   curVolume = soundPlayer->getVolume();
+    QFile file("volume.data");
+    if (file.open(QIODevice::WriteOnly))
+    {
+        QDataStream out(&file);
+        out << curVolume;  // 将整数写入文件
+    }
+    // 关闭文件
+    file.close();
+
+    qApp->quit();
 }
 
 void MainWindow::focusOutEvent(QFocusEvent* event)

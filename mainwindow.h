@@ -62,6 +62,7 @@ class MainWindow : public QWidget
    public slots:
     void aboutShowSlot();
     void baseInputShowSlot();
+    void quitSlot();
 };
 
 #endif  // MAINWINDOW_H
