@@ -136,20 +136,36 @@ void MainWindow::createActions()
     QSlider* volumeSlider = new QSlider(Qt::Horizontal);
     volumeSlider->setRange(0, 100);  // 设置音量范围
     volumeSlider->setValue(20);      // 默认值
-    volumeSlider->setStyleSheet("QSlider::handle:horizontal {"
+    // 设置样式，包括正常状态和禁用状态的样式
+    volumeWidget->setStyleSheet("QLabel {"
+                                "    color: white;"  // 正常状态下的文字颜色
+                                "}"
+                                "QSlider::handle:horizontal {"
                                 "    background: white;"  // 滑块的颜色
                                 "}"
-                                ""
                                 "QSlider::handle:horizontal:pressed {"
                                 "    background: #87ceeb;"  // 滑块被按下时的颜色
                                 "}"
-                                ""
                                 "QSlider::sub-page:horizontal {"
                                 "    background: lightblue;"  // 滑槽左侧（已滑动部分）的颜色
                                 "}"
-                                ""
                                 "QSlider::add-page:horizontal {"
                                 "    background: #cccccc;"  // 滑槽右侧（未滑动部分）的颜色
+                                "}"
+                                "QLabel:disabled {"
+                                "    color: gray;"  // 禁用状态下的文字颜色
+                                "}"
+                                "QSlider:disabled {"
+                                "    background: #dddddd;"  // 禁用状态下的滑槽背景色
+                                "}"
+                                "QSlider::handle:horizontal:disabled {"
+                                "    background: gray;"  // 禁用状态下的滑块颜色
+                                "}"
+                                "QSlider::sub-page:horizontal:disabled {"
+                                "    background:  #a9a9a9;"  // 禁用状态下已滑动部分颜色
+                                "}"
+                                "QSlider::add-page:horizontal:disabled {"
+                                "    background: #cccccc;"  // 禁用状态下未滑动部分颜色
                                 "}");
     // 创建滑块两端的标签，显示最小值和最大值
     QLabel* minLabel = new QLabel("0");
@@ -169,6 +185,7 @@ void MainWindow::createActions()
     connect(volumeSlider, SIGNAL(valueChanged(int)), liveSoundPlayer, SLOT(setVolume(int)));
     // 将 volumeWidget 设置为默认小部件
     volumeAction->setDefaultWidget(volumeWidget);
+    volumeAction->setEnabled(false);
 
     // 动作限制
     limitAction = new QAction(tr("是否启用动作限制"), this);
