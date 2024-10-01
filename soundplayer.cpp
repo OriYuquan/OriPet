@@ -26,9 +26,7 @@ void SoundPlayer::loadAction(Action action)
             int randomValue = generator.bounded(1, SoundMap[actionPlaying].totalFrameNumber + 1);
             curPath         = SoundMap[actionPlaying].path + QString::number(randomValue) + ".wav";
             // qDebug() << curPath;
-
             mediaPlayer->setMedia(QUrl::fromLocalFile(curPath));
-            mediaPlayer->setVolume(volume);  // Volume is set between 0 and 100
         }
         else
         {
@@ -47,6 +45,7 @@ void SoundPlayer::soundPlay(int curFrame)
         {
             mediaPlayer->stop();
         }
+        mediaPlayer->setVolume(volume);  // Volume is set between 0 and 100
         mediaPlayer->play();
     }
 }
@@ -76,5 +75,5 @@ void SoundPlayer::setMuted(bool muted)
 
 int SoundPlayer::getVolume()
 {
-    return mediaPlayer->volume();
+    return volume;
 }
