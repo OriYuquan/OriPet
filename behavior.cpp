@@ -408,7 +408,7 @@ void Behavior::actionUpdate(int curFrame, long long time)
                    "\nmouseKey:" + QString::number(int(mouseLeftKey)) +
                    "\ncontrolTime:" + QString::number(controlTime) +
                    "\nmouseX:" + QString::number(mousex) + "\nmouseY:" + QString::number(mousey);
-    //    qDebug() << debugMessage;
+    qDebug() << debugMessage;
     //    qDebug() << leftKey << " " << rightKey << " " << upKey << " " << downKey << " " << jumpKey
     //             << " " << featherKey << " " << dashKey << " " << mouseLeftKey << " " << bashKey;
 
@@ -454,8 +454,8 @@ void Behavior::inputControl(Action& pre,
                             double  randomValue,
                             int     curFrame)
 {
-    if (mouseLeftKey && mousex > LeftEdge && mousex < RightEdge && mousey < BottomEdge &&
-        mousey > TopEdge)
+    if (mouseLeftKey && mousex - 2 > LeftEdge - 1 && mousex - 2 < RightEdge + 1 &&
+        mousey < BottomEdge && mousey > TopEdge)
     {
         actionBehavior = ActionsMap[actionBehavior].transform ? MouseHoldLeft : MouseHoldRight;
         return;
