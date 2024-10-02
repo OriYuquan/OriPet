@@ -53,10 +53,8 @@ void SoundPlayer::soundPlay(int curFrame)
 
 void SoundPlayer::loadPathAndPlay(QString path, int num)
 {
-    quint32          seed = static_cast<quint32>(QDateTime::currentMSecsSinceEpoch() & 0xFFFFFFFF);
-    QRandomGenerator generator(seed);
-    int              randomValue = generator.bounded(1, num + 1);
-    curPath                      = path + QString::number(randomValue) + ".wav";
+    int randomValue = QRandomGenerator::system()->bounded(1, num + 1);
+    curPath         = path + QString::number(randomValue) + ".wav";
     // qDebug() << actionPlaying << " " << curPlayer;
     mediaPlayer[curPlayer]->setMedia(QUrl::fromLocalFile(curPath));
     mediaPlayer[curPlayer]->setVolume(volume);  // Volume is set between 0 and
