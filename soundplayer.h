@@ -3,6 +3,7 @@
 
 #include <QMediaPlayer>
 #include <QObject>
+#include <QVector>
 
 #include "actionsdetail.h"
 
@@ -15,11 +16,12 @@ class SoundPlayer : public QObject
     int  getVolume();  // 获取当前音量
 
    private:
-    int           volume;
-    int           frequency;
-    QString       curPath;
-    Action        actionPlaying;
-    QMediaPlayer* mediaPlayer;
+    int                    volume;
+    int                    frequency;
+    QString                curPath;
+    Action                 actionPlaying;
+    QVector<QMediaPlayer*> mediaPlayer;
+    int                    curPlayer;
 
    signals:
 
