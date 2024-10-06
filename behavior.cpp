@@ -135,8 +135,10 @@ double Behavior::generalPossiblity(Action act)
         }
         else if (act == LookUpLeft || act == LookUpRight)
         {
-            if ((act == LookUpLeft && mousex < x && mousex > x - 600 && mousey < 800) ||
-                (act == LookUpRight && mousex > x && mousex < x + 600 && mousey < 800))
+            if ((act == LookUpLeft && mousex < x + ORIWIDTH / 2 &&
+                 mousex > x + ORIWIDTH / 2 - 600 && mousey < 800) ||
+                (act == LookUpRight && mousex > x + ORIWIDTH / 2 &&
+                 mousex < x + ORIWIDTH / 2 + 600 && mousey < 800))
                 return 20;
             else
                 return 1;
