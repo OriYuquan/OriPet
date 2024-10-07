@@ -431,8 +431,9 @@ void Behavior::actionUpdate(int curFrame, long long time)
         // qDebug() << i << ActionsLeastTimes[Action(i)];
     }
     if (int(pre) < int(StandtoSitLeft))
-        ActionsLeastTimes[SittoStandLeft]        = ActionsLeastTimes[SittoStandRight] =
-            ActionsLeastTimes[WakeUpLefttoRight] = ActionsLeastTimes[WakeUpRighttoLeft] = 0;
+        ActionsLeastTimes[SittoStandLeft]         = ActionsLeastTimes[SittoStandRight] =
+            ActionsLeastTimes[WakeUpLefttoRight]  = ActionsLeastTimes[WakeUpRighttoLeft] =
+                ActionsLeastTimes[SittoSleepLeft] = ActionsLeastTimes[SittoSleepRight] = 0;
 
     // 跳跃次数更新
     if (x == LeftEdge || x == RightEdge || y == BottomEdge || y == TopEdge || isBashCharging(pre))
