@@ -284,9 +284,9 @@ void ActionsDetailLoad()
     ActionsMap[DebutFromRight] = ActionsDetail("Source/Debut/OriShow_", 122, true, 0, 0.0, false);
 
     ActionsMap[StandtoSitLeft] =
-        ActionsDetail("Source/StandtoSit/StandToSit_", 124, true, 6000, 0.0, false);
+        ActionsDetail("Source/StandtoSit/StandToSit_", 124, true, 10000, 0.0, false);
     ActionsMap[StandtoSitRight] =
-        ActionsDetail("Source/StandtoSit/StandToSit_", 124, false, 6000, 0.0, false);
+        ActionsDetail("Source/StandtoSit/StandToSit_", 124, false, 10000, 0.0, false);
 
     ActionsMap[SitTailMovingLeft] =
         ActionsDetail("Source/SitTailMoving/SitIdle_", 90, true, 0, 0.5);
