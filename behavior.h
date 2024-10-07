@@ -67,8 +67,6 @@ class Behavior : public QWidget
    public:
     // 是否在猛击充能
     bool isBashCharging(Action action);
-    // 是否在坐着
-    bool isSitting(Action action);
 
     void setControlFalse();
     void keyPressEvent(QKeyEvent* event);

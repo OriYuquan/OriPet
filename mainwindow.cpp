@@ -285,25 +285,101 @@ void MainWindow::createActionMenu()
             behavior->loadAction(actSit);
         }
     });
+
+    sleepAction = new QAction(tr("睡觉"), this);
+    actionMenu->addAction(sleepAction);
+    connect(sleepAction, &QAction::triggered, behavior, [=]() {
+        if (behavior->getY() == behavior->BottomEdge)
+        {
+            Action cur = behavior->getAction();
+
+            if (cur == StandtoSitLeft || cur == StandtoSitRight || cur == SitTailMovingLeft ||
+                cur == SitTailMovingRight || cur == SitTailNoMovingLeft ||
+                cur == SitTailNoMovingRight)
+            {
+                Action actSit =
+                    ActionsMap[behavior->getAction()].transform ? SittoSleepLeft : SittoSleepRight;
+                behavior->loadAction(actSit);
+            }
+            else
+            {
+                Action actSit =
+                    ActionsMap[behavior->getAction()].transform ? StandtoSitLeft : StandtoSitRight;
+                if (ActionsMap[behavior->getAction()].transform)
+                    ActionsLeastTimes[SitTailMovingLeft] = ActionsLeastTimes[SitTailNoMovingLeft] =
+                        150;
+                else
+                    ActionsLeastTimes[SitTailMovingRight] =
+                        ActionsLeastTimes[SitTailNoMovingRight] = 150;
+                behavior->loadAction(actSit);
+            }
+            Action actWakeUp =
+                ActionsMap[behavior->getAction()].transform ? WakeUpLefttoRight : WakeUpRighttoLeft;
+            ActionsLeastTimes[actWakeUp] = 100000;
+        }
+    });
+
+    sleepLongAction = new QAction(tr("睡觉一小时"), this);
+    actionMenu->addAction(sleepLongAction);
+    connect(sleepLongAction, &QAction::triggered, behavior, [=]() {
+        if (behavior->getY() == behavior->BottomEdge)
+        {
+            Action cur = behavior->getAction();
+
+            if (cur == StandtoSitLeft || cur == StandtoSitRight || cur == SitTailMovingLeft ||
+                cur == SitTailMovingRight || cur == SitTailNoMovingLeft ||
+                cur == SitTailNoMovingRight)
+            {
+                Action actSit =
+                    ActionsMap[behavior->getAction()].transform ? SittoSleepLeft : SittoSleepRight;
+                behavior->loadAction(actSit);
+            }
+            else
+            {
+                Action actSit =
+                    ActionsMap[behavior->getAction()].transform ? StandtoSitLeft : StandtoSitRight;
+                if (ActionsMap[behavior->getAction()].transform)
+                    ActionsLeastTimes[SitTailMovingLeft] = ActionsLeastTimes[SitTailNoMovingLeft] =
+                        150;
+                else
+                    ActionsLeastTimes[SitTailMovingRight] =
+                        ActionsLeastTimes[SitTailNoMovingRight] = 150;
+                behavior->loadAction(actSit);
+            }
+        }
+    });
 }
 
 void MainWindow::actionMenuUpdate()
 {
-    if (behavior->getY() != behavior->BottomEdge)
+    Action cur = behavior->getAction();
+    if (behavior->getY() != behavior->BottomEdge || !ActionsMap[cur].control)
         actionMenu->setEnabled(false);
     else
         actionMenu->setEnabled(true);
-    if (behavior->isSitting(behavior->getAction()))
+
+    if (cur == SitTailMovingLeft || cur == SitTailMovingRight || cur == SitTailNoMovingLeft ||
+        cur == SitTailNoMovingRight || cur == SleepLeft || cur == SleepRight)
     {
+        actCuteAction->setEnabled(false);
         sitAction->setEnabled(false);
         sitLongAction->setEnabled(false);
-        actCuteAction->setEnabled(false);
     }
     else
     {
+        actCuteAction->setEnabled(true);
         sitAction->setEnabled(true);
         sitLongAction->setEnabled(true);
-        actCuteAction->setEnabled(true);
+    }
+    if (cur == SleepLeft || cur == SleepRight)
+    {
+        sleepAction->setEnabled(false);
+        sleepLongAction->setEnabled(false);
+    }
+    else
+    {
+        sleepAction->setEnabled(true);
+        sleepLongAction->setEnabled(true);
     }
 }
 

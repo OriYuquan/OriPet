@@ -156,6 +156,20 @@ double Behavior::generalPossiblity(Action act)
                 (act == StandtoSitRight && x > LeftEdge + 90))
                 return 3;
         }
+        else if (act == SittoSleepLeft || act == SittoSleepRight)
+        {
+            if (hour >= 23 || hour < 7)
+                return 7;
+            else
+                return 1;
+        }
+        else if (act == WakeUpLefttoRight || act == WakeUpRighttoLeft)
+        {
+            if (hour >= 23 || hour < 7)
+                return 1;
+            else
+                return 10;
+        }
 
         return 0;
     }
@@ -312,14 +326,27 @@ void Behavior::actionUpdate(int curFrame, long long time)
     else
         mouseLeftKey = false;
 
-    int vxCheck =
-        pre == actionBehavior
-            ? vx
-            : ActionsDX(actionBehavior, x, y, vx, vy, 1, time, mousex, mousey, controlTime != 0);
-    int vyCheck =
-        pre == actionBehavior
-            ? vy
-            : ActionsDY(actionBehavior, x, y, vx, vy, 1, time, mousex, mousey, controlTime != 0);
+    int nextFrame = curFrame == ActionsMap[pre].totalFrameNumber ? 1 : curFrame + 1;
+    int vxCheck   = ActionsDX(actionBehavior,
+                            x,
+                            y,
+                            vx,
+                            vy,
+                            pre == actionBehavior ? nextFrame : 1,
+                            time,
+                            mousex,
+                            mousey,
+                            controlTime != 0);
+    int vyCheck   = ActionsDY(actionBehavior,
+                            x,
+                            y,
+                            vx,
+                            vy,
+                            pre == actionBehavior ? nextFrame : 1,
+                            time,
+                            mousex,
+                            mousey,
+                            controlTime != 0);
 
     // 边界判断
     if (x == LeftEdge && vxCheck < 0)
@@ -461,14 +488,6 @@ bool Behavior::isBashCharging(Action action)
            action == BashDiaDownChargeLeft || action == BashDiaDownChargeRight;
 }
 
-bool Behavior::isSitting(Action action)
-{
-    return action == StandtoSitLeft || action == StandtoSitRight || action == SittoStandLeft ||
-           action == SittoStandRight || action == SitTailMovingLeft ||
-           action == SitTailMovingRight || action == SitTailNoMovingLeft ||
-           action == SitTailNoMovingRight;
-}
-
 void Behavior::inputControl(Action& pre,
                             bool&   mirror,
                             bool&   restart,
@@ -583,12 +602,22 @@ void Behavior::inputControl(Action& pre,
     {
         bool control = (leftKey || rightKey || upKey || downKey || jumpKey || featherKey ||
                         dashKey || mouseLeftKey || bashKey);
-        if (control && isSitting(pre))
+        if (control && (pre == SitTailMovingLeft || pre == SitTailMovingRight ||
+                        pre == SitTailNoMovingLeft || pre == SitTailNoMovingRight))
         {
             actionBehavior =
                 ActionsMap[actionBehavior].transform ? SittoStandLeft : SittoStandRight;
+            ActionsLeastTimes[actionBehavior] = ActionsMap[actionBehavior].leastTime;
             return;
         }
+        else if (control && (pre == SleepLeft || pre == SleepRight))
+        {
+            actionBehavior =
+                ActionsMap[actionBehavior].transform ? WakeUpLefttoRight : WakeUpRighttoLeft;
+            ActionsLeastTimes[actionBehavior] = ActionsMap[actionBehavior].leastTime;
+            return;
+        }
+
         if (upKey)
         {
             actionBehavior = ActionsMap[actionBehavior].transform ? LookUpLeft : LookUpRight;

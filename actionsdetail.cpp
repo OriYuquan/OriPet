@@ -302,6 +302,23 @@ void ActionsDetailLoad()
     ActionsMap[SittoStandRight] =
         ActionsDetail("Source/SittoStand/SitToStand_", 47, false, 0, 0.0, false);
 
+    ActionsMap[SittoSleepLeft] =
+        ActionsDetail("Source/SittoSleep/SitToSleep_", 560, true, 0, 0.0, false);
+    ActionsMap[SittoSleepRight] =
+        ActionsDetail("Source/SittoSleep/SitToSleep_", 560, false, 0, 0.0, false);
+
+    ActionsMap[SleepLeft]  = ActionsDetail("Source/Sleep/SleepIdle_", 180, true, 0, 0.92);
+    ActionsMap[SleepRight] = ActionsDetail("Source/Sleep/SleepIdle_", 180, false, 0, 0.92);
+
+    ActionsMap[SitGreetLeft] =
+        ActionsDetail("Source/SitGreet/SitAndGreet_", 132, true, 2000, 0.0, false);
+    ActionsMap[SitGreetRight] =
+        ActionsDetail("Source/SitGreet/SitAndGreet_", 132, false, 2000, 0.0, false);
+
+    ActionsMap[WakeUpLefttoRight] = ActionsDetail("Source/WakeUp/Awake_", 162, true, 0, 0.0, false);
+    ActionsMap[WakeUpRighttoLeft] =
+        ActionsDetail("Source/WakeUp/Awake_", 162, false, 0, 0.0, false);
+
     // 动作限制集合
     ActionLimit = {Jump1LeftUp,       Jump1RightUp,
 
@@ -508,6 +525,18 @@ void ActionsDetailLoad()
 
     ActionsColdTrans[SittoStandLeft]  = StandFacingLeft;
     ActionsColdTrans[SittoStandRight] = StandFacingRight;
+
+    ActionsColdTrans[SittoSleepLeft]  = SleepLeft;
+    ActionsColdTrans[SittoSleepRight] = SleepRight;
+
+    ActionsColdTrans[SleepLeft]  = SleepLeft;
+    ActionsColdTrans[SleepRight] = SleepRight;
+
+    ActionsColdTrans[SitGreetLeft]  = SitTailNoMovingLeft;
+    ActionsColdTrans[SitGreetRight] = SitTailNoMovingRight;
+
+    ActionsColdTrans[WakeUpLefttoRight] = StandFacingRight;
+    ActionsColdTrans[WakeUpRighttoLeft] = StandFacingLeft;
 
     // 状态机的转移函数
     ActionsProbability[StandFacingLeft]  = {{StandFacingRight, 1},
@@ -1000,16 +1029,36 @@ void ActionsDetailLoad()
     ActionsProbability[DebutFromLeft]  = {{RunSlowlyRight, 1}};
     ActionsProbability[DebutFromRight] = {{RunSlowlyLeft, 1}};
 
-    ActionsProbability[StandtoSitLeft]  = {{SitTailMovingLeft, 2}, {SitTailNoMovingLeft, 3}};
-    ActionsProbability[StandtoSitRight] = {{SitTailMovingRight, 2}, {SitTailNoMovingRight, 3}};
+    ActionsProbability[StandtoSitLeft] = {
+        {SitTailMovingLeft, 10}, {SitTailNoMovingLeft, 15}, {SittoSleepLeft, -1}};
+    ActionsProbability[StandtoSitRight] = {
+        {SitTailMovingRight, 10}, {SitTailNoMovingRight, 15}, {SittoSleepRight, -1}};
 
-    ActionsProbability[SitTailMovingLeft]    = {{SitTailNoMovingLeft, 30}, {SittoStandLeft, 1}};
-    ActionsProbability[SitTailMovingRight]   = {{SitTailNoMovingRight, 30}, {SittoStandRight, 1}};
-    ActionsProbability[SitTailNoMovingLeft]  = {{SitTailMovingLeft, 30}, {SittoStandLeft, 1}};
-    ActionsProbability[SitTailNoMovingRight] = {{SitTailMovingRight, 30}, {SittoStandRight, 1}};
+    ActionsProbability[SitTailMovingLeft] = {
+        {SitTailNoMovingLeft, 30}, {SittoStandLeft, 2}, {SittoSleepLeft, -1}, {SitGreetLeft, 5}};
+    ActionsProbability[SitTailMovingRight]  = {{SitTailNoMovingRight, 30},
+                                               {SittoStandRight, 2},
+                                               {SittoSleepRight, -1},
+                                               {SitGreetRight, 5}};
+    ActionsProbability[SitTailNoMovingLeft] = {
+        {SitTailMovingLeft, 30}, {SittoStandLeft, 2}, {SittoSleepLeft, -1}, {SitGreetLeft, 5}};
+    ActionsProbability[SitTailNoMovingRight] = {
+        {SitTailMovingRight, 30}, {SittoStandRight, 2}, {SittoSleepRight, -1}, {SitGreetRight, 5}};
 
     ActionsProbability[SittoStandLeft]  = {{StandFacingLeft, 1}};
     ActionsProbability[SittoStandRight] = {{StandFacingRight, 1}};
+
+    ActionsProbability[SittoSleepLeft]  = {{SleepLeft, 1}};
+    ActionsProbability[SittoSleepRight] = {{SleepRight, 1}};
+
+    ActionsProbability[SitGreetLeft]  = ActionsProbability[StandtoSitLeft];
+    ActionsProbability[SitGreetRight] = ActionsProbability[StandtoSitRight];
+
+    ActionsProbability[SleepLeft]  = {{SleepLeft, 8}, {WakeUpLefttoRight, -1}};
+    ActionsProbability[SleepRight] = {{SleepRight, 8}, {WakeUpRighttoLeft, -1}};
+
+    ActionsProbability[WakeUpLefttoRight] = {{StandFacingRight, 1}, {YawnRight, 3}};
+    ActionsProbability[WakeUpRighttoLeft] = {{StandFacingLeft, 1}, {YawnLeft, 3}};
 
     // 音效加载
     SoundMap[RunSlowlyLeft] = SoundMap[RunSlowlyRight] = SoundMap[GetDownWalkLeft] =
@@ -1070,6 +1119,12 @@ void ActionsDetailLoad()
 
     SoundMap[StandtoSitLeft] = SoundMap[StandtoSitRight] =
         SoundsDetail("Sound/standtoSit/standtoSit", 1, 1);
+
+    SoundMap[SitGreetLeft] = SoundMap[SitGreetRight] =
+        SoundsDetail("Sound/sitGreet/oriCheerVoice_", 6, 1);
+
+    SoundMap[WakeUpLefttoRight] = SoundMap[WakeUpRighttoLeft] =
+        SoundsDetail("Sound/wakeUp/wakeUp", 1, 1);
 
     // 镜像动作初始化
     for (int i = 0; i < int(None); i++)
@@ -1404,7 +1459,27 @@ pair<int, int> ActionsMovement(Action    action,
         dx         = (ActionsMap[action].transform ? -1 : 1) * data[curFrame - 1];
         dy         = 0;
     }
-
+    if (action == WakeUpLefttoRight || action == WakeUpRighttoLeft)
+    {
+        int dataX[] = {0, 0, 0, 0, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 0, 0, 0, 0, 0,
+                       0, 0, 0, 0, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 0, 0, 0, 0, 0,
+                       0, 0, 0, 0, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 0, 0, 0, 0, 0,
+                       0, 0, 0, 0, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 0, 0, 0, 0, 0,
+                       0, 0, 0, 0, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 0, 0, 0, 0, 0,
+                       0, 0, 0, 0, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 0, 0, 0, 0, 0,
+                       0, 0, 0, 0, 0, 4, 12, 18, 23, 28, 25, 21, 16, 13, 10, 7, 4, 3, 1, 0, 0,
+                       0, 0, 0, 0, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0};
+        int dataY[] = {0, 0, 0, 0, 0, 0,   0,   0,  0,  0,  0, 0, 0, 0,  0,  0,  0,  0, 0, 0, 0,
+                       0, 0, 0, 0, 0, 0,   0,   0,  0,  0,  0, 0, 0, 0,  0,  0,  0,  0, 0, 0, 0,
+                       0, 0, 0, 0, 0, 0,   0,   0,  0,  0,  0, 0, 0, 0,  0,  0,  0,  0, 0, 0, 0,
+                       0, 0, 0, 0, 0, 0,   0,   0,  0,  0,  0, 0, 0, 0,  0,  0,  0,  0, 0, 0, 0,
+                       0, 0, 0, 0, 0, 0,   0,   0,  0,  0,  0, 0, 0, 0,  0,  0,  0,  0, 0, 0, 0,
+                       0, 0, 0, 0, 0, 0,   0,   0,  0,  0,  0, 0, 0, 0,  0,  0,  0,  0, 0, 0, 0,
+                       0, 0, 0, 0, 0, -22, -27, -9, -5, -3, 0, 4, 8, 10, 11, 11, 10, 8, 4, 0, 0,
+                       0, 0, 0, 0, 0, 0,   0,   0,  0,  0,  0, 0, 0, 0,  0};
+        dx          = (ActionsMap[action].transform ? -1 : 1) * dataX[curFrame - 1];
+        dy          = dataY[curFrame - 1];
+    }
     return {dx, dy};
 }
 

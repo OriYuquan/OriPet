@@ -196,6 +196,18 @@ enum Action
     SittoStandLeft,
     SittoStandRight,
 
+    SittoSleepLeft,
+    SittoSleepRight,
+
+    SitGreetLeft,
+    SitGreetRight,
+
+    SleepLeft,
+    SleepRight,
+
+    WakeUpLefttoRight,
+    WakeUpRighttoLeft,
+
     None
 };
 

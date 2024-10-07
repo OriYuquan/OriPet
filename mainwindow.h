@@ -41,6 +41,7 @@ class MainWindow : public QWidget
     // 动作设置
     QAction* actCuteAction;
     QAction *sitAction, *sitLongAction;
+    QAction *sleepAction, *sleepLongAction;
 
     Player*      player;
     Behavior*    behavior;
