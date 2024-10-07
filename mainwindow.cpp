@@ -279,9 +279,14 @@ void MainWindow::createActionMenu()
         {
             Action actSit =
                 ActionsMap[behavior->getAction()].transform ? StandtoSitLeft : StandtoSitRight;
+
             Action actSittoStand =
                 ActionsMap[behavior->getAction()].transform ? SittoStandLeft : SittoStandRight;
             ActionsLeastTimes[actSittoStand] = 100000;
+            Action actSittoSleep =
+                ActionsMap[behavior->getAction()].transform ? SittoSleepLeft : SittoSleepRight;
+            ActionsLeastTimes[actSittoSleep] = 100000;
+
             behavior->loadAction(actSit);
         }
     });
