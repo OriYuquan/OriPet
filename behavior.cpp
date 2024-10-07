@@ -150,6 +150,12 @@ double Behavior::generalPossiblity(Action act)
             else
                 return 1;
         }
+        else if (act == StandtoSitLeft || act == StandtoSitRight)
+        {
+            if ((act == StandtoSitLeft && x < RightEdge - 90) ||
+                (act == StandtoSitRight && x > LeftEdge + 90))
+                return 3;
+        }
 
         return 0;
     }
@@ -185,7 +191,8 @@ Action Behavior::NextActions(Action currentAction)
         cumulativeWeight += it.value();
         if (randomValue < cumulativeWeight)
         {
-            ActionsLeastTimes[it.key()] = ActionsMap[it.key()].leastTime;
+            ActionsLeastTimes[it.key()]                = ActionsMap[it.key()].leastTime;
+            ActionsLeastTimes[ActionsMirror[it.key()]] = ActionsMap[it.key()].leastTime;
             if (it.key() == DoubleJumpLeftUp || it.key() == DoubleJumpRightUp)
                 jumpChance--;
             if (it.key() == AirDashLeft || it.key() == AirDashRight)
@@ -194,7 +201,8 @@ Action Behavior::NextActions(Action currentAction)
             return it.key();
         }
     }
-    ActionsLeastTimes[currentAction] = ActionsMap[currentAction].leastTime;
+    ActionsLeastTimes[currentAction]                = ActionsMap[currentAction].leastTime;
+    ActionsLeastTimes[ActionsMirror[currentAction]] = ActionsMap[currentAction].leastTime;
     return currentAction;
 }
 
@@ -301,6 +309,8 @@ void Behavior::actionUpdate(int curFrame, long long time)
     {
         inputControl(pre, mirror, restart, randomValue, curFrame);
     }
+    else
+        mouseLeftKey = false;
 
     int vxCheck =
         pre == actionBehavior
@@ -451,6 +461,14 @@ bool Behavior::isBashCharging(Action action)
            action == BashDiaDownChargeLeft || action == BashDiaDownChargeRight;
 }
 
+bool Behavior::isSitting(Action action)
+{
+    return action == StandtoSitLeft || action == StandtoSitRight || action == SittoStandLeft ||
+           action == SittoStandRight || action == SitTailMovingLeft ||
+           action == SitTailMovingRight || action == SitTailNoMovingLeft ||
+           action == SitTailNoMovingRight;
+}
+
 void Behavior::inputControl(Action& pre,
                             bool&   mirror,
                             bool&   restart,
@@ -563,6 +581,14 @@ void Behavior::inputControl(Action& pre,
 
     if (y == BottomEdge)
     {
+        bool control = (leftKey || rightKey || upKey || downKey || jumpKey || featherKey ||
+                        dashKey || mouseLeftKey || bashKey);
+        if (control && isSitting(pre))
+        {
+            actionBehavior =
+                ActionsMap[actionBehavior].transform ? SittoStandLeft : SittoStandRight;
+            return;
+        }
         if (upKey)
         {
             actionBehavior = ActionsMap[actionBehavior].transform ? LookUpLeft : LookUpRight;

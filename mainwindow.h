@@ -38,6 +38,10 @@ class MainWindow : public QWidget
     QAction*       limitAction;    // 是否动作限制
     QAction*       baseSetAction;  // 基准设置
 
+    // 动作设置
+    QAction* actCuteAction;
+    QAction *sitAction, *sitLongAction;
+
     Player*      player;
     Behavior*    behavior;
     SoundPlayer* soundPlayer;

@@ -193,8 +193,8 @@ void ActionsDetailLoad()
     ActionsMap[GetDownWalkRight] =
         ActionsDetail("Source/GetDownWalk/ori3-", 36, false, 0, 0.8, true, false);
 
-    ActionsMap[RunLeft]  = ActionsDetail("Source/Run/ori26-", 21, true, 5000, 0.5);
-    ActionsMap[RunRight] = ActionsDetail("Source/Run/ori26-", 21, false, 5000, 0.5);
+    ActionsMap[RunLeft]  = ActionsDetail("Source/Run/ori26-", 21, true, 4000, 0.5);
+    ActionsMap[RunRight] = ActionsDetail("Source/Run/ori26-", 21, false, 4000, 0.5);
 
     ActionsMap[WalkLeft]  = ActionsDetail("Source/Walk/walk_", 30, true, 100, 0.8);
     ActionsMap[WalkRight] = ActionsDetail("Source/Walk/walk_", 30, false, 100, 0.8);
@@ -262,9 +262,9 @@ void ActionsDetailLoad()
     ActionsMap[ActCuteLeft]  = ActionsDetail("Source/ActCute/Cute1Idle_", 105, true, 0, 0.5);
     ActionsMap[ActCuteRight] = ActionsDetail("Source/ActCute/Cute1Idle_", 105, false, 0, 0.5);
     ActionsMap[StandLefttoActCuteRight] =
-        ActionsDetail("Source/StandtoActCute/StandToCute1_", 85, true, 3000, 0.0);
+        ActionsDetail("Source/StandtoActCute/StandToCute1_", 85, true, 2000, 0.0);
     ActionsMap[StandRighttoActCuteLeft] =
-        ActionsDetail("Source/StandtoActCute/StandToCute1_", 85, false, 3000, 0.0);
+        ActionsDetail("Source/StandtoActCute/StandToCute1_", 85, false, 2000, 0.0);
 
     ActionsMap[LandRollLeft] =
         ActionsDetail("Source/LandRoll/FallRoll_", 14, true, 0, 0.0, true, false);
@@ -282,6 +282,25 @@ void ActionsDetailLoad()
 
     ActionsMap[DebutFromLeft]  = ActionsDetail("Source/Debut/OriShow_", 122, false, 0, 0.0, false);
     ActionsMap[DebutFromRight] = ActionsDetail("Source/Debut/OriShow_", 122, true, 0, 0.0, false);
+
+    ActionsMap[StandtoSitLeft] =
+        ActionsDetail("Source/StandtoSit/StandToSit_", 124, true, 6000, 0.0, false);
+    ActionsMap[StandtoSitRight] =
+        ActionsDetail("Source/StandtoSit/StandToSit_", 124, false, 6000, 0.0, false);
+
+    ActionsMap[SitTailMovingLeft] =
+        ActionsDetail("Source/SitTailMoving/SitIdle_", 90, true, 0, 0.5);
+    ActionsMap[SitTailMovingRight] =
+        ActionsDetail("Source/SitTailMoving/SitIdle_", 90, false, 0, 0.5);
+    ActionsMap[SitTailNoMovingLeft] =
+        ActionsDetail("Source/SitNoTailMoving/SitIdleNoTailMoving_", 90, true, 0, 0.5);
+    ActionsMap[SitTailNoMovingRight] =
+        ActionsDetail("Source/SitNoTailMoving/SitIdleNoTailMoving_", 90, false, 0, 0.5);
+
+    ActionsMap[SittoStandLeft] =
+        ActionsDetail("Source/SittoStand/SitToStand_", 47, true, 0, 0.0, false);
+    ActionsMap[SittoStandRight] =
+        ActionsDetail("Source/SittoStand/SitToStand_", 47, false, 0, 0.0, false);
 
     // 动作限制集合
     ActionLimit = {Jump1LeftUp,       Jump1RightUp,
@@ -478,6 +497,18 @@ void ActionsDetailLoad()
     ActionsColdTrans[DebutFromLeft]  = RunSlowlyRight;
     ActionsColdTrans[DebutFromRight] = RunSlowlyLeft;
 
+    ActionsColdTrans[StandtoSitLeft]  = SitTailNoMovingLeft;
+    ActionsColdTrans[StandtoSitRight] = SitTailNoMovingRight;
+
+    ActionsColdTrans[SitTailMovingLeft]  = SitTailMovingLeft;
+    ActionsColdTrans[SitTailMovingRight] = SitTailMovingRight;
+
+    ActionsColdTrans[SitTailNoMovingLeft]  = SitTailNoMovingLeft;
+    ActionsColdTrans[SitTailNoMovingRight] = SitTailNoMovingRight;
+
+    ActionsColdTrans[SittoStandLeft]  = StandFacingLeft;
+    ActionsColdTrans[SittoStandRight] = StandFacingRight;
+
     // 状态机的转移函数
     ActionsProbability[StandFacingLeft]  = {{StandFacingRight, 1},
                                             {RunSlowlyLeft, -1},
@@ -495,7 +526,8 @@ void ActionsDetailLoad()
                                             {StandtoLookUpListenLeft, -1},
                                             {LookUpLeft, -1},
                                             {YawnLeft, -1},
-                                            {StandLefttoActCuteRight, 5}};
+                                            {StandLefttoActCuteRight, 5},
+                                            {StandtoSitLeft, -1}};
     ActionsProbability[StandFacingRight] = {{StandFacingLeft, 1},
                                             {RunSlowlyLeft, 1},
                                             {RunSlowlyRight, -1},
@@ -512,7 +544,8 @@ void ActionsDetailLoad()
                                             {StandtoLookUpListenRight, -1},
                                             {LookUpRight, -1},
                                             {YawnRight, -1},
-                                            {StandRighttoActCuteLeft, 5}};
+                                            {StandRighttoActCuteLeft, 5},
+                                            {StandtoSitRight, -1}};
     ActionsProbability[RunSlowlyLeft]    = {{StandFacingLeft, 20},
                                             {StandFacingRight, 1},
                                             {RunSlowlyRight, -1},
@@ -967,6 +1000,17 @@ void ActionsDetailLoad()
     ActionsProbability[DebutFromLeft]  = {{RunSlowlyRight, 1}};
     ActionsProbability[DebutFromRight] = {{RunSlowlyLeft, 1}};
 
+    ActionsProbability[StandtoSitLeft]  = {{SitTailMovingLeft, 2}, {SitTailNoMovingLeft, 3}};
+    ActionsProbability[StandtoSitRight] = {{SitTailMovingRight, 2}, {SitTailNoMovingRight, 3}};
+
+    ActionsProbability[SitTailMovingLeft]    = {{SitTailNoMovingLeft, 30}, {SittoStandLeft, 1}};
+    ActionsProbability[SitTailMovingRight]   = {{SitTailNoMovingRight, 30}, {SittoStandRight, 1}};
+    ActionsProbability[SitTailNoMovingLeft]  = {{SitTailMovingLeft, 30}, {SittoStandLeft, 1}};
+    ActionsProbability[SitTailNoMovingRight] = {{SitTailMovingRight, 30}, {SittoStandRight, 1}};
+
+    ActionsProbability[SittoStandLeft]  = {{StandFacingLeft, 1}};
+    ActionsProbability[SittoStandRight] = {{StandFacingRight, 1}};
+
     // 音效加载
     SoundMap[RunSlowlyLeft] = SoundMap[RunSlowlyRight] = SoundMap[GetDownWalkLeft] =
         SoundMap[GetDownWalkRight] = SoundMap[RunLeft] = SoundMap[RunRight] = SoundMap[WalkLeft] =
@@ -1023,6 +1067,9 @@ void ActionsDetailLoad()
         SoundsDetail("Sound/landRoll/seinLandRoll", 5, 1);
 
     SoundMap[DebutFromLeft] = SoundMap[DebutFromRight] = SoundsDetail("Sound/debut/debut", 1, 1);
+
+    SoundMap[StandtoSitLeft] = SoundMap[StandtoSitRight] =
+        SoundsDetail("Sound/standtoSit/standtoSit", 1, 1);
 
     // 镜像动作初始化
     for (int i = 0; i < int(None); i++)
@@ -1344,6 +1391,18 @@ pair<int, int> ActionsMovement(Action    action,
                 ActionsMap[GetDownJumpLeftDown].totalFrameNumber + 1) +
               (curFrame + ActionsMap[GetDownJumpLeftUp].totalFrameNumber) * 2) *
              1.2;
+    }
+    if (action == StandtoSitLeft || action == StandtoSitRight)
+    {
+        int data[] = {3,  2,  3,  2,  1,  -3, -5, -6, -6, -6, -6, -5, -5, -6, -5, -5, -5, -5,
+                      -5, -5, -5, -3, -3, -3, -3, -3, -1, 0,  2,  3,  2,  2,  3,  3,  3,  4,
+                      4,  3,  3,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+                      -1, 0,  0,  0,  0,  -1, 0,  0,  0,  2,  1,  1,  1,  1,  1,  1,  1,  0,
+                      1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+                      0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+                      0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0};
+        dx         = (ActionsMap[action].transform ? -1 : 1) * data[curFrame - 1];
+        dy         = 0;
     }
 
     return {dx, dy};

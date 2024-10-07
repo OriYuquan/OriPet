@@ -185,6 +185,17 @@ enum Action
     DebutFromLeft,
     DebutFromRight,
 
+    StandtoSitLeft,
+    StandtoSitRight,
+
+    SitTailMovingLeft,
+    SitTailMovingRight,
+    SitTailNoMovingLeft,
+    SitTailNoMovingRight,
+
+    SittoStandLeft,
+    SittoStandRight,
+
     None
 };
 

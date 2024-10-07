@@ -249,7 +249,8 @@ void MainWindow::createActionMenu()
 {
     actionMenu = new QMenu(tr("动作"));
     actionMenu->setStyleSheet("QMenu::icon { width: 0px; }");
-    QAction* actCuteAction = new QAction(tr("卖萌"), this);
+
+    actCuteAction = new QAction(tr("卖萌"), this);
     actionMenu->addAction(actCuteAction);
     connect(actCuteAction, &QAction::triggered, behavior, [=]() {
         if (behavior->getY() == behavior->BottomEdge)
@@ -260,8 +261,30 @@ void MainWindow::createActionMenu()
         }
     });
 
-    //    QAction* sleepAction = new QAction(tr("睡觉"), this);
-    //    actionMenu->addAction(sleepAction);
+    sitAction = new QAction(tr("坐下"), this);
+    actionMenu->addAction(sitAction);
+    connect(sitAction, &QAction::triggered, behavior, [=]() {
+        if (behavior->getY() == behavior->BottomEdge)
+        {
+            Action actSit =
+                ActionsMap[behavior->getAction()].transform ? StandtoSitLeft : StandtoSitRight;
+            behavior->loadAction(actSit);
+        }
+    });
+
+    sitLongAction = new QAction(tr("坐下一小时"), this);
+    actionMenu->addAction(sitLongAction);
+    connect(sitLongAction, &QAction::triggered, behavior, [=]() {
+        if (behavior->getY() == behavior->BottomEdge)
+        {
+            Action actSit =
+                ActionsMap[behavior->getAction()].transform ? StandtoSitLeft : StandtoSitRight;
+            Action actSittoStand =
+                ActionsMap[behavior->getAction()].transform ? SittoStandLeft : SittoStandRight;
+            ActionsLeastTimes[actSittoStand] = 100000;
+            behavior->loadAction(actSit);
+        }
+    });
 }
 
 void MainWindow::actionMenuUpdate()
@@ -270,6 +293,18 @@ void MainWindow::actionMenuUpdate()
         actionMenu->setEnabled(false);
     else
         actionMenu->setEnabled(true);
+    if (behavior->isSitting(behavior->getAction()))
+    {
+        sitAction->setEnabled(false);
+        sitLongAction->setEnabled(false);
+        actCuteAction->setEnabled(false);
+    }
+    else
+    {
+        sitAction->setEnabled(true);
+        sitLongAction->setEnabled(true);
+        actCuteAction->setEnabled(true);
+    }
 }
 
 void MainWindow::contextMenuEvent(QContextMenuEvent* event)

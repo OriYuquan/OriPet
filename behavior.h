@@ -55,8 +55,6 @@ class Behavior : public QWidget
     double generalPossiblity(Action);
     // 操作函数
     void inputControl(Action& pre, bool& mirror, bool& restart, double randomValue, int curFrame);
-    // 是否在猛击充能
-    bool isBashCharging(Action action);
 
    signals:
     void PlayerLoadNewActionSignal(Action);
@@ -67,6 +65,11 @@ class Behavior : public QWidget
     void SoundPlayerPathPlay(QString, int);
 
    public:
+    // 是否在猛击充能
+    bool isBashCharging(Action action);
+    // 是否在坐着
+    bool isSitting(Action action);
+
     void setControlFalse();
     void keyPressEvent(QKeyEvent* event);
     void keyReleaseEvent(QKeyEvent* event);
