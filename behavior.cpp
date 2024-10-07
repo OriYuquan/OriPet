@@ -430,6 +430,9 @@ void Behavior::actionUpdate(int curFrame, long long time)
         // 冷却时间调试输出
         // qDebug() << i << ActionsLeastTimes[Action(i)];
     }
+    if (int(pre) < int(StandtoSitLeft))
+        ActionsLeastTimes[SittoStandLeft]        = ActionsLeastTimes[SittoStandRight] =
+            ActionsLeastTimes[WakeUpLefttoRight] = ActionsLeastTimes[WakeUpRighttoLeft] = 0;
 
     // 跳跃次数更新
     if (x == LeftEdge || x == RightEdge || y == BottomEdge || y == TopEdge || isBashCharging(pre))
@@ -607,14 +610,12 @@ void Behavior::inputControl(Action& pre,
         {
             actionBehavior =
                 ActionsMap[actionBehavior].transform ? SittoStandLeft : SittoStandRight;
-            ActionsLeastTimes[actionBehavior] = ActionsMap[actionBehavior].leastTime;
             return;
         }
         else if (control && (pre == SleepLeft || pre == SleepRight))
         {
             actionBehavior =
                 ActionsMap[actionBehavior].transform ? WakeUpLefttoRight : WakeUpRighttoLeft;
-            ActionsLeastTimes[actionBehavior] = ActionsMap[actionBehavior].leastTime;
             return;
         }
 

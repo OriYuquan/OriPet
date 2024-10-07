@@ -297,9 +297,39 @@ void MainWindow::createActionMenu()
                 cur == SitTailMovingRight || cur == SitTailNoMovingLeft ||
                 cur == SitTailNoMovingRight)
             {
-                Action actSit =
+                Action actSleep =
                     ActionsMap[behavior->getAction()].transform ? SittoSleepLeft : SittoSleepRight;
+                behavior->loadAction(actSleep);
+            }
+            else
+            {
+                Action actSit =
+                    ActionsMap[behavior->getAction()].transform ? StandtoSitLeft : StandtoSitRight;
+                if (ActionsMap[behavior->getAction()].transform)
+                    ActionsLeastTimes[SitTailMovingLeft] = ActionsLeastTimes[SitTailNoMovingLeft] =
+                        150;
+                else
+                    ActionsLeastTimes[SitTailMovingRight] =
+                        ActionsLeastTimes[SitTailNoMovingRight] = 150;
                 behavior->loadAction(actSit);
+            }
+        }
+    });
+
+    sleepLongAction = new QAction(tr("睡觉一小时"), this);
+    actionMenu->addAction(sleepLongAction);
+    connect(sleepLongAction, &QAction::triggered, behavior, [=]() {
+        if (behavior->getY() == behavior->BottomEdge)
+        {
+            Action cur = behavior->getAction();
+
+            if (cur == StandtoSitLeft || cur == StandtoSitRight || cur == SitTailMovingLeft ||
+                cur == SitTailMovingRight || cur == SitTailNoMovingLeft ||
+                cur == SitTailNoMovingRight)
+            {
+                Action actSleep =
+                    ActionsMap[behavior->getAction()].transform ? SittoSleepLeft : SittoSleepRight;
+                behavior->loadAction(actSleep);
             }
             else
             {
@@ -316,36 +346,6 @@ void MainWindow::createActionMenu()
             Action actWakeUp =
                 ActionsMap[behavior->getAction()].transform ? WakeUpLefttoRight : WakeUpRighttoLeft;
             ActionsLeastTimes[actWakeUp] = 100000;
-        }
-    });
-
-    sleepLongAction = new QAction(tr("睡觉一小时"), this);
-    actionMenu->addAction(sleepLongAction);
-    connect(sleepLongAction, &QAction::triggered, behavior, [=]() {
-        if (behavior->getY() == behavior->BottomEdge)
-        {
-            Action cur = behavior->getAction();
-
-            if (cur == StandtoSitLeft || cur == StandtoSitRight || cur == SitTailMovingLeft ||
-                cur == SitTailMovingRight || cur == SitTailNoMovingLeft ||
-                cur == SitTailNoMovingRight)
-            {
-                Action actSit =
-                    ActionsMap[behavior->getAction()].transform ? SittoSleepLeft : SittoSleepRight;
-                behavior->loadAction(actSit);
-            }
-            else
-            {
-                Action actSit =
-                    ActionsMap[behavior->getAction()].transform ? StandtoSitLeft : StandtoSitRight;
-                if (ActionsMap[behavior->getAction()].transform)
-                    ActionsLeastTimes[SitTailMovingLeft] = ActionsLeastTimes[SitTailNoMovingLeft] =
-                        150;
-                else
-                    ActionsLeastTimes[SitTailMovingRight] =
-                        ActionsLeastTimes[SitTailNoMovingRight] = 150;
-                behavior->loadAction(actSit);
-            }
         }
     });
 }
