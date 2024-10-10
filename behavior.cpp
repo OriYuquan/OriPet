@@ -26,6 +26,9 @@ Behavior::Behavior(QWidget* parent) : QWidget(parent)
     controlTime = freeTime = 0;
     limitable              = false;
 
+    bashAction   = None;
+    curBashFrame = ActionsMap[BashDiaUpLeft].totalFrameNumber + 1;
+
     x = y = vx = vy = mousex = mousey = 0;
 
     startTimer(10000);
@@ -248,6 +251,20 @@ void Behavior::actionUpdate(int curFrame, long long time)
     vy = ActionsDY(actionBehavior, x, y, vx, vy, curFrame, time, mousex, mousey, controlTime != 0);
     x += vx;
     y += vy;
+
+    if ((pre == BashUpLeft || pre == BashUpRight || pre == BashHorLeft || pre == BashHorRight ||
+         pre == BashDownLeft || pre == BashDownRight || pre == BashDiaUpLeft ||
+         pre == BashDiaUpRight || pre == BashDiaDownLeft || pre == BashDiaDownRight) &&
+        curFrame == 1)
+    {
+        curBashFrame = 1;
+        bashAction   = pre;
+    }
+    if (curBashFrame <= ActionsMap[BashDiaUpLeft].totalFrameNumber)
+    {
+        BashMouseMove(curBashFrame, bashAction);
+        curBashFrame++;
+    }
 
     // 边界位置判断
     x = max(x, LeftEdge);

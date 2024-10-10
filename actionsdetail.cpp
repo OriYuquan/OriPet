@@ -1382,46 +1382,26 @@ pair<int, int> ActionsMovement(Action    action,
     {
         dx = 0;
         dy = -(120 / curFrame + 4 - curFrame * 0.35);
-
-        bashBeginMouseX += 0;
-        bashBeginMouseY += (30 / curFrame);
-        QCursor::setPos(bashBeginMouseX, bashBeginMouseY);
     }
     if (action == BashHorLeft || action == BashHorRight)
     {
         dx = (ActionsMap[action].transform ? -1 : 1) * (120 / curFrame + 4);
         dy = curFrame * 0.7;
-
-        bashBeginMouseX += -(ActionsMap[action].transform ? -1 : 1) * (30 / curFrame);
-        bashBeginMouseY += 0;
-        QCursor::setPos(bashBeginMouseX, bashBeginMouseY);
     }
     if (action == BashDownLeft || action == BashDownRight)
     {
         dx = 0;
         dy = (120 / curFrame + 4 + curFrame * 0.35);
-
-        bashBeginMouseX += 0;
-        bashBeginMouseY += -(30 / curFrame);
-        QCursor::setPos(bashBeginMouseX, bashBeginMouseY);
     }
     if (action == BashDiaUpLeft || action == BashDiaUpRight)
     {
         dx = (ActionsMap[action].transform ? -1 : 1) * (120 / curFrame + 5) * 0.72;
         dy = -(120 / curFrame + 4 - curFrame * 0.35) * 0.72;
-
-        bashBeginMouseX += -(ActionsMap[action].transform ? -1 : 1) * (30 / curFrame) * 0.72;
-        bashBeginMouseY += (30 / curFrame) * 0.72;
-        QCursor::setPos(bashBeginMouseX, bashBeginMouseY);
     }
     if (action == BashDiaDownLeft || action == BashDiaDownRight)
     {
         dx = (ActionsMap[action].transform ? -1 : 1) * (120 / curFrame + 5) * 0.72;
         dy = (120 / curFrame + 4 + curFrame * 0.9) * 0.72;
-
-        bashBeginMouseX += -(ActionsMap[action].transform ? -1 : 1) * (30 / curFrame) * 0.72;
-        bashBeginMouseY += -(30 / curFrame) * 0.72;
-        QCursor::setPos(bashBeginMouseX, bashBeginMouseY);
     }
     if (action == QuitStepLeft || action == QuitStepRight)
     {
@@ -1481,6 +1461,40 @@ pair<int, int> ActionsMovement(Action    action,
         dy          = dataY[curFrame - 1];
     }
     return {dx, dy};
+}
+
+void BashMouseMove(int curFrame, Action action)
+{
+    if (action == BashUpLeft || action == BashUpRight)
+    {
+        bashBeginMouseX += 0;
+        bashBeginMouseY += (30 / curFrame);
+        QCursor::setPos(bashBeginMouseX, bashBeginMouseY);
+    }
+    if (action == BashHorLeft || action == BashHorRight)
+    {
+        bashBeginMouseX += -(ActionsMap[action].transform ? -1 : 1) * (30 / curFrame);
+        bashBeginMouseY += 0;
+        QCursor::setPos(bashBeginMouseX, bashBeginMouseY);
+    }
+    if (action == BashDownLeft || action == BashDownRight)
+    {
+        bashBeginMouseX += 0;
+        bashBeginMouseY += -(30 / curFrame);
+        QCursor::setPos(bashBeginMouseX, bashBeginMouseY);
+    }
+    if (action == BashDiaUpLeft || action == BashDiaUpRight)
+    {
+        bashBeginMouseX += -(ActionsMap[action].transform ? -1 : 1) * (30 / curFrame) * 0.72;
+        bashBeginMouseY += (30 / curFrame) * 0.72;
+        QCursor::setPos(bashBeginMouseX, bashBeginMouseY);
+    }
+    if (action == BashDiaDownLeft || action == BashDiaDownRight)
+    {
+        bashBeginMouseX += -(ActionsMap[action].transform ? -1 : 1) * (30 / curFrame) * 0.72;
+        bashBeginMouseY += -(30 / curFrame) * 0.72;
+        QCursor::setPos(bashBeginMouseX, bashBeginMouseY);
+    }
 }
 
 int ActionsDX(Action    action,

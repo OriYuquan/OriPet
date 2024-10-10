@@ -40,6 +40,9 @@ class Behavior : public QWidget
     Action actionBehavior;
     // 控制冷却时间
     int controlTime, freeTime;
+    // 猛击控制
+    Action bashAction;
+    int    curBashFrame;
     // 二段跳剩余次数
     int jumpChance;
     // 冲刺剩余次数

@@ -73,14 +73,14 @@ MainWindow::MainWindow(QWidget* parent) : QWidget(parent)
         player->loadAction(DebutFromLeft);
         soundPlayer->loadAction(DebutFromLeft);
         behavior->loadAction(DebutFromLeft);
-        behavior->loadPos(SCREENWIDTHFIX + 210, SCREENHEIGHTFIX + SCREENHEIGHT - ORIHEIGHT);
+        behavior->loadPos(SCREENWIDTHFIX + 215, SCREENHEIGHTFIX + SCREENHEIGHT - ORIHEIGHT);
     }
     else
     {
         player->loadAction(DebutFromRight);
         soundPlayer->loadAction(DebutFromRight);
         behavior->loadAction(DebutFromRight);
-        behavior->loadPos(SCREENWIDTHFIX - 336 + SCREENWIDTH,
+        behavior->loadPos(SCREENWIDTHFIX - 341 + SCREENWIDTH,
                           SCREENHEIGHTFIX + SCREENHEIGHT - ORIHEIGHT);
     }
 

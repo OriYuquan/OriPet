@@ -277,6 +277,9 @@ extern int PNGWIDTH, PNGHEIGHT;
 extern int originalMouseX;
 extern int originalMousey;
 
+// 猛击鼠标移动
+void BashMouseMove(int curFrame, Action action);
+
 // 映射关系初始化
 void ActionsDetailLoad();
 
