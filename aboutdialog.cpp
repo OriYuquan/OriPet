@@ -69,7 +69,7 @@ AboutDialog::AboutDialog(QWidget* parent) : QDialog(parent)
     infoLabel->setTextFormat(Qt::RichText);  // 启用富文本支持
     infoLabel->setText(
         "奥里桌宠<br><br>"
-        "Vtest<br><br>"
+        "版本：1.0<br><br>"
         "程序: &nbsp;&nbsp;&nbsp;&nbsp;<a href=\"https://space.bilibili.com/504203036\" "
         "style=\"color:lightblue; font-weight:bold; text-decoration:underline;\">羽泉</a><br>"
         "素材: &nbsp;&nbsp;&nbsp;&nbsp;<a href=\"https://space.bilibili.com/1630447462\" "

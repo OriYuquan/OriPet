@@ -47,8 +47,7 @@ double Behavior::generalPossiblity(Action act)
         else if (act == RunSlowlyRight || act == RunFastRight || act == GetDownWalkRight ||
                  act == WalkRight)
         {
-            return 10.0 * (double) (RightEdge - LeftEdge - (x - LeftEdge)) /
-                   (double) (RightEdge - LeftEdge);
+            return 10.0 * (double) (RightEdge - x) / (double) (RightEdge - LeftEdge);
         }
         else if (act == RunLeft)
         {
@@ -56,8 +55,7 @@ double Behavior::generalPossiblity(Action act)
         }
         else if (act == RunRight)
         {
-            return 2.0 * (double) (RightEdge - LeftEdge - (x - LeftEdge)) /
-                   (double) (RightEdge - LeftEdge);
+            return 2.0 * (double) (RightEdge - x) / (double) (RightEdge - LeftEdge);
         }
         else if (act == ClimbUpLeft || act == ClimbUpRight)
         {
@@ -68,8 +66,7 @@ double Behavior::generalPossiblity(Action act)
         {
             if ((act == ClimbDownLeft && x == LeftEdge) ||
                 (act == ClimbDownRight && x == RightEdge))
-                return 8.0 * (double) (BottomEdge - TopEdge - (y - TopEdge)) /
-                       (double) (BottomEdge - TopEdge);
+                return 8.0 * (double) (BottomEdge - y) / (double) (BottomEdge - TopEdge);
             else
                 return 0;
         }
@@ -100,8 +97,7 @@ double Behavior::generalPossiblity(Action act)
         else if (act == TopClimbRight)
         {
             if (y == TopEdge)
-                return 10.0 * (double) (RightEdge - LeftEdge - (x - LeftEdge)) /
-                       (double) (RightEdge - LeftEdge);
+                return 10.0 * (double) (RightEdge - x) / (double) (RightEdge - LeftEdge);
             else
                 return 0;
         }
@@ -155,9 +151,10 @@ double Behavior::generalPossiblity(Action act)
         }
         else if (act == StandtoSitLeft || act == StandtoSitRight)
         {
-            if ((act == StandtoSitLeft && x < RightEdge - 90) ||
-                (act == StandtoSitRight && x > LeftEdge + 90))
-                return 3;
+            if (act == StandtoSitLeft && x < RightEdge - 90)
+                return 3.0 * (double) (x - LeftEdge) / (double) (RightEdge - 90 - LeftEdge);
+            else if (act == StandtoSitRight && x > LeftEdge + 90)
+                return 3.0 * (double) (RightEdge - x) / (double) (RightEdge - 90 - LeftEdge);
         }
         else if (act == SittoSleepLeft || act == SittoSleepRight)
         {
