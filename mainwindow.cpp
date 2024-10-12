@@ -55,7 +55,7 @@ MainWindow::MainWindow(QWidget* parent) : QWidget(parent)
     // 创建系统托盘图标
     tray = new QSystemTrayIcon(this);
     tray->setIcon(QIcon("Ori.ico"));
-    tray->setToolTip(tr("奥里桌宠"));
+    tray->setToolTip(tr("OriPet"));
 
     // 创建动作和菜单
     createActions();

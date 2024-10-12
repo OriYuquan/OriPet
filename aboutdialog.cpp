@@ -44,23 +44,6 @@ AboutDialog::AboutDialog(QWidget* parent) : QDialog(parent)
                 }
             )");
 
-    // 创建 GIF 背景
-    QLabel* backgroundLabel = new QLabel(this);
-    backgroundLabel->setFixedSize(size());  // 与窗口大小一致
-    backgroundLabel->lower();               // 置于底层
-
-    QMovie* movie = new QMovie("background.gif");
-    movie->setParent(this);
-    backgroundLabel->setMovie(movie);
-    movie->setScaledSize(size());
-    movie->start();
-
-    // 创建一个用于调整亮度的遮罩层
-    QWidget* brightnessOverlay = new QWidget(this);
-    brightnessOverlay->setFixedSize(size());
-    brightnessOverlay->setStyleSheet(
-        "background-color: rgba(0, 0, 0, 90);");  // 使用黑色，50 表示半透明度
-
     // 设置对话框布局
     QVBoxLayout* layout = new QVBoxLayout(this);
 
@@ -68,13 +51,16 @@ AboutDialog::AboutDialog(QWidget* parent) : QDialog(parent)
     QLabel* infoLabel = new QLabel(this);
     infoLabel->setTextFormat(Qt::RichText);  // 启用富文本支持
     infoLabel->setText(
-        "奥里桌宠<br><br>"
-        "版本：1.0<br><br>"
-        "程序: &nbsp;&nbsp;&nbsp;&nbsp;<a href=\"https://space.bilibili.com/504203036\" "
+        "<span style='font-size: 28px;'>OriPet<br><br>"
+        "<span style='font-size: 18px;'>版本：1.0<br><br>"
+        "<span style='font-size: 22px;'>程序开发: &nbsp;&nbsp;<a "
+        "href=\"https://space.bilibili.com/504203036\" "
         "style=\"color:lightblue; font-weight:bold; text-decoration:underline;\">羽泉</a><br>"
-        "素材: &nbsp;&nbsp;&nbsp;&nbsp;<a href=\"https://space.bilibili.com/1630447462\" "
+        "<span style='font-size: 22px;'>素材处理: &nbsp;&nbsp;<a "
+        "href=\"https://space.bilibili.com/1630447462\" "
         "style=\"color:lightblue; font-weight:bold; text-decoration:underline;\">无名</a><br>");
-    infoLabel->setOpenExternalLinks(true);  // 启用外部链接点击
+    infoLabel->setOpenExternalLinks(true);     // 启用外部链接点击
+    infoLabel->setAlignment(Qt::AlignCenter);  // 设置文本居中对齐
     layout->addWidget(infoLabel);
 
     // 添加按钮
