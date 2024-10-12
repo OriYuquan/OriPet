@@ -12,7 +12,7 @@ AboutDialog::AboutDialog(QWidget* parent) : QDialog(parent)
     // 设置窗口标题
     setWindowTitle("关于");
     setWindowIcon(QIcon("Ori.icon"));
-    setFixedSize(290, 230);
+    setFixedSize(270, 230);
 
     // 设置样式表
     setStyleSheet(R"(
